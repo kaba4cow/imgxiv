@@ -34,6 +34,9 @@ public class Tag implements Comparable<Tag> {
 	@Column(name = "column_name")
 	private String name;
 
+	@Column(name = "column_description")
+	private String description;
+
 	@ManyToOne
 	@JoinColumn(name = "column_category_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)

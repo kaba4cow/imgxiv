@@ -29,4 +29,7 @@ public class Category {
 	@Column(name = "column_name")
 	private String name;
 
+	@Column(name = "column_description")
+	private String description;
+
 }
