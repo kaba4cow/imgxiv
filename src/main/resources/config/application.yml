@@ -1,15 +1,9 @@
 spring:
     application:
         name: imgxiv
-    datasource:
-        url: jdbc:postgresql://localhost:5432/imgxiv
-        driver-class-name: org.postgresql.Driver
-        username: postgres
-        password: password
+    profiles:
+        active: dev
     jpa:
-        database-platform: org.hibernate.dialect.PostgreSQLDialect
-        hibernate:
-            ddl-auto: update
         show-sql: false
         properties:
             hibernate:
