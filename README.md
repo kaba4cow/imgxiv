@@ -25,9 +25,20 @@ cd imgxiv
 Run using maven:
 
 ```bash
+# On Linux/MacOS
 ./mvnw spring-boot:run
 ```
 
+```bash
+# On Windows (cmd)
+mvnw.cmd spring-boot:run
+```
+
+### Requirements
+
+- Java 17 or higher
+- Maven
+
 ## License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License** - see the [LICENSE](./LICENSE) file for details.
