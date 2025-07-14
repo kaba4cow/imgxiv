@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.post;
+package com.kaba4cow.imgxiv.domain.comment;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

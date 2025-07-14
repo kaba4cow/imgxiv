@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.post;
+package com.kaba4cow.imgxiv.domain.comment;
 
 import java.util.UUID;
 
