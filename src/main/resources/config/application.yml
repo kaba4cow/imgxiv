@@ -3,6 +3,8 @@ spring:
         name: imgxiv
     profiles:
         active: dev
+    config:
+        import: secret.yml
     jpa:
         show-sql: false
         properties:
