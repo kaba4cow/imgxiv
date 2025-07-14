@@ -30,7 +30,7 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "column_id", nullable = false)
+	@Column(name = "column_id")
 	private UUID id;
 
 	@Column(name = "column_username", nullable = false)
