@@ -25,7 +25,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "table_tag", uniqueConstraints = @UniqueConstraint(columnNames = "column_name"))
-public class Tag {
+public class Tag implements Comparable<Tag> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -38,5 +38,10 @@ public class Tag {
 	@JoinColumn(name = "column_category_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Category category;
+
+	@Override
+	public int compareTo(Tag other) {
+		return this.name.compareTo(other.name);
+	}
 
 }
