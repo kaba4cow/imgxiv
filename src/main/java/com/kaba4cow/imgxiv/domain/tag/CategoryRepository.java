@@ -1,0 +1,9 @@
+package com.kaba4cow.imgxiv.domain.tag;
+
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CategoryRepository extends JpaRepository<Category, UUID> {
+
+}
