@@ -40,6 +40,9 @@ public class Comment {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User author;
 
+	@Column(name = "column_text", length = 1024)
+	private String text;
+
 	@CreationTimestamp
 	@Column(name = "column_created_at", updatable = false)
 	private LocalDateTime createdAt;
