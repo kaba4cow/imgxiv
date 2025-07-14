@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.user;
+package com.kaba4cow.imgxiv.domain.user;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
