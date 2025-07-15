@@ -26,7 +26,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "table_tag", uniqueConstraints = @UniqueConstraint(columnNames = "column_name"))
-public class Tag extends EntityWithId implements Comparable<Tag> {
+public class Tag extends EntityWithId {
 
 	@Embedded
 	private NameAndDescription nameAndDescription = new NameAndDescription();
@@ -35,10 +35,5 @@ public class Tag extends EntityWithId implements Comparable<Tag> {
 	@JoinColumn(name = "column_category_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Category category;
-
-	@Override
-	public int compareTo(Tag other) {
-		return this.nameAndDescription.getName().compareTo(other.nameAndDescription.getName());
-	}
 
 }

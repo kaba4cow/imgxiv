@@ -1,7 +1,7 @@
 package com.kaba4cow.imgxiv.domain.post;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -38,6 +38,6 @@ public class Post extends EntityWithIdAndCreationTimestamp {
 
 	@ManyToMany
 	@JoinTable(name = "table_post_tag")
-	private Set<Tag> tags = new TreeSet<>();
+	private Set<Tag> tags = new HashSet<>();
 
 }
