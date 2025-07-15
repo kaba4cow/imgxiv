@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.kaba4cow.imgxiv.domain.AbstractEntity;
+import com.kaba4cow.imgxiv.domain.EntityWithId;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,7 +28,7 @@ import lombok.ToString;
 		@UniqueConstraint(columnNames = "column_username"), //
 		@UniqueConstraint(columnNames = "column_email") //
 })
-public class User extends AbstractEntity {
+public class User extends EntityWithId {
 
 	@Column(name = "column_username", length = 32, nullable = false)
 	private String username;

@@ -3,7 +3,7 @@ package com.kaba4cow.imgxiv.domain.tag;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.kaba4cow.imgxiv.domain.AbstractEntity;
+import com.kaba4cow.imgxiv.domain.EntityWithId;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.embeddable.NameAndDescription;
 
@@ -26,7 +26,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "table_tag", uniqueConstraints = @UniqueConstraint(columnNames = "column_name"))
-public class Tag extends AbstractEntity implements Comparable<Tag> {
+public class Tag extends EntityWithId implements Comparable<Tag> {
 
 	@Embedded
 	private NameAndDescription nameAndDescription = new NameAndDescription();

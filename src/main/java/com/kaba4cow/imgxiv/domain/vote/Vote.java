@@ -1,6 +1,6 @@
 package com.kaba4cow.imgxiv.domain.vote;
 
-import com.kaba4cow.imgxiv.domain.AbstractEntity;
+import com.kaba4cow.imgxiv.domain.EntityWithId;
 import com.kaba4cow.imgxiv.domain.embeddable.PostAndUser;
 
 import jakarta.persistence.Column;
@@ -22,7 +22,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "table_vote")
-public class Vote extends AbstractEntity {
+public class Vote extends EntityWithId {
 
 	@Embedded
 	private PostAndUser postAndUser = new PostAndUser();

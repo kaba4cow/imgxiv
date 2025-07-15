@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.kaba4cow.imgxiv.domain.AbstractEntity;
+import com.kaba4cow.imgxiv.domain.EntityWithId;
 import com.kaba4cow.imgxiv.domain.embeddable.PostAndUser;
 
 import jakarta.persistence.Column;
@@ -24,7 +24,7 @@ import lombok.ToString;
 @Entity
 @ToString
 @Table(name = "table_comment")
-public class Comment extends AbstractEntity {
+public class Comment extends EntityWithId {
 
 	@Embedded
 	private PostAndUser postAndUser = new PostAndUser();

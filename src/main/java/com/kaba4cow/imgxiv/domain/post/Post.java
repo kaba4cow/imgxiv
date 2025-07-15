@@ -8,7 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.kaba4cow.imgxiv.domain.AbstractEntity;
+import com.kaba4cow.imgxiv.domain.EntityWithId;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.user.User;
 
@@ -32,7 +32,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "table_post")
-public class Post extends AbstractEntity {
+public class Post extends EntityWithId {
 
 	@ManyToOne
 	@JoinColumn(name = "column_author_id")
