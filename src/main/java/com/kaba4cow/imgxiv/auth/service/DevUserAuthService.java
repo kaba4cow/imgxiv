@@ -14,6 +14,8 @@ import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
 import com.kaba4cow.imgxiv.auth.dto.UserDto;
 import com.kaba4cow.imgxiv.auth.dto.UserMapper;
 import com.kaba4cow.imgxiv.auth.jwt.JwtService;
+import com.kaba4cow.imgxiv.common.exception.EmailConflictException;
+import com.kaba4cow.imgxiv.common.exception.UsernameConflictException;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 
@@ -37,9 +39,9 @@ public class DevUserAuthService implements UserAuthService {
 	@Override
 	public UserDto register(RegisterRequest request) {
 		if (userRepository.existsByUsername(request.getUsername()))
-			throw new IllegalArgumentException("Username already taken");
+			throw new UsernameConflictException("Username already taken");
 		if (userRepository.existsByEmail(request.getEmail()))
-			throw new IllegalArgumentException("Email already taken");
+			throw new EmailConflictException("Email already taken");
 		User user = registerUser(request);
 		return userMapper.mapToDto(user);
 	}
