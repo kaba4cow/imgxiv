@@ -1,50 +1,31 @@
 package com.kaba4cow.imgxiv.domain.vote;
 
-import java.util.UUID;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import com.kaba4cow.imgxiv.domain.post.Post;
-import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.embeddable.PostAndUser;
+import com.kaba4cow.imgxiv.domain.superclass.EntityWithId;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "table_vote")
-public class Vote {
+public class Vote extends EntityWithId {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "column_id")
-	private UUID id;
-
-	@ManyToOne
-	@JoinColumn(name = "column_post_id")
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Post post;
-
-	@ManyToOne
-	@JoinColumn(name = "column_voter_id")
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private User voter;
+	@Embedded
+	private PostAndUser postAndUser = new PostAndUser();
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "column_type")
