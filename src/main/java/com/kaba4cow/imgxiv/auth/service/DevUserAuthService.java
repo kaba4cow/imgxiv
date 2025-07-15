@@ -18,7 +18,9 @@ import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Profile("dev")
 @Service
@@ -47,7 +49,9 @@ public class DevUserAuthService implements UserAuthService {
 		user.setUsername(request.getUsername());
 		user.setEmail(request.getEmail());
 		user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
-		return userRepository.save(user);
+		User saved = userRepository.save(user);
+		log.info("Registered new User: {}", saved);
+		return saved;
 	}
 
 	@Override
