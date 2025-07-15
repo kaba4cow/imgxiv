@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.common;
+package com.kaba4cow.imgxiv.common.response;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatusCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-class ExceptionHandlerResponseBuilder {
+public class ExceptionHandlerResponseBuilder {
 
 	private final Map<String, Object> errors = new LinkedHashMap<>();
 

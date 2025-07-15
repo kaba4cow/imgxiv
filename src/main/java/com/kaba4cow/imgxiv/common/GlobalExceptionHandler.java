@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.kaba4cow.imgxiv.common.exception.ConflictException;
+import com.kaba4cow.imgxiv.common.response.ExceptionHandlerResponseBuilder;
+import com.kaba4cow.imgxiv.common.response.ExceptionHandlerResponseEntity;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
