@@ -1,18 +1,14 @@
 package com.kaba4cow.imgxiv.domain.tag;
 
-import java.util.UUID;
-
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.kaba4cow.imgxiv.domain.AbstractEntity;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.embeddable.NameAndDescription;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -30,11 +26,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "table_tag", uniqueConstraints = @UniqueConstraint(columnNames = "column_name"))
-public class Tag implements Comparable<Tag> {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
+public class Tag extends AbstractEntity implements Comparable<Tag> {
 
 	@Embedded
 	private NameAndDescription nameAndDescription = new NameAndDescription();

@@ -1,18 +1,15 @@
 package com.kaba4cow.imgxiv.domain.comment;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.kaba4cow.imgxiv.domain.AbstractEntity;
 import com.kaba4cow.imgxiv.domain.embeddable.PostAndUser;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,12 +24,7 @@ import lombok.ToString;
 @Entity
 @ToString
 @Table(name = "table_comment")
-public class Comment {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "column_id")
-	private UUID id;
+public class Comment extends AbstractEntity {
 
 	@Embedded
 	private PostAndUser postAndUser = new PostAndUser();

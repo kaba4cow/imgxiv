@@ -1,17 +1,15 @@
 package com.kaba4cow.imgxiv.domain.user;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.kaba4cow.imgxiv.domain.AbstractEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -30,12 +28,7 @@ import lombok.ToString;
 		@UniqueConstraint(columnNames = "column_username"), //
 		@UniqueConstraint(columnNames = "column_email") //
 })
-public class User {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "column_id")
-	private UUID id;
+public class User extends AbstractEntity {
 
 	@Column(name = "column_username", length = 32, nullable = false)
 	private String username;

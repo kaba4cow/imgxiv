@@ -1,7 +1,6 @@
 package com.kaba4cow.imgxiv.domain.vote;
 
-import java.util.UUID;
-
+import com.kaba4cow.imgxiv.domain.AbstractEntity;
 import com.kaba4cow.imgxiv.domain.embeddable.PostAndUser;
 
 import jakarta.persistence.Column;
@@ -9,9 +8,6 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,12 +22,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "table_vote")
-public class Vote {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "column_id")
-	private UUID id;
+public class Vote extends AbstractEntity {
 
 	@Embedded
 	private PostAndUser postAndUser = new PostAndUser();
