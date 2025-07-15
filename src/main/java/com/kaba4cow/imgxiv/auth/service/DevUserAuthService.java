@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Profile("dev")
 @Service
-public class DevUserService implements UserService {
+public class DevUserAuthService implements UserAuthService {
 
 	private final UserRepository userRepository;
 

@@ -8,7 +8,7 @@ import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
 import com.kaba4cow.imgxiv.auth.dto.UserDto;
 import com.kaba4cow.imgxiv.domain.user.User;
 
-public interface UserService {
+public interface UserAuthService {
 
 	UserDto register(RegisterRequest request);
 
