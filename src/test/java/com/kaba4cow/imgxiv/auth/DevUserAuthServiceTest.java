@@ -20,12 +20,12 @@ import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
 import com.kaba4cow.imgxiv.auth.dto.UserDto;
 import com.kaba4cow.imgxiv.auth.dto.UserMapper;
 import com.kaba4cow.imgxiv.auth.jwt.JwtService;
-import com.kaba4cow.imgxiv.auth.service.DevUserService;
+import com.kaba4cow.imgxiv.auth.service.DevUserAuthService;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class DevUserServiceTest {
+public class DevUserAuthServiceTest {
 
 	@Mock
 	private UserRepository userRepository;
@@ -40,7 +40,7 @@ public class DevUserServiceTest {
 	private UserMapper userMapper;
 
 	@InjectMocks
-	private DevUserService userService;
+	private DevUserAuthService userAuthService;
 
 	@Test
 	void throwIfUsernameTaken() {
@@ -48,7 +48,7 @@ public class DevUserServiceTest {
 
 		when(userRepository.existsByUsername("user")).thenReturn(true);
 
-		assertThrows(IllegalArgumentException.class, () -> userService.register(request));
+		assertThrows(IllegalArgumentException.class, () -> userAuthService.register(request));
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class DevUserServiceTest {
 		when(userRepository.existsByUsername("user")).thenReturn(false);
 		when(userRepository.existsByEmail("mail@mail.com")).thenReturn(true);
 
-		assertThrows(IllegalArgumentException.class, () -> userService.register(request));
+		assertThrows(IllegalArgumentException.class, () -> userAuthService.register(request));
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class DevUserServiceTest {
 
 		when(userMapper.mapToDto(Mockito.any())).thenReturn(new UserDto("user", "mail@mail.com"));
 
-		UserDto result = userService.register(request);
+		UserDto result = userAuthService.register(request);
 
 		assertEquals("user", result.getUsername());
 		assertEquals("mail@mail.com", result.getEmail());
@@ -90,7 +90,7 @@ public class DevUserServiceTest {
 		when(jwtService.generateToken(user)).thenReturn("mock-token");
 		when(userMapper.mapToDto(user)).thenReturn(new UserDto("user", "mail@mail.com"));
 
-		AuthResponse response = userService.login(new LoginRequest("user", "pass"));
+		AuthResponse response = userAuthService.login(new LoginRequest("user", "pass"));
 
 		assertEquals("mock-token", response.getToken());
 		assertEquals("user", response.getUser().getUsername());
