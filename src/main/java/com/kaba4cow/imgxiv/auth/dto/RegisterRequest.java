@@ -15,15 +15,18 @@ import lombok.Setter;
 public class RegisterRequest {
 
 	@NotBlank(message = "Username is required")
-	@Size(min = 2, max = 32, message = "Username must be between 2 and 32 characters long")
+	@Size(min = 2, message = "Username is too short (min 4 characters)")
+	@Size(max = 32, message = "Username is too long (max 50 characters)")
 	private String username;
 
 	@NotBlank(message = "Email is required")
+	@Size(max = 64, message = "Email is too long (max 64 characters)")
 	@Email(message = "Email must be valid")
 	private String email;
 
 	@NotBlank(message = "Password is required")
-	@Size(min = 8, max = 64, message = "Password must be between 8 and 64 characters long")
+	@Size(min = 8, message = "Password is too short (min 8 characters)")
+	@Size(max = 64, message = "Password is too long (max 64 characters)")
 	private String password;
 
 }
