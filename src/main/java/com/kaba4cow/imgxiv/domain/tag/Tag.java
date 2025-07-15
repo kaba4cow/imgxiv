@@ -31,7 +31,7 @@ public class Tag extends EntityWithId {
 	@Embedded
 	private NameAndDescription nameAndDescription = new NameAndDescription();
 
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "column_category_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Category category;

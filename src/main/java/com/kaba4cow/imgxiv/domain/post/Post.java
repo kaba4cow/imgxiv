@@ -31,7 +31,7 @@ import lombok.ToString;
 @Table(name = "table_post")
 public class Post extends EntityWithIdAndCreationTimestamp {
 
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "column_author_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User author;
