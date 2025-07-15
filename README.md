@@ -12,6 +12,7 @@ RESTful tag-based image archive.
 - Spring Security
 - Spring Data JPA
 - Spring Validation
+- Springdoc OpenAPI (Swagger UI)
 
 ## How to run
 

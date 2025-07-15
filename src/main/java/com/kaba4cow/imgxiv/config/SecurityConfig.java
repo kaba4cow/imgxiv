@@ -23,13 +23,15 @@ public class SecurityConfig {
 
 	private final AuthenticationProvider authProvider;
 
+	private final SecurityProperties securityProperties;
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http//
 				.csrf(AbstractHttpConfigurer::disable)//
 				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))//
 				.authorizeHttpRequests(requests -> requests//
-						.requestMatchers("/api/auth/**").permitAll()//
+						.requestMatchers(securityProperties.getWhitelist()).permitAll()//
 						.anyRequest().authenticated()//
 				)//
 				.authenticationProvider(authProvider)//
