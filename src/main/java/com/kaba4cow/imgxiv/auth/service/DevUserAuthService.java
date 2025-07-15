@@ -52,7 +52,7 @@ public class DevUserAuthService implements UserAuthService {
 		user.setEmail(request.getEmail());
 		user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
 		User saved = userRepository.save(user);
-		log.info("Registered new User: {}", saved);
+		log.info("Registered {}", saved);
 		return saved;
 	}
 
