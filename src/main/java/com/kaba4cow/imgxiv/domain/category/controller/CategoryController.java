@@ -34,7 +34,10 @@ public class CategoryController {
 			description = "Creates a new category and returns category info"//
 	)
 	@PostMapping
-	public ResponseEntity<CategoryDto> create(@RequestBody @Valid CategoryCreateRequest request) {
+	public ResponseEntity<CategoryDto> create(//
+			@RequestBody //
+			@Valid //
+			CategoryCreateRequest request) {
 		return ResponseEntity.ok(categoryService.create(request));
 	}
 
