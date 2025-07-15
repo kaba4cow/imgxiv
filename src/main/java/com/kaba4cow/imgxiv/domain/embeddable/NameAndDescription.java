@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
 @Getter
 @Setter
+@ToString
 @Embeddable
 public class NameAndDescription {
 

@@ -21,11 +21,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "table_tag", uniqueConstraints = @UniqueConstraint(columnNames = "column_name"))
 public class Tag implements Comparable<Tag> {
