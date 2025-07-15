@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
+import com.kaba4cow.imgxiv.domain.user.role.UserAuthorityRegistry;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,10 +16,12 @@ public class DefaultUserDetailsService implements UserDetailsService {
 
 	private final UserRepository userRepository;
 
+	private final UserAuthorityRegistry userAuthorityRegistry;
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		return userRepository.findByUsername(username)//
-				.map(UserDetailsAdapter::of)//
+				.map(user -> UserDetailsAdapter.of(user, userAuthorityRegistry))//
 				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 	}
 

@@ -4,7 +4,9 @@ spring:
     profiles:
         active: dev
     config:
-        import: secret.yml
+        import:
+            - secret.yml
+            - roles.yml
     jpa:
         show-sql: false
         properties:

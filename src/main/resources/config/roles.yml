@@ -1,0 +1,14 @@
+roles:
+    map:
+        user:
+            authorities:
+                - create-post
+        moderator:
+            parent: user
+            authorities:
+                - create-category
+                - create-tag
+        admin:
+            parent: moderator
+            authorities:
+                - assign-moderator

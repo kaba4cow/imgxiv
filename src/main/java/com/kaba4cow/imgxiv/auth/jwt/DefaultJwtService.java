@@ -3,7 +3,6 @@ package com.kaba4cow.imgxiv.auth.jwt;
 import java.security.Key;
 import java.util.Date;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -15,30 +14,25 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 @RequiredArgsConstructor
-@Setter
-@ConfigurationProperties(prefix = "jwt")
 @Service
 public class DefaultJwtService implements JwtService {
 
-	private String secretKey;
-
-	private long expirationMillis;
+	private final JwtProperties jwtProperties;
 
 	@Override
 	public String generateToken(User user) {
 		return Jwts.builder()//
 				.setSubject(user.getUsername())//
 				.setIssuedAt(new Date())//
-				.setExpiration(new Date(System.currentTimeMillis() + expirationMillis))//
+				.setExpiration(new Date(System.currentTimeMillis() + jwtProperties.getExpirationMillis()))//
 				.signWith(getSignInKey(), SignatureAlgorithm.HS256)//
 				.compact();
 	}
 
 	private Key getSignInKey() {
-		return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+		return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecretKey()));
 	}
 
 	@Override

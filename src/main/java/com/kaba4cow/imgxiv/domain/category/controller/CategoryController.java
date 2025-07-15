@@ -34,7 +34,7 @@ public class CategoryController {
 			summary = "Creates new category", //
 			description = "Creates a new category and returns category info"//
 	)
-	@PreAuthorize("hasRole('MODERATOR')")
+	@PreAuthorize("hasRole('create-category')")
 	@PostMapping
 	public ResponseEntity<CategoryDto> create(//
 			@RequestBody //

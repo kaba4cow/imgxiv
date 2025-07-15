@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.user.role.UserAuthorityRegistry;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +19,11 @@ public class UserDetailsAdapter implements UserDetails {
 
 	private final User user;
 
+	private final UserAuthorityRegistry userAuthorityRegistry;
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return user.getRole().getGrantedAuthorities();
+		return userAuthorityRegistry.getAuthorities(user.getRole());
 	}
 
 	@Override
