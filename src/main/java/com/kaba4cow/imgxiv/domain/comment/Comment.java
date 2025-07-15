@@ -4,19 +4,15 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import com.kaba4cow.imgxiv.domain.post.Post;
-import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.embeddable.PostAndUser;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,15 +32,8 @@ public class Comment {
 	@Column(name = "column_id")
 	private UUID id;
 
-	@ManyToOne
-	@JoinColumn(name = "column_post_id")
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Post post;
-
-	@ManyToOne
-	@JoinColumn(name = "column_author_id")
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private User author;
+	@Embedded
+	private PostAndUser postAndUser = new PostAndUser();
 
 	@Column(name = "column_text", length = 1024)
 	private String text;
