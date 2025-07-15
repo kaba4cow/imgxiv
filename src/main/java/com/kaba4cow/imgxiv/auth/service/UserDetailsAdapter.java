@@ -1,10 +1,12 @@
-package com.kaba4cow.imgxiv.domain.user;
+package com.kaba4cow.imgxiv.auth.service;
 
 import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.kaba4cow.imgxiv.domain.user.User;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
