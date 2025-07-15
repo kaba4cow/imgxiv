@@ -1,10 +1,6 @@
 package com.kaba4cow.imgxiv.domain.user;
 
-import java.time.LocalDateTime;
-
-import org.hibernate.annotations.CreationTimestamp;
-
-import com.kaba4cow.imgxiv.domain.superclass.EntityWithId;
+import com.kaba4cow.imgxiv.domain.superclass.EntityWithIdAndCreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,7 +24,7 @@ import lombok.ToString;
 		@UniqueConstraint(columnNames = "column_username"), //
 		@UniqueConstraint(columnNames = "column_email") //
 })
-public class User extends EntityWithId {
+public class User extends EntityWithIdAndCreationTimestamp {
 
 	@Column(name = "column_username", length = 32, nullable = false)
 	private String username;
@@ -42,9 +38,5 @@ public class User extends EntityWithId {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "column_role", nullable = false)
 	private UserRole role;
-
-	@CreationTimestamp
-	@Column(name = "column_created_at", updatable = false)
-	private LocalDateTime createdAt;
 
 }
