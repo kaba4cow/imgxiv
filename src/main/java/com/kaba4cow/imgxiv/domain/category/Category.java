@@ -2,7 +2,9 @@ package com.kaba4cow.imgxiv.domain.category;
 
 import java.util.UUID;
 
-import jakarta.persistence.Column;
+import com.kaba4cow.imgxiv.domain.embeddable.NameAndDescription;
+
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,10 +28,7 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
-	@Column(name = "column_name")
-	private String name;
-
-	@Column(name = "column_description")
-	private String description;
+	@Embedded
+	private NameAndDescription nameAndDescription = new NameAndDescription();
 
 }

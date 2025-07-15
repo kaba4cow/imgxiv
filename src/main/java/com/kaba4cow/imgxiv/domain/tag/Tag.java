@@ -6,8 +6,9 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.kaba4cow.imgxiv.domain.category.Category;
+import com.kaba4cow.imgxiv.domain.embeddable.NameAndDescription;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,11 +34,8 @@ public class Tag implements Comparable<Tag> {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
-	@Column(name = "column_name")
-	private String name;
-
-	@Column(name = "column_description")
-	private String description;
+	@Embedded
+	private NameAndDescription nameAndDescription = new NameAndDescription();
 
 	@ManyToOne
 	@JoinColumn(name = "column_category_id")
@@ -46,7 +44,7 @@ public class Tag implements Comparable<Tag> {
 
 	@Override
 	public int compareTo(Tag other) {
-		return this.name.compareTo(other.name);
+		return this.nameAndDescription.getName().compareTo(other.nameAndDescription.getName());
 	}
 
 }
