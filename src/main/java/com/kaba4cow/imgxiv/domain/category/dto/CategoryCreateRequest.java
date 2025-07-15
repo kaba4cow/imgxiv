@@ -17,7 +17,7 @@ public class CategoryCreateRequest {
 
 	@NotBlank(message = "Name is required")
 	@Size(min = 2, message = "Name is too short (min 2 characters)")
-	@Size(max = 16, message = "Name is too long (max 16 characters)")
+	@Size(max = 32, message = "Name is too long (max 32 characters)")
 	@Schema(//
 			description = "Unique name", //
 			example = "category_name"//
@@ -25,7 +25,7 @@ public class CategoryCreateRequest {
 	private String name;
 
 	@NotBlank(message = "Description is required")
-	@Size(min = 16, message = "Description is too short (min 16 characters)")
+	@Size(min = 8, message = "Description is too short (min 8 characters)")
 	@Size(max = 1024, message = "Description is too long (max 1024 characters)")
 	@Schema(//
 			description = "Description", //
