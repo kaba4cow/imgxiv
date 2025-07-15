@@ -35,10 +35,10 @@ public class User {
 	@Column(name = "column_id")
 	private UUID id;
 
-	@Column(name = "column_username", nullable = false)
+	@Column(name = "column_username", length = 32, nullable = false)
 	private String username;
 
-	@Column(name = "column_email", nullable = false)
+	@Column(name = "column_email", length = 64, nullable = false)
 	private String email;
 
 	@Column(name = "column_password_hash", nullable = false)
