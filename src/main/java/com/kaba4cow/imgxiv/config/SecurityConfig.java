@@ -23,22 +23,15 @@ public class SecurityConfig {
 
 	private final AuthenticationProvider authProvider;
 
+	private final SecurityProperties securityProperties;
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http//
 				.csrf(AbstractHttpConfigurer::disable)//
 				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))//
 				.authorizeHttpRequests(requests -> requests//
-						.requestMatchers(//
-								"/api/docs/**", //
-								"/docs/**", //
-
-								"/v3/api-docs/**", //
-								"/swagger-ui/**", //
-								"/swagger-ui.html", //
-
-								"/api/auth/**"//
-						).permitAll()//
+						.requestMatchers(securityProperties.getWhitelist()).permitAll()//
 						.anyRequest().authenticated()//
 				)//
 				.authenticationProvider(authProvider)//
