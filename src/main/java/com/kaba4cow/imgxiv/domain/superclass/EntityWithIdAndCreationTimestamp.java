@@ -6,7 +6,11 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @MappedSuperclass
 public class EntityWithIdAndCreationTimestamp extends EntityWithId {
 

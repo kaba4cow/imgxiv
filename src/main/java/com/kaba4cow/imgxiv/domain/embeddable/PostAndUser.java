@@ -23,12 +23,12 @@ import lombok.ToString;
 @Embeddable
 public class PostAndUser {
 
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "column_post_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Post post;
 
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "column_user_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;

@@ -1,9 +1,7 @@
 package com.kaba4cow.imgxiv.domain.comment;
 
-import java.util.UUID;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CommentRepository extends JpaRepository<Comment, UUID> {
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 
 }

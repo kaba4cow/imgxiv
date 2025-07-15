@@ -49,7 +49,7 @@ public class DefaultCategoryServiceTest {
 				.thenAnswer(i -> i.getArgument(0));
 
 		when(categoryMapper.mapToDto(Mockito.any()))//
-				.thenReturn(new CategoryDto("category-b", "category-description"));
+				.thenReturn(new CategoryDto(0L, "category-b", "category-description"));
 
 		CategoryDto result = categoryService.create(request);
 

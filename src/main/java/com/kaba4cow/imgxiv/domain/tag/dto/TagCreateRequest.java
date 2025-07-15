@@ -1,7 +1,8 @@
-package com.kaba4cow.imgxiv.domain.category.dto;
+package com.kaba4cow.imgxiv.domain.tag.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,15 +13,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Schema(description = "Request for creating a new category")
-public class CategoryCreateRequest {
+@Schema(description = "Request for creating a new tag")
+public class TagCreateRequest {
 
 	@NotBlank(message = "Name is required")
 	@Size(min = 2, message = "Name is too short (min 2 characters)")
 	@Size(max = 32, message = "Name is too long (max 32 characters)")
 	@Schema(//
 			description = "Unique name", //
-			example = "category_name"//
+			example = "tag_name"//
 	)
 	private String name;
 
@@ -29,8 +30,15 @@ public class CategoryCreateRequest {
 	@Size(max = 1024, message = "Description is too long (max 1024 characters)")
 	@Schema(//
 			description = "Description", //
-			example = "category_description"//
+			example = "tag_description"//
 	)
 	private String description;
+
+	@NotNull(message = "Category ID is required")
+	@Schema(//
+			description = "Category ID", //
+			example = "1234567890"//
+	)
+	private Long categoryId;
 
 }

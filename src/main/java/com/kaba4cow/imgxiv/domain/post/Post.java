@@ -1,7 +1,7 @@
 package com.kaba4cow.imgxiv.domain.post;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -31,13 +31,13 @@ import lombok.ToString;
 @Table(name = "table_post")
 public class Post extends EntityWithIdAndCreationTimestamp {
 
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "column_author_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User author;
 
 	@ManyToMany
 	@JoinTable(name = "table_post_tag")
-	private Set<Tag> tags = new TreeSet<>();
+	private Set<Tag> tags = new HashSet<>();
 
 }
