@@ -21,6 +21,8 @@ import com.kaba4cow.imgxiv.auth.dto.UserDto;
 import com.kaba4cow.imgxiv.auth.dto.UserMapper;
 import com.kaba4cow.imgxiv.auth.jwt.JwtService;
 import com.kaba4cow.imgxiv.auth.service.DevUserAuthService;
+import com.kaba4cow.imgxiv.common.exception.EmailConflictException;
+import com.kaba4cow.imgxiv.common.exception.UsernameConflictException;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 
@@ -48,7 +50,7 @@ public class DevUserAuthServiceTest {
 
 		when(userRepository.existsByUsername("user")).thenReturn(true);
 
-		assertThrows(IllegalArgumentException.class, () -> userAuthService.register(request));
+		assertThrows(UsernameConflictException.class, () -> userAuthService.register(request));
 	}
 
 	@Test
@@ -58,7 +60,7 @@ public class DevUserAuthServiceTest {
 		when(userRepository.existsByUsername("user")).thenReturn(false);
 		when(userRepository.existsByEmail("mail@mail.com")).thenReturn(true);
 
-		assertThrows(IllegalArgumentException.class, () -> userAuthService.register(request));
+		assertThrows(EmailConflictException.class, () -> userAuthService.register(request));
 	}
 
 	@Test
