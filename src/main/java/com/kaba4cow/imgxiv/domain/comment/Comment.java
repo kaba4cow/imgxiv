@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.user.User;
 
 import jakarta.persistence.Column;
@@ -34,6 +35,11 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "column_id")
 	private UUID id;
+
+	@ManyToOne
+	@JoinColumn(name = "column_post_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Post post;
 
 	@ManyToOne
 	@JoinColumn(name = "column_author_id")
