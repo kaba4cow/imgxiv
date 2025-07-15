@@ -10,3 +10,9 @@ spring:
         properties:
             hibernate:
                 format_sql: false
+springdoc:
+    api-docs:
+        path: /api/docs
+    swagger-ui:
+        path: /docs
+        display-operation-id: true
