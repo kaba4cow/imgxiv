@@ -1,7 +1,5 @@
 package com.kaba4cow.imgxiv.domain;
 
-import java.util.UUID;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,8 +10,8 @@ import jakarta.persistence.MappedSuperclass;
 public class AbstractEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "column_id")
-	private UUID id;
+	private Long id;
 
 }

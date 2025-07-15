@@ -20,7 +20,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "table_category", uniqueConstraints = @UniqueConstraint(columnNames = "column_name"))
-public class Category  extends AbstractEntity {
+public class Category extends AbstractEntity {
 
 	@Embedded
 	private NameAndDescription nameAndDescription = new NameAndDescription();
