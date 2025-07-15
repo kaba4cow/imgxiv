@@ -1,6 +1,7 @@
 package com.kaba4cow.imgxiv.domain.category.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -41,8 +42,10 @@ public class DefaultCategoryService implements CategoryService {
 	}
 
 	@Override
-	public List<Category> findAll() {
-		return categoryRepository.findAll();
+	public List<CategoryDto> findAll() {
+		return categoryRepository.findAll().stream()//
+				.map(categoryMapper::mapToDto)//
+				.collect(Collectors.toList());
 	}
 
 }
