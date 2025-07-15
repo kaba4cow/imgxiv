@@ -17,6 +17,9 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.user.UserRepository;
+import com.kaba4cow.imgxiv.domain.user.UserRole;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @AutoConfigureMockMvc
@@ -25,6 +28,9 @@ public class CategoryControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	private String token;
 
@@ -42,6 +48,10 @@ public class CategoryControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)//
 				.content(reg))//
 				.andExpect(status().isOk());
+
+		User user = userRepository.findByUsername("testuser").orElseThrow();
+		user.setRole(UserRole.MODERATOR);
+		userRepository.save(user);
 
 		String login = """
 				{
