@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 @Configuration
 public class SecurityConfig {
 
@@ -25,17 +25,12 @@ public class SecurityConfig {
 
 	private final AuthenticationProvider authProvider;
 
-	private final SecurityProperties securityProperties;
-
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http//
 				.csrf(AbstractHttpConfigurer::disable)//
 				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))//
-				.authorizeHttpRequests(requests -> requests//
-						.requestMatchers(securityProperties.getWhitelist()).permitAll()//
-						.anyRequest().authenticated()//
-				)//
+				.authorizeHttpRequests(requests -> requests.anyRequest().permitAll())//
 				.authenticationProvider(authProvider)//
 				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)//
 				.build();

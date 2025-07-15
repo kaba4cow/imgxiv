@@ -2,6 +2,7 @@ package com.kaba4cow.imgxiv.common;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
@@ -43,6 +44,11 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(AuthenticationException.class)
 	public ExceptionHandlerResponseEntity handleAuthenticationException(AuthenticationException exception) {
 		return defaultResponse(HttpStatus.UNAUTHORIZED, exception);
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	public ExceptionHandlerResponseEntity handleAccessDeniedException(AccessDeniedException exception) {
+		return defaultResponse(HttpStatus.FORBIDDEN, exception);
 	}
 
 	@ExceptionHandler(Exception.class)

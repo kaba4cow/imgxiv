@@ -3,6 +3,7 @@ package com.kaba4cow.imgxiv.domain.category.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,6 +34,7 @@ public class CategoryController {
 			summary = "Creates new category", //
 			description = "Creates a new category and returns category info"//
 	)
+	@PreAuthorize("hasRole('MODERATOR')")
 	@PostMapping
 	public ResponseEntity<CategoryDto> create(//
 			@RequestBody //
