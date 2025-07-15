@@ -7,6 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -43,6 +45,10 @@ public class User {
 
 	@Column(name = "column_password_hash", nullable = false)
 	private String passwordHash;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "column_role", nullable = false)
+	private UserRole role;
 
 	@CreationTimestamp
 	@Column(name = "column_created_at", updatable = false)

@@ -18,6 +18,7 @@ import com.kaba4cow.imgxiv.common.exception.EmailConflictException;
 import com.kaba4cow.imgxiv.common.exception.UsernameConflictException;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
+import com.kaba4cow.imgxiv.domain.user.UserRole;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +52,7 @@ public class DevUserAuthService implements UserAuthService {
 		user.setUsername(request.getUsername());
 		user.setEmail(request.getEmail());
 		user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+		user.setRole(UserRole.USER);
 		User saved = userRepository.save(user);
 		log.info("Registered {}", saved);
 		return saved;
