@@ -8,7 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.kaba4cow.imgxiv.domain.EntityWithId;
+import com.kaba4cow.imgxiv.domain.superclass.EntityWithId;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.user.User;
 

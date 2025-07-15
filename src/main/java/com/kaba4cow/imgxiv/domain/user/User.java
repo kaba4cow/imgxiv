@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.kaba4cow.imgxiv.domain.EntityWithId;
+import com.kaba4cow.imgxiv.domain.superclass.EntityWithId;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

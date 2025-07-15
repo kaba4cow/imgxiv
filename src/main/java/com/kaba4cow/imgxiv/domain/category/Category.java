@@ -1,7 +1,7 @@
 package com.kaba4cow.imgxiv.domain.category;
 
-import com.kaba4cow.imgxiv.domain.EntityWithId;
 import com.kaba4cow.imgxiv.domain.embeddable.NameAndDescription;
+import com.kaba4cow.imgxiv.domain.superclass.EntityWithId;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
