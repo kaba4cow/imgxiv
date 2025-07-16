@@ -37,7 +37,7 @@ public class TagController {
 			summary = "Creates new tag", //
 			description = "Creates a new tag and returns tag info"//
 	)
-	@PreAuthorize("hasRole('create-tag')")
+	@PreAuthorize("hasAuthority('create-tag')")
 	@PostMapping
 	public ResponseEntity<TagDto> create(//
 			@RequestBody //
