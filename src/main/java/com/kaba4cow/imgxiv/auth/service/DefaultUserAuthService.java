@@ -36,8 +36,6 @@ public class DefaultUserAuthService implements UserAuthService {
 
 	private final UserMapper userMapper;
 
-	private final PersistLog persistLog;
-
 	@Override
 	public UserDto register(RegisterRequest request) {
 		if (userRepository.existsByUsername(request.getUsername()))
@@ -54,7 +52,7 @@ public class DefaultUserAuthService implements UserAuthService {
 		user.setEmail(request.getEmail());
 		user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
 		user.setRole(UserRole.USER);
-		return persistLog.logPersist(user, userRepository);
+		return PersistLog.logPersist(user, userRepository);
 	}
 
 	@Override

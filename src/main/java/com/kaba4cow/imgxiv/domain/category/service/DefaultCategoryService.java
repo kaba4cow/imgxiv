@@ -25,8 +25,6 @@ public class DefaultCategoryService implements CategoryService {
 
 	private final CategoryMapper categoryMapper;
 
-	private final PersistLog persistLog;
-
 	@Override
 	public CategoryDto create(CategoryCreateRequest request) {
 		if (categoryRepository.existsByName(request.getName()))
@@ -39,7 +37,7 @@ public class DefaultCategoryService implements CategoryService {
 		Category category = new Category();
 		category.getNameAndDescription().setName(request.getName());
 		category.getNameAndDescription().setDescription(request.getDescription());
-		return persistLog.logPersist(category, categoryRepository);
+		return PersistLog.logPersist(category, categoryRepository);
 	}
 
 	@Override

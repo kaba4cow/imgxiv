@@ -32,8 +32,6 @@ public class DefaultTagService implements TagService {
 
 	private final TagMapper tagMapper;
 
-	private final PersistLog persistLog;
-
 	@Override
 	public TagDto create(TagCreateRequest request) {
 		if (tagRepository.existsByName(request.getName()))
@@ -49,7 +47,7 @@ public class DefaultTagService implements TagService {
 		tag.getNameAndDescription().setName(request.getName());
 		tag.getNameAndDescription().setDescription(request.getDescription());
 		tag.setCategory(category);
-		return persistLog.logPersist(tag, tagRepository);
+		return PersistLog.logPersist(tag, tagRepository);
 	}
 
 	@Override
