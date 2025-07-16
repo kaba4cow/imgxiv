@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.kaba4cow.imgxiv.common.exception.ConflictException;
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
-import com.kaba4cow.imgxiv.common.response.ExceptionHandlerResponseBuilder;
-import com.kaba4cow.imgxiv.common.response.ExceptionHandlerResponseEntity;
+import com.kaba4cow.imgxiv.common.handler.ExceptionHandlerResponseBuilder;
+import com.kaba4cow.imgxiv.common.handler.ExceptionHandlerResponseEntity;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
