@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.initializer;
+package com.kaba4cow.imgxiv.setup;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
