@@ -12,7 +12,6 @@ import com.kaba4cow.imgxiv.auth.dto.LoginRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
 import com.kaba4cow.imgxiv.auth.dto.UserDto;
 import com.kaba4cow.imgxiv.auth.dto.UserMapper;
-import com.kaba4cow.imgxiv.auth.jwt.JwtService;
 import com.kaba4cow.imgxiv.common.exception.EmailConflictException;
 import com.kaba4cow.imgxiv.common.exception.UsernameConflictException;
 import com.kaba4cow.imgxiv.domain.user.User;
