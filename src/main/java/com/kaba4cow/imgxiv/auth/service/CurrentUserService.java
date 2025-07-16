@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class AuthenticatedUserService {
+public class CurrentUserService {
 
-	public User getAuthenticatedUser() {
+	public User getCurrentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!hasAuthenticatedUser(authentication))
 			throw new IllegalStateException("No authenticated user found");
