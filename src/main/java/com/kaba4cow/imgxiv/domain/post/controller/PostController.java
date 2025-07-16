@@ -15,6 +15,7 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.service.PostService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,12 +33,20 @@ public class PostController {
 
 	private final CurrentUserService currentUserService;
 
+	@Operation(//
+			summary = "Creates new post", //
+			description = "Creates a new post with given tags and returns post info"//
+	)
 	@PreAuthorize("hasRole('create-post')")
 	@PostMapping
 	public ResponseEntity<PostDto> create(@RequestBody @Valid PostCreateRequest request) {
 		return ResponseEntity.ok(postService.create(request, currentUserService.getCurrentUser()));
 	}
 
+	@Operation(//
+			summary = "Retrieves all existing posts", //
+			description = "Returns post infos of all existing posts"//
+	)
 	@GetMapping
 	public ResponseEntity<List<PostDto>> getAll() {
 		return ResponseEntity.ok(postService.findAll());
