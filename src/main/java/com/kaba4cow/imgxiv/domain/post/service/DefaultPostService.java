@@ -1,0 +1,51 @@
+package com.kaba4cow.imgxiv.domain.post.service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.kaba4cow.imgxiv.domain.post.Post;
+import com.kaba4cow.imgxiv.domain.post.PostRepository;
+import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
+import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
+import com.kaba4cow.imgxiv.domain.post.dto.PostMapper;
+import com.kaba4cow.imgxiv.domain.tag.service.TagService;
+import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.util.PersistLog;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RequiredArgsConstructor
+@Service
+public class DefaultPostService implements PostService {
+
+	private final PostRepository postRepository;
+
+	private final TagService tagService;
+
+	private final PostMapper postMapper;
+
+	@Override
+	public PostDto create(PostCreateRequest request, User author) {
+		Post post = createPost(request, author);
+		return postMapper.mapToDto(post);
+	}
+
+	private Post createPost(PostCreateRequest request, User author) {
+		Post post = new Post();
+		post.setAuthor(author);
+		post.setTags(tagService.findByIdsOrThrow(request.getTagIds()));
+		return PersistLog.logPersist(post, postRepository);
+	}
+
+	@Override
+	public List<PostDto> findAll() {
+		return postRepository.findAll().stream()//
+				.map(postMapper::mapToDto)//
+				.collect(Collectors.toList());
+	}
+
+}
