@@ -6,10 +6,12 @@ import java.util.Set;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.kaba4cow.imgxiv.domain.superclass.EntityWithIdAndCreationTimestamp;
+import com.kaba4cow.imgxiv.domain.embeddable.CreatedAt;
+import com.kaba4cow.imgxiv.domain.superclass.EntityWithId;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.user.User;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -29,7 +31,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "table_post")
-public class Post extends EntityWithIdAndCreationTimestamp {
+public class Post extends EntityWithId {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "column_author_id")
@@ -39,5 +41,8 @@ public class Post extends EntityWithIdAndCreationTimestamp {
 	@ManyToMany
 	@JoinTable(name = "table_post_tag")
 	private Set<Tag> tags = new HashSet<>();
+
+	@Embedded
+	private CreatedAt createdAt = new CreatedAt();
 
 }

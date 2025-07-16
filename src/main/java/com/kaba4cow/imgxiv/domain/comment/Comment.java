@@ -1,7 +1,8 @@
 package com.kaba4cow.imgxiv.domain.comment;
 
+import com.kaba4cow.imgxiv.domain.embeddable.CreatedAt;
 import com.kaba4cow.imgxiv.domain.embeddable.PostAndUser;
-import com.kaba4cow.imgxiv.domain.superclass.EntityWithIdAndCreationTimestamp;
+import com.kaba4cow.imgxiv.domain.superclass.EntityWithId;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -20,12 +21,15 @@ import lombok.ToString;
 @Entity
 @ToString
 @Table(name = "table_comment")
-public class Comment extends EntityWithIdAndCreationTimestamp {
+public class Comment extends EntityWithId {
 
 	@Embedded
 	private PostAndUser postAndUser = new PostAndUser();
 
 	@Column(name = "column_text", length = 1024)
 	private String text;
+
+	@Embedded
+	private CreatedAt createdAt = new CreatedAt();
 
 }

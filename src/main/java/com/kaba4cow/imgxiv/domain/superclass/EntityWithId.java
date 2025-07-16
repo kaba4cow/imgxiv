@@ -6,12 +6,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @MappedSuperclass
-public class EntityWithId {
+public abstract class EntityWithId {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

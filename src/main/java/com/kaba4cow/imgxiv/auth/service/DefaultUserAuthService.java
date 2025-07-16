@@ -2,7 +2,6 @@ package com.kaba4cow.imgxiv.auth.service;
 
 import java.util.Optional;
 
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,15 +18,15 @@ import com.kaba4cow.imgxiv.common.exception.UsernameConflictException;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.UserRole;
+import com.kaba4cow.imgxiv.util.PersistLog;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@Profile("dev")
 @Service
-public class DevUserAuthService implements UserAuthService {
+public class DefaultUserAuthService implements UserAuthService {
 
 	private final UserRepository userRepository;
 
@@ -53,9 +52,7 @@ public class DevUserAuthService implements UserAuthService {
 		user.setEmail(request.getEmail());
 		user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
 		user.setRole(UserRole.USER);
-		User saved = userRepository.save(user);
-		log.info("Registered {}", saved);
-		return saved;
+		return PersistLog.logPersist(user, userRepository);
 	}
 
 	@Override

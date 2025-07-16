@@ -11,6 +11,7 @@ import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryCreateRequest;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryDto;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryMapper;
+import com.kaba4cow.imgxiv.util.PersistLog;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +37,7 @@ public class DefaultCategoryService implements CategoryService {
 		Category category = new Category();
 		category.getNameAndDescription().setName(request.getName());
 		category.getNameAndDescription().setDescription(request.getDescription());
-		Category saved = categoryRepository.save(category);
-		log.info("Created {}", saved);
-		return saved;
+		return PersistLog.logPersist(category, categoryRepository);
 	}
 
 	@Override
