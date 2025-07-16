@@ -56,7 +56,7 @@ public class TagController {
 					description = "ID of the category to filter tags by", //
 					example = "1234567890"//
 			) //
-			@RequestParam("category") //
+			@RequestParam("categoryId") //
 			@NotNull //
 			Long categoryId) {
 		return ResponseEntity.ok(tagService.findByCategoryId(categoryId));
