@@ -3,6 +3,7 @@ package com.kaba4cow.imgxiv.auth.jwt;
 import java.io.IOException;
 import java.util.Objects;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,9 +39,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			HttpServletResponse response, //
 			FilterChain filterChain//
 	) throws ServletException, IOException {
-		if (isAuthRequest(request))
-			processAuthRequest(request);
-		filterChain.doFilter(request, response);
+		try {
+			if (isAuthRequest(request))
+				processAuthRequest(request);
+			filterChain.doFilter(request, response);
+		} catch (ExpiredJwtException exception) {
+			respondUnauthorized(response, "Token expired");
+		} catch (JwtException exception) {
+			respondUnauthorized(response, "Invalid token");
+		}
+	}
+
+	public void respondUnauthorized(HttpServletResponse response, String message) throws IOException {
+		if (Objects.nonNull(response)) {
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+			response.setContentType("application/json");
+			response.getWriter().write(String.format("{\"error\": \"%s\"}", message));
+		}
 	}
 
 	private boolean isAuthRequest(HttpServletRequest request) {
