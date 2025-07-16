@@ -17,13 +17,6 @@ import lombok.Setter;
 @Schema(description = "Request for creating a new post")
 public class PostCreateRequest {
 
-	@NotNull(message = "Author ID is required")
-	@Schema(//
-			description = "Author ID", //
-			example = "1234567890"//
-	)
-	private Long authorId;
-
 	@NotEmpty(message = "At least one tag is required")
 	@Schema(//
 			description = "List of tag IDs", //

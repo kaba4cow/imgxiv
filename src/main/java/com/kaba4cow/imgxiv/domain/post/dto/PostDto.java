@@ -15,6 +15,8 @@ public class PostDto {
 
 	private Long id;
 
+	private Long authorId;
+
 	private Set<Long> tagIds;
 
 }

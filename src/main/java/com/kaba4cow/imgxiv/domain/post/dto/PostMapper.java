@@ -13,6 +13,7 @@ public class PostMapper {
 	public PostDto mapToDto(Post post) {
 		return new PostDto(//
 				post.getId(), //
+				post.getAuthor().getId(), //
 				post.getTags().stream()//
 						.map(Tag::getId)//
 						.collect(Collectors.toSet())//
