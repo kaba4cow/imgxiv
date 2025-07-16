@@ -18,6 +18,7 @@ import com.kaba4cow.imgxiv.common.exception.UsernameConflictException;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.UserRole;
+import com.kaba4cow.imgxiv.util.PersistLog;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,8 @@ public class DefaultUserAuthService implements UserAuthService {
 
 	private final UserMapper userMapper;
 
+	private final PersistLog persistLog;
+
 	@Override
 	public UserDto register(RegisterRequest request) {
 		if (userRepository.existsByUsername(request.getUsername()))
@@ -51,9 +54,7 @@ public class DefaultUserAuthService implements UserAuthService {
 		user.setEmail(request.getEmail());
 		user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
 		user.setRole(UserRole.USER);
-		User saved = userRepository.save(user);
-		log.info("Registered {}", saved);
-		return saved;
+		return persistLog.logPersist(user, userRepository);
 	}
 
 	@Override

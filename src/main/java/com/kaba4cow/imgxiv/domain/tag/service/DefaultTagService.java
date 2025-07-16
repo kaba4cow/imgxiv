@@ -16,6 +16,7 @@ import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagCreateRequest;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagMapper;
+import com.kaba4cow.imgxiv.util.PersistLog;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,8 @@ public class DefaultTagService implements TagService {
 	private final CategoryRepository categoryRepository;
 
 	private final TagMapper tagMapper;
+
+	private final PersistLog persistLog;
 
 	@Override
 	public TagDto create(TagCreateRequest request) {
@@ -46,9 +49,7 @@ public class DefaultTagService implements TagService {
 		tag.getNameAndDescription().setName(request.getName());
 		tag.getNameAndDescription().setDescription(request.getDescription());
 		tag.setCategory(category);
-		Tag saved = tagRepository.save(tag);
-		log.info("Created {}", saved);
-		return saved;
+		return persistLog.logPersist(tag, tagRepository);
 	}
 
 	@Override
