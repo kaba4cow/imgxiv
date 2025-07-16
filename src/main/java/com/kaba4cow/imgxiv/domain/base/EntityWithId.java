@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.superclass;
+package com.kaba4cow.imgxiv.domain.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
