@@ -32,7 +32,9 @@ public class CategoryControllerTest {
 							}
 						"""))//
 				.andExpect(status().isOk())//
-				.andExpect(jsonPath("$.name").value("category-name"));
+				.andExpect(jsonPath("$.id").isNumber())//
+				.andExpect(jsonPath("$.name").value("category-name"))//
+				.andExpect(jsonPath("$.description").value("category-description"));
 	}
 
 	@Test
