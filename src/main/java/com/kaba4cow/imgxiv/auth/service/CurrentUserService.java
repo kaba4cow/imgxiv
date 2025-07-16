@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.kaba4cow.imgxiv.auth.userdetails.UserDetailsAdapter;
 import com.kaba4cow.imgxiv.domain.user.User;
 
 import lombok.RequiredArgsConstructor;
