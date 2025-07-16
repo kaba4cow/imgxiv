@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.auth.userdetails.UserDetailsAdapter;
 import com.kaba4cow.imgxiv.domain.category.Category;
@@ -28,6 +29,7 @@ import com.kaba4cow.imgxiv.domain.user.UserRole;
 import com.kaba4cow.imgxiv.domain.user.role.UserAuthorityRegistry;
 
 @AutoConfigureMockMvc
+@Transactional
 @SpringBootTest
 public class PostControllerTest {
 
@@ -47,10 +49,9 @@ public class PostControllerTest {
 	private UserAuthorityRegistry userAuthorityRegistry;
 
 	@BeforeEach
-	public void prepare() {
-		categoryRepository.deleteAll();
+	public void beforeEach() {
 		tagRepository.deleteAll();
-		userRepository.deleteAll();
+		categoryRepository.deleteAll();
 	}
 
 	@Test

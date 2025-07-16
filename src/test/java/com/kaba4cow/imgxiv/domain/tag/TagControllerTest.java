@@ -13,11 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 
 @AutoConfigureMockMvc
+@Transactional
 @SpringBootTest
 public class TagControllerTest {
 
@@ -31,9 +33,9 @@ public class TagControllerTest {
 	private TagRepository tagRepository;
 
 	@BeforeEach
-	public void prepare() {
-		categoryRepository.deleteAll();
+	public void beforeEach() {
 		tagRepository.deleteAll();
+		categoryRepository.deleteAll();
 	}
 
 	@WithMockUser(authorities = "create-tag")
