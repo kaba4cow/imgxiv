@@ -2,7 +2,6 @@ package com.kaba4cow.imgxiv.auth.service;
 
 import java.util.Optional;
 
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,9 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@Profile("dev")
 @Service
-public class DevUserAuthService implements UserAuthService {
+public class DefaultUserAuthService implements UserAuthService {
 
 	private final UserRepository userRepository;
 

@@ -20,14 +20,14 @@ import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
 import com.kaba4cow.imgxiv.auth.dto.UserDto;
 import com.kaba4cow.imgxiv.auth.dto.UserMapper;
 import com.kaba4cow.imgxiv.auth.jwt.JwtService;
-import com.kaba4cow.imgxiv.auth.service.DevUserAuthService;
+import com.kaba4cow.imgxiv.auth.service.DefaultUserAuthService;
 import com.kaba4cow.imgxiv.common.exception.EmailConflictException;
 import com.kaba4cow.imgxiv.common.exception.UsernameConflictException;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class DevUserAuthServiceTest {
+public class DefaultUserAuthServiceTest {
 
 	@Mock
 	private UserRepository userRepository;
@@ -42,7 +42,7 @@ public class DevUserAuthServiceTest {
 	private UserMapper userMapper;
 
 	@InjectMocks
-	private DevUserAuthService userAuthService;
+	private DefaultUserAuthService userAuthService;
 
 	@Test
 	void throwIfUsernameTaken() {
