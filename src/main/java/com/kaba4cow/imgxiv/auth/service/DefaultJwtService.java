@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.auth.jwt;
+package com.kaba4cow.imgxiv.auth.service;
 
 import java.security.Key;
 import java.util.Date;
@@ -6,6 +6,7 @@ import java.util.Date;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.kaba4cow.imgxiv.auth.jwt.JwtProperties;
 import com.kaba4cow.imgxiv.domain.user.User;
 
 import io.jsonwebtoken.Claims;
