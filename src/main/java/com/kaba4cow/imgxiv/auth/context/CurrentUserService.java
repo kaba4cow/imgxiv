@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.auth.service;
+package com.kaba4cow.imgxiv.auth.context;
 
 import java.util.Objects;
 
