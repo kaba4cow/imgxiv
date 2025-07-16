@@ -3,6 +3,7 @@ package com.kaba4cow.imgxiv.auth.jwt;
 import java.io.IOException;
 import java.util.Objects;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,12 +44,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				processAuthRequest(request);
 			filterChain.doFilter(request, response);
 		} catch (ExpiredJwtException exception) {
-			respondUnauthorized(request, response, "Token expired");
+			respondUnauthorized(response, "Token expired");
 		} catch (JwtException exception) {
-			respondUnauthorized(request, response, "Invalid token");
+			respondUnauthorized(response, "Invalid token");
 		}
 	}
-	
+
+	public void respondUnauthorized(HttpServletResponse response, String message) throws IOException {
+		if (Objects.nonNull(response)) {
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+			response.setContentType("application/json");
+			response.getWriter().write(String.format("{\"error\": \"%s\"}", message));
+		}
+	}
+
 	private boolean isAuthRequest(HttpServletRequest request) {
 		String authHeader = request.getHeader(AUTH_HEADER);
 		return Objects.nonNull(authHeader) && authHeader.startsWith(BEARER);
@@ -59,15 +68,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		String username = jwtService.extractUsername(jwt);
 		if (shouldAuthenticate(username))
 			authenticate(jwt, username, request);
-	}
-
-	private void respondUnauthorized(HttpServletRequest request, HttpServletResponse response, String message)
-			throws IOException {
-		if (Objects.nonNull(response)) {
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			response.setContentType("application/json");
-			response.getWriter().write(String.format("{\"error\": \"%s\"}", message));
-		}
 	}
 
 	private String extractToken(HttpServletRequest request) {
