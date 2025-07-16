@@ -12,6 +12,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,11 +38,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			HttpServletResponse response, //
 			FilterChain filterChain//
 	) throws ServletException, IOException {
-		if (isAuthRequest(request))
-			processAuthRequest(request);
-		filterChain.doFilter(request, response);
+		try {
+			if (isAuthRequest(request))
+				processAuthRequest(request);
+			filterChain.doFilter(request, response);
+		} catch (ExpiredJwtException exception) {
+			respondUnauthorized(request, response, "Token expired");
+		} catch (JwtException exception) {
+			respondUnauthorized(request, response, "Invalid token");
+		}
 	}
-
+	
 	private boolean isAuthRequest(HttpServletRequest request) {
 		String authHeader = request.getHeader(AUTH_HEADER);
 		return Objects.nonNull(authHeader) && authHeader.startsWith(BEARER);
@@ -51,6 +59,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		String username = jwtService.extractUsername(jwt);
 		if (shouldAuthenticate(username))
 			authenticate(jwt, username, request);
+	}
+
+	private void respondUnauthorized(HttpServletRequest request, HttpServletResponse response, String message)
+			throws IOException {
+		if (Objects.nonNull(response)) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.setContentType("application/json");
+			response.getWriter().write(String.format("{\"error\": \"%s\"}", message));
+		}
 	}
 
 	private String extractToken(HttpServletRequest request) {
