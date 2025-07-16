@@ -1,8 +1,10 @@
 package com.kaba4cow.imgxiv.domain.user;
 
-import com.kaba4cow.imgxiv.domain.superclass.EntityWithIdAndCreationTimestamp;
+import com.kaba4cow.imgxiv.domain.embeddable.CreatedAt;
+import com.kaba4cow.imgxiv.domain.superclass.EntityWithId;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -24,7 +26,7 @@ import lombok.ToString;
 		@UniqueConstraint(columnNames = "column_username"), //
 		@UniqueConstraint(columnNames = "column_email") //
 })
-public class User extends EntityWithIdAndCreationTimestamp {
+public class User extends EntityWithId {
 
 	@Column(name = "column_username", length = 32, nullable = false)
 	private String username;
@@ -38,5 +40,8 @@ public class User extends EntityWithIdAndCreationTimestamp {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "column_role", nullable = false)
 	private UserRole role;
+
+	@Embedded
+	private CreatedAt createdAt = new CreatedAt();
 
 }
