@@ -8,10 +8,14 @@ RESTful tag-based image archive.
 - Maven
 - PostgreSQL
 - Spring Boot 3.5
+
+### Spring
+
 - Spring Web
 - Spring Security
 - Spring Data JPA
 - Spring Validation
+- Spring Cache
 - Springdoc OpenAPI (Swagger UI)
 
 ## How to run
