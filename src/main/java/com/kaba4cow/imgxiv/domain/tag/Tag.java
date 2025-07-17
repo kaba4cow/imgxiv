@@ -1,7 +1,7 @@
 package com.kaba4cow.imgxiv.domain.tag;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -38,7 +38,7 @@ public class Tag extends EntityWithId {
 
 	@ToString.Exclude
 	@OneToMany(mappedBy = "tag")
-	private List<PostTag> postTags = new ArrayList<>();
+	private Set<PostTag> postTags = new HashSet<>();
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "column_category_id")

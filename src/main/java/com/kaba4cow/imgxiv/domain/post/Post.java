@@ -1,7 +1,6 @@
 package com.kaba4cow.imgxiv.domain.post;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,7 +20,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,7 +42,7 @@ public class Post extends EntityWithId {
 
 	@ToString.Exclude
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<PostTag> postTags = new ArrayList<>();
+	private Set<PostTag> postTags = new HashSet<>();
 
 	@Embedded
 	private CreatedAt createdAt = new CreatedAt();
@@ -60,9 +58,7 @@ public class Post extends EntityWithId {
 	}
 
 	public void addTag(Tag tag) {
-		PostTag postTag = postTagOf(tag);
-		if (!postTags.contains(postTag))
-			postTags.add(postTag);
+		postTags.add(postTagOf(tag));
 	}
 
 	public void removeTag(Tag tag) {
