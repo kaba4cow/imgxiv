@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kaba4cow.imgxiv.auth.dto.AuthResponse;
 import com.kaba4cow.imgxiv.auth.dto.LoginRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
-import com.kaba4cow.imgxiv.auth.dto.AuthUserDto;
 import com.kaba4cow.imgxiv.auth.service.UserAuthService;
+import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,7 +33,7 @@ public class AuthController {
 			description = "Creates a new user and returns basic user info"//
 	)
 	@PostMapping("/register")
-	public ResponseEntity<AuthUserDto> register(@RequestBody @Valid RegisterRequest request) {
+	public ResponseEntity<UserDto> register(@RequestBody @Valid RegisterRequest request) {
 		return ResponseEntity.ok(userAuthService.register(request));
 	}
 

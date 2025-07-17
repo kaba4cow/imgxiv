@@ -10,6 +10,6 @@ public interface JwtService {
 
 	boolean isTokenValid(String token, UserDetails userDetails);
 
-	String extractUsername(String token);
+	String extractUserId(String token);
 
 }

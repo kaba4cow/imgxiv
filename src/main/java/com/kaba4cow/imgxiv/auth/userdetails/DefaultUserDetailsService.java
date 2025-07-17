@@ -19,8 +19,8 @@ public class DefaultUserDetailsService implements UserDetailsService {
 	private final UserAuthorityRegistry userAuthorityRegistry;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return userRepository.findByUsername(username)//
+	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+		return userRepository.findById(Long.valueOf(userId))//
 				.map(user -> UserDetailsAdapter.of(user, userAuthorityRegistry))//
 				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 	}

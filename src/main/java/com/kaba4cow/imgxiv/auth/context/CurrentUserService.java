@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.auth.userdetails.UserDetailsAdapter;
@@ -39,6 +40,10 @@ public class CurrentUserService {
 		if (userDetails instanceof UserDetailsAdapter adapter)
 			return Optional.of(adapter.getUser());
 		return Optional.empty();
+	}
+
+	public User getUserOrThrow() {
+		return getUser().orElseThrow(() -> new UsernameNotFoundException("User not found"));
 	}
 
 }

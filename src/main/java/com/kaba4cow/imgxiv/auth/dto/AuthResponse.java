@@ -1,5 +1,7 @@
 package com.kaba4cow.imgxiv.auth.dto;
 
+import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,6 @@ public class AuthResponse {
 
 	private String token;
 
-	private AuthUserDto user;
+	private UserDto user;
 
 }

@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.auth.dto;
+package com.kaba4cow.imgxiv.domain.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AuthUserDto {
+public class UserDto {
 
 	private String username;
 

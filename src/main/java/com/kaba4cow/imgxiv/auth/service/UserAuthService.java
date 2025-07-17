@@ -5,12 +5,12 @@ import java.util.Optional;
 import com.kaba4cow.imgxiv.auth.dto.AuthResponse;
 import com.kaba4cow.imgxiv.auth.dto.LoginRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
-import com.kaba4cow.imgxiv.auth.dto.AuthUserDto;
 import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 
 public interface UserAuthService {
 
-	AuthUserDto register(RegisterRequest request);
+	UserDto register(RegisterRequest request);
 
 	AuthResponse login(LoginRequest request);
 

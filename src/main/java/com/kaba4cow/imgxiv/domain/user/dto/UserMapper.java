@@ -1,14 +1,14 @@
-package com.kaba4cow.imgxiv.auth.dto;
+package com.kaba4cow.imgxiv.domain.user.dto;
 
 import org.springframework.stereotype.Component;
 
 import com.kaba4cow.imgxiv.domain.user.User;
 
 @Component
-public class AuthUserMapper {
+public class UserMapper {
 
-	public AuthUserDto mapToDto(User user) {
-		return new AuthUserDto(//
+	public UserDto mapToDto(User user) {
+		return new UserDto(//
 				user.getUsername(), //
 				user.getEmail()//
 		);
