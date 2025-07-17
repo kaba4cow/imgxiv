@@ -40,6 +40,13 @@ mvnw.cmd spring-boot:run
 - Java 17 or higher
 - Maven
 
+## API Documentation
+
+This project includes an automatically generated Swagger UI for testing the API.
+
+- Swagger UI: `http://<host>:<port>/docs`
+- OpenAPI JSON: `http://<host>:<port>/api/docs`
+
 ## License
 
 This project is licensed under the **MIT License** - see the [LICENSE](./LICENSE) file for details.
