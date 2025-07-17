@@ -1,6 +1,6 @@
 package com.kaba4cow.imgxiv.common.exception;
 
-public class PasswordMismatchException extends RuntimeException {
+public class PasswordMismatchException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 1L;
 
