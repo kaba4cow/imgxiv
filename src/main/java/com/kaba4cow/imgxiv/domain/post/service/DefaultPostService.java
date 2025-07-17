@@ -11,6 +11,7 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostMapper;
 import com.kaba4cow.imgxiv.domain.post.dto.PostPreviewDto;
+import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.tag.service.TagService;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.util.PersistLog;
@@ -46,8 +47,8 @@ public class DefaultPostService implements PostService {
 	}
 
 	@Override
-	public List<PostPreviewDto> findByQuery(String query) {
-		return postRepository.findAll(postSpecificationService.getSpecification(query)).stream()//
+	public List<PostPreviewDto> findByQuery(PostQueryRequest request) {
+		return postRepository.findAll(postSpecificationService.getSpecification(request.getQuery())).stream()//
 				.map(postMapper::mapToPreviewDto)//
 				.collect(Collectors.toList());
 	}
