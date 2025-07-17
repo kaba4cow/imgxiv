@@ -39,7 +39,6 @@ public class UserAuthorityRegistry {
 
 	private Set<? extends GrantedAuthority> toGrantedAuthorities(Set<String> authorities) {
 		return authorities.stream()//
-				.map("ROLE_"::concat)//
 				.map(SimpleGrantedAuthority::new)//
 				.collect(Collectors.toUnmodifiableSet());
 	}

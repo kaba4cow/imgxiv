@@ -37,7 +37,7 @@ public class TagController {
 			summary = "Creates new tag", //
 			description = "Creates a new tag and returns tag info"//
 	)
-	@PreAuthorize("hasRole('create-tag')")
+	@PreAuthorize("hasAuthority('create-tag')")
 	@PostMapping
 	public ResponseEntity<TagDto> create(//
 			@RequestBody //
@@ -56,7 +56,7 @@ public class TagController {
 					description = "ID of the category to filter tags by", //
 					example = "1234567890"//
 			) //
-			@RequestParam("category") //
+			@RequestParam("categoryId") //
 			@NotNull //
 			Long categoryId) {
 		return ResponseEntity.ok(tagService.findByCategoryId(categoryId));

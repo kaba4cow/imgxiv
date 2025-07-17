@@ -37,7 +37,7 @@ public class PostController {
 			summary = "Creates new post", //
 			description = "Creates a new post with given tags and returns post info"//
 	)
-	@PreAuthorize("hasRole('create-post')")
+	@PreAuthorize("hasAuthority('create-post')")
 	@PostMapping
 	public ResponseEntity<PostDto> create(@RequestBody @Valid PostCreateRequest request) {
 		return ResponseEntity.ok(postService.create(request, currentUserService.getCurrentUser()));

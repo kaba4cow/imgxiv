@@ -37,7 +37,8 @@ public class DefaultPostService implements PostService {
 	private Post createPost(PostCreateRequest request, User author) {
 		Post post = new Post();
 		post.setAuthor(author);
-		post.setTags(tagService.findByIdsOrThrow(request.getTagIds()));
+		tagService.findByIdsOrThrow(request.getTagIds())//
+				.forEach(post::addTag);
 		return PersistLog.logPersist(post, postRepository);
 	}
 
