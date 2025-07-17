@@ -2,10 +2,12 @@ package com.kaba4cow.imgxiv.auth.context;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.auth.userdetails.UserDetailsAdapter;
@@ -17,24 +19,26 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class CurrentUserService {
 
-	public UserDetailsAdapter getDetails() {
+	public UserDetails getDetails() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!hasAuthenticatedUser(authentication))
-			throw new IllegalStateException("No authenticated user found");
-		else
-			return (UserDetailsAdapter) authentication.getPrincipal();
+		if (hasAuthenticatedUser(authentication))
+			return (UserDetails) authentication.getPrincipal();
+		throw new IllegalStateException("No authenticated user found");
+	}
+
+	private boolean hasAuthenticatedUser(Authentication authentication) {
+		return Objects.nonNull(authentication) && authentication.getPrincipal() instanceof UserDetails;
 	}
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return getDetails().getAuthorities();
 	}
 
-	public User getUser() {
-		return getDetails().getUser();
-	}
-
-	private boolean hasAuthenticatedUser(Authentication authentication) {
-		return Objects.nonNull(authentication) && authentication.getPrincipal() instanceof UserDetailsAdapter;
+	public Optional<User> getUser() {
+		UserDetails userDetails = getDetails();
+		if (userDetails instanceof UserDetailsAdapter adapter)
+			return Optional.of(adapter.getUser());
+		return Optional.empty();
 	}
 
 }
