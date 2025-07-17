@@ -56,7 +56,7 @@ public class DefaultUserAuthService implements UserAuthService {
 	@Override
 	public AuthResponse login(LoginRequest request) {
 		User user = findByUsernameOrEmail(request.getUsernameOrEmail())//
-				.orElseThrow(() -> new UsernameNotFoundException("Not found"));
+				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 		if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash()))
 			throw new BadCredentialsException("Invalid credentials");
 		String token = jwtService.generateToken(user);

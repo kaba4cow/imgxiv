@@ -25,7 +25,7 @@ public class DefaultJwtService implements JwtService {
 	@Override
 	public String generateToken(User user) {
 		return Jwts.builder()//
-				.setSubject(user.getUsername())//
+				.setSubject(user.getId().toString())//
 				.setIssuedAt(new Date())//
 				.setExpiration(new Date(System.currentTimeMillis() + jwtProperties.getExpirationMillis()))//
 				.signWith(getSignInKey(), SignatureAlgorithm.HS256)//
@@ -38,7 +38,7 @@ public class DefaultJwtService implements JwtService {
 
 	@Override
 	public boolean isTokenValid(String token, UserDetails userDetails) {
-		return extractUsername(token).equals(userDetails.getUsername()) && !isTokenExpired(token);
+		return extractUserId(token).equals(userDetails.getUsername()) && !isTokenExpired(token);
 	}
 
 	private boolean isTokenExpired(String token) {
@@ -46,7 +46,7 @@ public class DefaultJwtService implements JwtService {
 	}
 
 	@Override
-	public String extractUsername(String token) {
+	public String extractUserId(String token) {
 		return extractAllClaims(token).getSubject();
 	}
 

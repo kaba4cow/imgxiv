@@ -67,21 +67,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private void processAuthRequest(HttpServletRequest request) {
 		String jwt = extractToken(request);
-		String username = jwtService.extractUsername(jwt);
-		if (shouldAuthenticate(username))
-			authenticate(jwt, username, request);
+		String userId = jwtService.extractUserId(jwt);
+		if (shouldAuthenticate(userId))
+			authenticate(jwt, userId, request);
 	}
 
 	private String extractToken(HttpServletRequest request) {
 		return request.getHeader(AUTH_HEADER).substring(BEARER.length());
 	}
 
-	private boolean shouldAuthenticate(String username) {
-		return Objects.nonNull(username) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication());
+	private boolean shouldAuthenticate(String userId) {
+		return Objects.nonNull(userId) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication());
 	}
 
-	private void authenticate(String jwt, String username, HttpServletRequest request) {
-		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+	private void authenticate(String jwt, String userId, HttpServletRequest request) {
+		UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
 		if (jwtService.isTokenValid(jwt, userDetails))
 			createAuthentication(userDetails, request);
 	}
