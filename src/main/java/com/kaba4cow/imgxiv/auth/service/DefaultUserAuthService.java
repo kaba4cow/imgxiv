@@ -51,7 +51,7 @@ public class DefaultUserAuthService implements UserAuthService {
 		user.setEmail(request.getEmail());
 		user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
 		user.setRole(UserRole.USER);
-		return PersistLog.logPersist(user, userRepository);
+		return PersistLog.log(userRepository.save(user));
 	}
 
 	@Override

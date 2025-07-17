@@ -37,7 +37,7 @@ public class DefaultCategoryService implements CategoryService {
 		Category category = new Category();
 		category.getNameAndDescription().setName(request.getName());
 		category.getNameAndDescription().setDescription(request.getDescription());
-		return PersistLog.logPersist(category, categoryRepository);
+		return PersistLog.log(categoryRepository.save(category));
 	}
 
 	@Override

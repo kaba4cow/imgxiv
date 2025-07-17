@@ -47,7 +47,7 @@ public class DefaultTagService implements TagService {
 		tag.getNameAndDescription().setName(request.getName());
 		tag.getNameAndDescription().setDescription(request.getDescription());
 		tag.setCategory(category);
-		return PersistLog.logPersist(tag, tagRepository);
+		return PersistLog.log(tagRepository.save(tag));
 	}
 
 	@Override

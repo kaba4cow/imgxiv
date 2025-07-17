@@ -39,7 +39,7 @@ public class DefaultPostService implements PostService {
 		post.setAuthor(author);
 		tagService.findByIdsOrThrow(request.getTagIds())//
 				.forEach(post::addTag);
-		return PersistLog.logPersist(post, postRepository);
+		return PersistLog.log(postRepository.save(post));
 	}
 
 	@Override
