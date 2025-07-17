@@ -36,7 +36,7 @@ public class CategoryController {
 	)
 	@PreAuthorize("hasAuthority('create-category')")
 	@PostMapping
-	public ResponseEntity<CategoryDto> create(@RequestBody @Valid CategoryCreateRequest request) {
+	public ResponseEntity<CategoryDto> createCategory(@RequestBody @Valid CategoryCreateRequest request) {
 		return ResponseEntity.ok(categoryService.create(request));
 	}
 
@@ -45,7 +45,7 @@ public class CategoryController {
 			description = "Returns category infos of all existing categories"//
 	)
 	@GetMapping
-	public ResponseEntity<List<CategoryDto>> getAll() {
+	public ResponseEntity<List<CategoryDto>> getAllCategories() {
 		return ResponseEntity.ok(categoryService.findAll());
 	}
 

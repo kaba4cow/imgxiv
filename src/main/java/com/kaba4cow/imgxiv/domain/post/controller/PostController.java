@@ -40,7 +40,7 @@ public class PostController {
 	)
 	@PreAuthorize("hasAuthority('create-post')")
 	@PostMapping
-	public ResponseEntity<PostDto> create(@RequestBody @Valid PostCreateRequest request) {
+	public ResponseEntity<PostDto> createPost(@RequestBody @Valid PostCreateRequest request) {
 		User user = currentUserService.getUserOrThrow();
 		return ResponseEntity.ok(postService.create(request, user));
 	}
@@ -50,7 +50,7 @@ public class PostController {
 			description = "Returns post infos of all existing posts"//
 	)
 	@GetMapping
-	public ResponseEntity<List<PostDto>> getAll() {
+	public ResponseEntity<List<PostDto>> getAllPosts() {
 		return ResponseEntity.ok(postService.findAll());
 	}
 
