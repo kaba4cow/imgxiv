@@ -51,6 +51,13 @@ public class DefaultTagService implements TagService {
 	}
 
 	@Override
+	public List<TagDto> findAll() {
+		return tagRepository.findAll().stream()//
+				.map(tagMapper::mapToDto)//
+				.collect(Collectors.toList());
+	}
+
+	@Override
 	public List<TagDto> findByCategoryId(Long categoryId) {
 		return tagRepository.findByCategoryId(categoryId).stream()//
 				.map(tagMapper::mapToDto)//
