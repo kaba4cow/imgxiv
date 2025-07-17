@@ -8,15 +8,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.auth.dto.AuthResponse;
+import com.kaba4cow.imgxiv.auth.dto.AuthUserDto;
+import com.kaba4cow.imgxiv.auth.dto.AuthUserMapper;
 import com.kaba4cow.imgxiv.auth.dto.LoginRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
-import com.kaba4cow.imgxiv.auth.dto.UserDto;
-import com.kaba4cow.imgxiv.auth.dto.UserMapper;
-import com.kaba4cow.imgxiv.common.exception.EmailConflictException;
-import com.kaba4cow.imgxiv.common.exception.UsernameConflictException;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.UserRole;
+import com.kaba4cow.imgxiv.domain.user.validation.UserValidationService;
 import com.kaba4cow.imgxiv.util.PersistLog;
 
 import lombok.RequiredArgsConstructor;
@@ -33,16 +32,16 @@ public class DefaultUserAuthService implements UserAuthService {
 
 	private final PasswordEncoder passwordEncoder;
 
-	private final UserMapper userMapper;
+	private final UserValidationService userValidationService;
+
+	private final AuthUserMapper authUserMapper;
 
 	@Override
-	public UserDto register(RegisterRequest request) {
-		if (userRepository.existsByUsername(request.getUsername()))
-			throw new UsernameConflictException("Username already taken");
-		if (userRepository.existsByEmail(request.getEmail()))
-			throw new EmailConflictException("Email already taken");
+	public AuthUserDto register(RegisterRequest request) {
+		userValidationService.ensureUsernameAvailable(request.getUsername());
+		userValidationService.ensureEmailAvailable(request.getEmail());
 		User user = registerUser(request);
-		return userMapper.mapToDto(user);
+		return authUserMapper.mapToDto(user);
 	}
 
 	private User registerUser(RegisterRequest request) {
@@ -61,7 +60,7 @@ public class DefaultUserAuthService implements UserAuthService {
 		if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash()))
 			throw new BadCredentialsException("Invalid credentials");
 		String token = jwtService.generateToken(user);
-		return new AuthResponse(token, userMapper.mapToDto(user));
+		return new AuthResponse(token, authUserMapper.mapToDto(user));
 	}
 
 	@Override

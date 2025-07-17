@@ -36,10 +36,7 @@ public class CategoryController {
 	)
 	@PreAuthorize("hasAuthority('create-category')")
 	@PostMapping
-	public ResponseEntity<CategoryDto> create(//
-			@RequestBody //
-			@Valid //
-			CategoryCreateRequest request) {
+	public ResponseEntity<CategoryDto> create(@RequestBody @Valid CategoryCreateRequest request) {
 		return ResponseEntity.ok(categoryService.create(request));
 	}
 
