@@ -17,14 +17,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.kaba4cow.imgxiv.auth.dto.AuthResponse;
 import com.kaba4cow.imgxiv.auth.dto.LoginRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
-import com.kaba4cow.imgxiv.auth.dto.AuthUserDto;
-import com.kaba4cow.imgxiv.auth.dto.AuthUserMapper;
 import com.kaba4cow.imgxiv.auth.service.DefaultUserAuthService;
 import com.kaba4cow.imgxiv.auth.service.JwtService;
 import com.kaba4cow.imgxiv.common.exception.EmailConflictException;
 import com.kaba4cow.imgxiv.common.exception.UsernameConflictException;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
+import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
+import com.kaba4cow.imgxiv.domain.user.dto.UserMapper;
 
 @ExtendWith(MockitoExtension.class)
 public class DefaultUserAuthServiceTest {
@@ -39,7 +39,7 @@ public class DefaultUserAuthServiceTest {
 	private PasswordEncoder passwordEncoder;
 
 	@Mock
-	private AuthUserMapper userMapper;
+	private UserMapper userMapper;
 
 	@InjectMocks
 	private DefaultUserAuthService userAuthService;
@@ -80,9 +80,9 @@ public class DefaultUserAuthServiceTest {
 				.thenAnswer(i -> i.getArgument(0));
 
 		when(userMapper.mapToDto(Mockito.any()))//
-				.thenReturn(new AuthUserDto("user", "mail@mail.com"));
+				.thenReturn(new UserDto("user", "mail@mail.com"));
 
-		AuthUserDto result = userAuthService.register(request);
+		UserDto result = userAuthService.register(request);
 
 		assertEquals("user", result.getUsername());
 		assertEquals("mail@mail.com", result.getEmail());
@@ -102,7 +102,7 @@ public class DefaultUserAuthServiceTest {
 		when(jwtService.generateToken(user))//
 				.thenReturn("mock-token");
 		when(userMapper.mapToDto(user))//
-				.thenReturn(new AuthUserDto("user", "mail@mail.com"));
+				.thenReturn(new UserDto("user", "mail@mail.com"));
 
 		AuthResponse response = userAuthService.login(new LoginRequest("user", "pass"));
 
