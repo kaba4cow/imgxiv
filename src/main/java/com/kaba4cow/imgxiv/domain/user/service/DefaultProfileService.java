@@ -32,11 +32,12 @@ public class DefaultProfileService implements ProfileService {
 
 	@Override
 	public UserDto changeUsername(ChangeUsernameRequest request, User user) {
+		String originalUsername = user.getUsername();
 		String newUsername = request.getUsername();
-		if (!Objects.equals(newUsername, user.getUsername())) {
+		if (!Objects.equals(newUsername, originalUsername)) {
 			userValidationService.ensureUsernameAvailable(newUsername);
 			user.setUsername(newUsername);
-			log.info("User {} changed username: {} -> {}", user.getId(), user.getUsername(), newUsername);
+			log.info("User {} changed username: {} -> {}", user.getId(), originalUsername, newUsername);
 			return userMapper.mapToDto(userRepository.save(user));
 		} else
 			return userMapper.mapToDto(user);
@@ -44,11 +45,12 @@ public class DefaultProfileService implements ProfileService {
 
 	@Override
 	public UserDto changeEmail(ChangeEmailRequest request, User user) {
+		String originalEmail = user.getEmail();
 		String newEmail = request.getEmail();
-		if (!Objects.equals(newEmail, user.getEmail())) {
+		if (!Objects.equals(newEmail, originalEmail)) {
 			userValidationService.ensureEmailAvailable(newEmail);
 			user.setEmail(newEmail);
-			log.info("User {} changed email: {} -> {}", user.getId(), user.getEmail(), newEmail);
+			log.info("User {} changed email: {} -> {}", user.getId(), originalEmail, newEmail);
 			return userMapper.mapToDto(userRepository.save(user));
 		} else
 			return userMapper.mapToDto(user);
@@ -58,8 +60,8 @@ public class DefaultProfileService implements ProfileService {
 	public void changePassword(ChangePasswordRequest request, User user) {
 		userValidationService.ensurePasswordsMatch(request.getOldPassword(), user.getPasswordHash());
 		user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
-		userRepository.save(user);
 		log.info("User {} changed password", user.getId());
+		userRepository.save(user);
 	}
 
 }
