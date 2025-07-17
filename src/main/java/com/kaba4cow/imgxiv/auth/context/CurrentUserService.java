@@ -1,8 +1,10 @@
 package com.kaba4cow.imgxiv.auth.context;
 
+import java.util.Collection;
 import java.util.Objects;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +17,20 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class CurrentUserService {
 
-	public User getCurrentUser() {
+	public UserDetailsAdapter getCurrentUserDetails() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!hasAuthenticatedUser(authentication))
 			throw new IllegalStateException("No authenticated user found");
-		else {
-			UserDetailsAdapter userDetails = (UserDetailsAdapter) authentication.getPrincipal();
-			return userDetails.getUser();
-		}
+		else
+			return (UserDetailsAdapter) authentication.getPrincipal();
+	}
+
+	public Collection<? extends GrantedAuthority> getCurrentUserAuthorities() {
+		return getCurrentUserDetails().getAuthorities();
+	}
+
+	public User getCurrentUser() {
+		return getCurrentUserDetails().getUser();
 	}
 
 	private boolean hasAuthenticatedUser(Authentication authentication) {
