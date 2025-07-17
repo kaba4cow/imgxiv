@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,8 @@ public class PostControllerTest {
 	public void createPost() throws Exception {
 		Category category = createTestCategory();
 		Tag tag = createTestTag(category);
-		authenticateTestUser(createTestUser());
+		User author = createTestUser();
+		authenticateTestUser(author);
 		mockMvc.perform(post("/api/posts")//
 				.contentType(MediaType.APPLICATION_JSON)//
 				.content("""
@@ -70,7 +72,9 @@ public class PostControllerTest {
 				.andExpect(status().isOk())//
 				.andExpect(jsonPath("$.id").isNumber())//
 				.andExpect(jsonPath("$.authorId").isNumber())//
-				.andExpect(jsonPath("$.tagIds").isArray());
+				.andExpect(jsonPath("$.authorId").value(author.getId()))//
+				.andExpect(jsonPath("$.tagIds").isArray())//
+				.andExpect(jsonPath("$.tagIds").value(Matchers.contains(tag.getId().intValue())));
 	}
 
 	@Test
