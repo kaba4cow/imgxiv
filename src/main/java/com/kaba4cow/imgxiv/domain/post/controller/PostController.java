@@ -49,7 +49,7 @@ public class PostController {
 			summary = "Retrieves all existing posts", //
 			description = "Returns post infos of all existing posts"//
 	)
-	@GetMapping
+	@GetMapping("/all")
 	public ResponseEntity<List<PostDto>> getAllPosts() {
 		return ResponseEntity.ok(postService.findAll());
 	}
