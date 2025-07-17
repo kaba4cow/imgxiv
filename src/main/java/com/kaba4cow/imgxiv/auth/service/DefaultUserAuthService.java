@@ -2,7 +2,6 @@ package com.kaba4cow.imgxiv.auth.service;
 
 import java.util.Optional;
 
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,8 +56,7 @@ public class DefaultUserAuthService implements UserAuthService {
 	public AuthResponse login(LoginRequest request) {
 		User user = findByUsernameOrEmail(request.getUsernameOrEmail())//
 				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-		if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash()))
-			throw new BadCredentialsException("Invalid credentials");
+		userValidationService.ensurePasswordsMatch(request.getPassword(), user.getPasswordHash());
 		String token = jwtService.generateToken(user);
 		return new AuthResponse(token, userMapper.mapToDto(user));
 	}
