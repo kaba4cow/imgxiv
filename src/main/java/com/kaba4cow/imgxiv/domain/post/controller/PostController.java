@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kaba4cow.imgxiv.auth.context.CurrentUserService;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
+import com.kaba4cow.imgxiv.domain.post.dto.PostPreviewDto;
+import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.service.PostService;
 import com.kaba4cow.imgxiv.domain.user.User;
 
@@ -43,6 +45,15 @@ public class PostController {
 	public ResponseEntity<PostDto> createPost(@RequestBody @Valid PostCreateRequest request) {
 		User user = currentUserService.getUserOrThrow();
 		return ResponseEntity.ok(postService.create(request, user));
+	}
+
+	@Operation(//
+			summary = "Retrieves posts by specified query", //
+			description = "Returns post previews of posts by specified query"//
+	)
+	@GetMapping
+	public ResponseEntity<List<PostPreviewDto>> getPostsByQuery(@RequestBody @Valid PostQueryRequest request) {
+		return ResponseEntity.ok(postService.findByQuery(request));
 	}
 
 	@Operation(//
