@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,6 +26,7 @@ import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 import com.kaba4cow.imgxiv.domain.user.dto.UserMapper;
+import com.kaba4cow.imgxiv.domain.user.validation.DefaultUserValidationService;
 
 @ExtendWith(MockitoExtension.class)
 public class DefaultUserAuthServiceTest {
@@ -42,7 +44,15 @@ public class DefaultUserAuthServiceTest {
 	private UserMapper userMapper;
 
 	@InjectMocks
+	private DefaultUserValidationService userValidationService;
+
 	private DefaultUserAuthService userAuthService;
+
+	@BeforeEach
+	void setup() {
+		userAuthService = new DefaultUserAuthService(userRepository, jwtService, passwordEncoder, userValidationService,
+				userMapper);
+	}
 
 	@Test
 	void throwIfUsernameTaken() {
