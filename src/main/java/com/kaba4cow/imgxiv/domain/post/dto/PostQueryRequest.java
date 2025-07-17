@@ -1,5 +1,7 @@
 package com.kaba4cow.imgxiv.domain.post.dto;
 
+import org.springframework.data.domain.Sort;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -37,5 +39,11 @@ public class PostQueryRequest {
 			example = "20" //
 	)
 	private int size = 20;
+
+	@Schema(//
+			description = "Sort direction (ASC or DESC)", //
+			example = "DESC" //
+	)
+	private Sort.Direction direction = Sort.Direction.DESC;
 
 }
