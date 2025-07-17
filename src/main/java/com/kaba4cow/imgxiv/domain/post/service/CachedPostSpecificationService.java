@@ -7,7 +7,9 @@ import com.kaba4cow.imgxiv.domain.post.specification.PostSpecification;
 import com.kaba4cow.imgxiv.domain.post.specification.PostSpecificationCompiler;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CachedPostSpecificationService implements PostSpecificationService {
@@ -17,7 +19,9 @@ public class CachedPostSpecificationService implements PostSpecificationService 
 	@Cacheable(value = "postSpecification", key = "#query")
 	@Override
 	public PostSpecification getSpecification(String query) {
-		return postSpecificationCompiler.compile(query);
+		PostSpecification postSpecification = postSpecificationCompiler.compile(query);
+		log.info("Compiled specification for query: {}", query);
+		return postSpecification;
 	}
 
 }
