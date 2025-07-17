@@ -1,17 +1,18 @@
 package com.kaba4cow.imgxiv.domain.post.specification;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeAll;
+import java.util.List;
+import java.util.Set;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
-import com.kaba4cow.imgxiv.domain.link.posttag.PostTag;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
@@ -22,9 +23,8 @@ import com.kaba4cow.imgxiv.domain.user.UserRole;
 
 import jakarta.transaction.Transactional;
 
-@SpringBootTest
-@AutoConfigureTestDatabase
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DataJpaTest
+@Transactional
 public class DefaultPostSpecificationTest {
 
 	@Autowired
@@ -43,26 +43,121 @@ public class DefaultPostSpecificationTest {
 
 	private Category category;
 
-	@BeforeAll
+	@BeforeEach
 	void setup() {
 		author = createUser();
 		category = createCategory();
 	}
 
+	@Test
+	void matchByRequiredTags() {
+		Post ab = createPost("a", "b");
+		Post c = createPost("c");
+
+		List<Post> result = findPosts(//
+				Set.of("a"), //
+				Set.of()//
+		);
+
+		assertTrue(result.contains(ab));
+		assertFalse(result.contains(c));
+	}
+
+	@Test
+	void excludeByExcludedTags() {
+		Post a = createPost("a");
+		Post b = createPost("b");
+
+		List<Post> result = findPosts(//
+				Set.of(), //
+				Set.of("b")//
+		);
+
+		assertTrue(result.contains(a));
+		assertFalse(result.contains(b));
+	}
+
+	@Test
+	void requiredAndExcludedTags() {
+		Post ab = createPost("a", "b");
+		Post ac = createPost("a", "c");
+		Post d = createPost("d");
+
+		List<Post> result = findPosts(//
+				Set.of("a"), //
+				Set.of("c")//
+		);
+
+		assertTrue(result.contains(ab));
+		assertFalse(result.contains(ac));
+		assertFalse(result.contains(d));
+	}
+
+	@Test
+	void emptyTagsReturnsAllPosts() {
+		Post a = createPost("a");
+		Post b = createPost("b");
+
+		List<Post> result = findPosts(//
+				Set.of(), //
+				Set.of()//
+		);
+
+		assertTrue(result.contains(a));
+		assertTrue(result.contains(b));
+	}
+
+	@Test
+	void noMatchingRequiredTags() {
+		createPost("a");
+		createPost("b");
+
+		List<Post> result = findPosts(//
+				Set.of("c"), //
+				Set.of()//
+		);
+
+		assertTrue(result.isEmpty());
+	}
+
+	@Test
+	void postMustHaveAllRequiredTags() {
+		Post ab = createPost("a", "b");
+		Post a = createPost("a");
+		Post b = createPost("b");
+
+		List<Post> result = findPosts(//
+				Set.of("a", "b"), //
+				Set.of()//
+		);
+
+		assertTrue(result.contains(ab));
+		assertFalse(result.contains(a));
+		assertFalse(result.contains(b));
+	}
+
+	private List<Post> findPosts(Set<String> requiredTags, Set<String> excludedTags) {
+		return postRepository.findAll(new DefaultPostSpecification(requiredTags, excludedTags));
+	}
+
 	private Post createPost(String... tags) {
-		Post post = new Post();
-		for (String tagName : tags) {
-			Tag tag = createTag(tagName);
-			PostTag postTag = new PostTag();
-			postTag.setPost(post);
-			postTag.setTag(tag);
-			post.getPostTags().add(postTag);
-		}
+		Post post = createPost();
+		for (String tagName : tags)
+			post.addTag(getOrCreateTag(tagName));
 		return postRepository.saveAndFlush(post);
 	}
 
-	private Tag createTag(String name) {
+	private Post createPost() {
+		Post post = new Post();
+		post.setAuthor(author);
+		return postRepository.saveAndFlush(post);
+	}
+
+	private Tag getOrCreateTag(String name) {
+		if (tagRepository.existsByName(name))
+			return tagRepository.findByName(name).orElseThrow();
 		Tag tag = new Tag();
+		tag.setCategory(category);
 		tag.getNameAndDescription().setName(name);
 		tag.getNameAndDescription().setDescription("tag-description");
 		return tagRepository.saveAndFlush(tag);
