@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kaba4cow.imgxiv.auth.context.CurrentUserService;
-import com.kaba4cow.imgxiv.common.exception.NotFoundException;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.service.PostService;
@@ -42,8 +41,7 @@ public class PostController {
 	@PreAuthorize("hasAuthority('create-post')")
 	@PostMapping
 	public ResponseEntity<PostDto> create(@RequestBody @Valid PostCreateRequest request) {
-		User user = currentUserService.getUser()//
-				.orElseThrow(() -> new NotFoundException("User not found"));
+		User user = currentUserService.getUserOrThrow();
 		return ResponseEntity.ok(postService.create(request, user));
 	}
 
