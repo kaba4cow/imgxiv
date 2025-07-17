@@ -26,7 +26,7 @@ public class DefaultPostService implements PostService {
 
 	private final PostRepository postRepository;
 
-	private final PostSpecificationService postSpecificationService;
+	private final PostQueryExecutorService postQueryExecutorService;
 
 	private final TagService tagService;
 
@@ -48,7 +48,7 @@ public class DefaultPostService implements PostService {
 
 	@Override
 	public List<PostPreviewDto> findByQuery(PostQueryRequest request) {
-		return postRepository.findAll(postSpecificationService.getSpecification(request.getQuery())).stream()//
+		return postQueryExecutorService.executeQuery(request)//
 				.map(postMapper::mapToPreviewDto)//
 				.collect(Collectors.toList());
 	}
