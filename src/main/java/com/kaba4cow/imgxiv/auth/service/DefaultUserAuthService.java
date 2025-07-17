@@ -8,13 +8,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.auth.dto.AuthResponse;
-import com.kaba4cow.imgxiv.auth.dto.AuthUserDto;
-import com.kaba4cow.imgxiv.auth.dto.AuthUserMapper;
 import com.kaba4cow.imgxiv.auth.dto.LoginRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.UserRole;
+import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
+import com.kaba4cow.imgxiv.domain.user.dto.UserMapper;
 import com.kaba4cow.imgxiv.domain.user.validation.UserValidationService;
 import com.kaba4cow.imgxiv.util.PersistLog;
 
@@ -34,14 +34,14 @@ public class DefaultUserAuthService implements UserAuthService {
 
 	private final UserValidationService userValidationService;
 
-	private final AuthUserMapper authUserMapper;
+	private final UserMapper userMapper;
 
 	@Override
-	public AuthUserDto register(RegisterRequest request) {
+	public UserDto register(RegisterRequest request) {
 		userValidationService.ensureUsernameAvailable(request.getUsername());
 		userValidationService.ensureEmailAvailable(request.getEmail());
 		User user = registerUser(request);
-		return authUserMapper.mapToDto(user);
+		return userMapper.mapToDto(user);
 	}
 
 	private User registerUser(RegisterRequest request) {
@@ -60,7 +60,7 @@ public class DefaultUserAuthService implements UserAuthService {
 		if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash()))
 			throw new BadCredentialsException("Invalid credentials");
 		String token = jwtService.generateToken(user);
-		return new AuthResponse(token, authUserMapper.mapToDto(user));
+		return new AuthResponse(token, userMapper.mapToDto(user));
 	}
 
 	@Override
