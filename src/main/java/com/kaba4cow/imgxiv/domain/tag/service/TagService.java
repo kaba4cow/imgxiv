@@ -12,6 +12,8 @@ public interface TagService {
 
 	TagDto create(TagCreateRequest request);
 
+	List<TagDto> findAll();
+
 	List<TagDto> findByCategoryId(Long categoryId);
 
 	Set<Tag> findByIdsOrThrow(Collection<? extends Long> ids);

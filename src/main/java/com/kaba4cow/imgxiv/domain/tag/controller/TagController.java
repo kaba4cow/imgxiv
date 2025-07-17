@@ -39,11 +39,17 @@ public class TagController {
 	)
 	@PreAuthorize("hasAuthority('create-tag')")
 	@PostMapping
-	public ResponseEntity<TagDto> create(//
-			@RequestBody //
-			@Valid //
-			TagCreateRequest request) {
+	public ResponseEntity<TagDto> createTag(@RequestBody @Valid TagCreateRequest request) {
 		return ResponseEntity.ok(tagService.create(request));
+	}
+
+	@Operation(//
+			summary = "Retrieves all tags", //
+			description = "Returns tag infos of all existing tags"//
+	)
+	@GetMapping
+	public ResponseEntity<List<TagDto>> getAllTags() {
+		return ResponseEntity.ok(tagService.findAll());
 	}
 
 	@Operation(//
@@ -51,14 +57,12 @@ public class TagController {
 			description = "Returns tag infos of all existing tags by category ID"//
 	)
 	@GetMapping
-	public ResponseEntity<List<TagDto>> getByCategory(//
+	public ResponseEntity<List<TagDto>> getTagsByCategory(//
 			@Schema(//
 					description = "ID of the category to filter tags by", //
 					example = "1234567890"//
 			) //
-			@RequestParam("categoryId") //
-			@NotNull //
-			Long categoryId) {
+			@RequestParam("categoryId") @NotNull Long categoryId) {
 		return ResponseEntity.ok(tagService.findByCategoryId(categoryId));
 	}
 
