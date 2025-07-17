@@ -47,7 +47,7 @@ public class TagController {
 			summary = "Retrieves all tags", //
 			description = "Returns tag infos of all existing tags"//
 	)
-	@GetMapping
+	@GetMapping("/all")
 	public ResponseEntity<List<TagDto>> getAllTags() {
 		return ResponseEntity.ok(tagService.findAll());
 	}
