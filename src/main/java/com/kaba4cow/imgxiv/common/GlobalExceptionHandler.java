@@ -19,11 +19,16 @@ import com.kaba4cow.imgxiv.common.handler.ExceptionHandlerResponseEntity;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ExceptionHandlerResponseEntity handleValidationException(MethodArgumentNotValidException exception) {
+	public ExceptionHandlerResponseEntity handleMethodArgumentNotValid(MethodArgumentNotValidException exception) {
 		return new ExceptionHandlerResponseBuilder()//
 				.status(HttpStatus.BAD_REQUEST)//
 				.errors(exception.getBindingResult().getFieldErrors(), FieldError::getField, FieldError::getDefaultMessage)//
 				.build();
+	}
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ExceptionHandlerResponseEntity handleIllegalArgument(IllegalArgumentException exception) {
+		return defaultResponse(HttpStatus.BAD_REQUEST, exception);
 	}
 
 	@ExceptionHandler(UsernameNotFoundException.class)
@@ -37,17 +42,17 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(ConflictException.class)
-	public ExceptionHandlerResponseEntity handleConflictException(ConflictException exception) {
+	public ExceptionHandlerResponseEntity handleConflict(ConflictException exception) {
 		return defaultResponse(HttpStatus.CONFLICT, exception);
 	}
 
 	@ExceptionHandler(AuthenticationException.class)
-	public ExceptionHandlerResponseEntity handleAuthenticationException(AuthenticationException exception) {
+	public ExceptionHandlerResponseEntity handleAuthentication(AuthenticationException exception) {
 		return defaultResponse(HttpStatus.UNAUTHORIZED, exception);
 	}
 
 	@ExceptionHandler(AccessDeniedException.class)
-	public ExceptionHandlerResponseEntity handleAccessDeniedException(AccessDeniedException exception) {
+	public ExceptionHandlerResponseEntity handleAccessDenied(AccessDeniedException exception) {
 		return defaultResponse(HttpStatus.FORBIDDEN, exception);
 	}
 
