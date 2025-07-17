@@ -12,6 +12,6 @@ public interface ProfileService {
 
 	UserDto changeEmail(ChangeEmailRequest request, User user);
 
-	UserDto changePassword(ChangePasswordRequest request, User user);
+	void changePassword(ChangePasswordRequest request, User user);
 
 }
