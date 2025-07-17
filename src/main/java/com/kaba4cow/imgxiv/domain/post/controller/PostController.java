@@ -51,8 +51,8 @@ public class PostController {
 			summary = "Retrieves posts by specified query", //
 			description = "Returns post previews of posts by specified query"//
 	)
-	@GetMapping
-	public ResponseEntity<List<PostPreviewDto>> getPostsByQuery(@RequestBody @Valid PostQueryRequest request) {
+	@GetMapping("/search")
+	public ResponseEntity<List<PostPreviewDto>> searchPosts(@RequestBody @Valid PostQueryRequest request) {
 		return ResponseEntity.ok(postService.findByQuery(request));
 	}
 
