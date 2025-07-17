@@ -9,7 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import com.kaba4cow.imgxiv.domain.base.EntityWithId;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.embeddable.NameAndDescription;
-import com.kaba4cow.imgxiv.domain.posttag.PostTag;
+import com.kaba4cow.imgxiv.domain.link.posttag.PostTag;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

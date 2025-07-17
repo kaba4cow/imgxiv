@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.posttag;
+package com.kaba4cow.imgxiv.domain.link.posttag;
 
 import java.io.Serializable;
 

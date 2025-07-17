@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.posttag;
+package com.kaba4cow.imgxiv.domain.link.posttag;
 
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
