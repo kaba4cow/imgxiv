@@ -40,7 +40,7 @@ public class PostController {
 	@PreAuthorize("hasAuthority('create-post')")
 	@PostMapping
 	public ResponseEntity<PostDto> create(@RequestBody @Valid PostCreateRequest request) {
-		return ResponseEntity.ok(postService.create(request, currentUserService.getCurrentUser()));
+		return ResponseEntity.ok(postService.create(request, currentUserService.getUser()));
 	}
 
 	@Operation(//

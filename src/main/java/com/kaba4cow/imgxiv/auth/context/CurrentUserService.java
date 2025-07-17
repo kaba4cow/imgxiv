@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class CurrentUserService {
 
-	public UserDetailsAdapter getCurrentUserDetails() {
+	public UserDetailsAdapter getDetails() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!hasAuthenticatedUser(authentication))
 			throw new IllegalStateException("No authenticated user found");
@@ -25,12 +25,12 @@ public class CurrentUserService {
 			return (UserDetailsAdapter) authentication.getPrincipal();
 	}
 
-	public Collection<? extends GrantedAuthority> getCurrentUserAuthorities() {
-		return getCurrentUserDetails().getAuthorities();
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return getDetails().getAuthorities();
 	}
 
-	public User getCurrentUser() {
-		return getCurrentUserDetails().getUser();
+	public User getUser() {
+		return getDetails().getUser();
 	}
 
 	private boolean hasAuthenticatedUser(Authentication authentication) {
