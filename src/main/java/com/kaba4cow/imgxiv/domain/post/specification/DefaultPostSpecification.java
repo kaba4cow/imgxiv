@@ -1,6 +1,7 @@
 package com.kaba4cow.imgxiv.domain.post.specification;
 
-import java.util.Collections;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.kaba4cow.imgxiv.domain.link.posttag.PostTag;
@@ -23,9 +24,9 @@ public class DefaultPostSpecification implements PostSpecification {
 
 	private final Set<String> excludedTags;
 
-	public DefaultPostSpecification(Set<String> requiredTags, Set<String> excludedTags) {
-		this.requiredTags = Collections.unmodifiableSet(requiredTags);
-		this.excludedTags = Collections.unmodifiableSet(excludedTags);
+	public DefaultPostSpecification(Collection<String> requiredTags, Collection<String> excludedTags) {
+		this.requiredTags = new HashSet<>(requiredTags);
+		this.excludedTags = new HashSet<>(excludedTags);
 	}
 
 	@Override
