@@ -12,11 +12,10 @@ import com.kaba4cow.imgxiv.auth.dto.AuthUserDto;
 import com.kaba4cow.imgxiv.auth.dto.AuthUserMapper;
 import com.kaba4cow.imgxiv.auth.dto.LoginRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
-import com.kaba4cow.imgxiv.common.exception.EmailConflictException;
-import com.kaba4cow.imgxiv.common.exception.UsernameConflictException;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.UserRole;
+import com.kaba4cow.imgxiv.domain.user.validation.UserValidationService;
 import com.kaba4cow.imgxiv.util.PersistLog;
 
 import lombok.RequiredArgsConstructor;
@@ -33,14 +32,14 @@ public class DefaultUserAuthService implements UserAuthService {
 
 	private final PasswordEncoder passwordEncoder;
 
+	private final UserValidationService userValidationService;
+
 	private final AuthUserMapper authUserMapper;
 
 	@Override
 	public AuthUserDto register(RegisterRequest request) {
-		if (userRepository.existsByUsername(request.getUsername()))
-			throw new UsernameConflictException("Username already taken");
-		if (userRepository.existsByEmail(request.getEmail()))
-			throw new EmailConflictException("Email already taken");
+		userValidationService.ensureUsernameAvailable(request.getUsername());
+		userValidationService.ensureEmailAvailable(request.getEmail());
 		User user = registerUser(request);
 		return authUserMapper.mapToDto(user);
 	}
