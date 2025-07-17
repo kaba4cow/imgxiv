@@ -20,4 +20,10 @@ public class PostMapper {
 		);
 	}
 
+	public PostPreviewDto mapToPreviewDto(Post post) {
+		return new PostPreviewDto(//
+				post.getId()//
+		);
+	}
+
 }
