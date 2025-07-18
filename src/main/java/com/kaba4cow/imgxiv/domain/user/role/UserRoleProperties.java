@@ -1,6 +1,7 @@
 package com.kaba4cow.imgxiv.domain.user.role;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -28,6 +29,10 @@ public class UserRoleProperties {
 		private String parent;
 
 		private Set<String> authorities;
+
+		public boolean hasParent() {
+			return Objects.nonNull(parent);
+		}
 
 	}
 
