@@ -31,9 +31,9 @@ public class DefaultCategoryServiceTest {
 
 	@Test
 	void throwIfNameTaken() {
-		CategoryCreateRequest request = new CategoryCreateRequest("category-a", "category-description");
+		CategoryCreateRequest request = new CategoryCreateRequest("name", "description");
 
-		when(categoryRepository.existsByName("category-a"))//
+		when(categoryRepository.existsByName("name"))//
 				.thenReturn(true);
 
 		assertThrows(NameConflictException.class, () -> categoryService.create(request));
@@ -41,20 +41,20 @@ public class DefaultCategoryServiceTest {
 
 	@Test
 	void createNewCategory() {
-		CategoryCreateRequest request = new CategoryCreateRequest("category-b", "category-description");
+		CategoryCreateRequest request = new CategoryCreateRequest("name", "description");
 
-		when(categoryRepository.existsByName("category-b"))//
+		when(categoryRepository.existsByName("name"))//
 				.thenReturn(false);
 		when(categoryRepository.save(Mockito.any()))//
 				.thenAnswer(i -> i.getArgument(0));
 
 		when(categoryMapper.mapToDto(Mockito.any()))//
-				.thenReturn(new CategoryDto(0L, "category-b", "category-description"));
+				.thenReturn(new CategoryDto(0L, "name", "description"));
 
 		CategoryDto result = categoryService.create(request);
 
-		assertEquals("category-b", result.getName());
-		assertEquals("category-description", result.getDescription());
+		assertEquals("name", result.getName());
+		assertEquals("description", result.getDescription());
 	}
 
 }
