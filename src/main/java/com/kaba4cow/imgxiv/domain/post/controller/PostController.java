@@ -3,7 +3,6 @@ package com.kaba4cow.imgxiv.domain.post.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,27 +49,12 @@ public class PostController {
 
 	@Operation(//
 			summary = "Search posts by tag query", //
-			description = """
-					Performs a tag-based search and returns a list of post previews.
-
-					The query string can contain required and excluded tags.
-					Example: `"cat cute !boring"` — finds posts tagged with "cat" and "cute" but not "boring".
-					"""//
+			description = "Performs a tag-based search and returns a list of post previews"//
 	)
 	@PermitAll
 	@PostMapping("/search")
 	public ResponseEntity<List<PostPreviewDto>> searchPosts(@RequestBody @Valid PostQueryRequest request) {
 		return ResponseEntity.ok(postService.findByQuery(request));
-	}
-
-	@Operation(//
-			summary = "Get all posts", //
-			description = "Returns a full list of all existing posts including tag info"//
-	)
-	@PermitAll
-	@GetMapping("/all")
-	public ResponseEntity<List<PostDto>> getAllPosts() {
-		return ResponseEntity.ok(postService.findAll());
 	}
 
 }
