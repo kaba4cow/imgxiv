@@ -1,12 +1,12 @@
 package com.kaba4cow.imgxiv.domain.user.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.context.CurrentUserService;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeEmailRequest;
@@ -19,7 +19,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@PreAuthorize("isAuthenticated()")
 @RequestMapping("/api/profile")
 @RestController
 public class ProfileController {
@@ -28,6 +27,7 @@ public class ProfileController {
 
 	private final ProfileService profileService;
 
+	@IsAuthenticated
 	@PatchMapping("/username")
 	public ResponseEntity<UserDto> changeUsername(@RequestBody @Valid ChangeUsernameRequest request) {
 		User user = currentUserService.getUserOrThrow();
@@ -35,6 +35,7 @@ public class ProfileController {
 		return ResponseEntity.ok(result);
 	}
 
+	@IsAuthenticated
 	@PatchMapping("/email")
 	public ResponseEntity<UserDto> changeEmail(@RequestBody @Valid ChangeEmailRequest request) {
 		User user = currentUserService.getUserOrThrow();
@@ -42,6 +43,7 @@ public class ProfileController {
 		return ResponseEntity.ok(result);
 	}
 
+	@IsAuthenticated
 	@PatchMapping("/password")
 	public ResponseEntity<Void> changePassword(@RequestBody @Valid ChangePasswordRequest request) {
 		User user = currentUserService.getUserOrThrow();

@@ -3,7 +3,6 @@ package com.kaba4cow.imgxiv.domain.tag.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
+import com.kaba4cow.imgxiv.auth.annotation.authority.CanCreateTag;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagCreateRequest;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
 import com.kaba4cow.imgxiv.domain.tag.service.TagService;
@@ -37,7 +38,7 @@ public class TagController {
 			summary = "Creates new tag", //
 			description = "Creates a new tag and returns tag info"//
 	)
-	@PreAuthorize("hasAuthority('create-tag')")
+	@CanCreateTag
 	@PostMapping
 	public ResponseEntity<TagDto> createTag(@RequestBody @Valid TagCreateRequest request) {
 		return ResponseEntity.ok(tagService.create(request));
@@ -47,6 +48,7 @@ public class TagController {
 			summary = "Retrieves all tags", //
 			description = "Returns tag infos of all existing tags"//
 	)
+	@PermitAll
 	@GetMapping("/all")
 	public ResponseEntity<List<TagDto>> getAllTags() {
 		return ResponseEntity.ok(tagService.findAll());
@@ -56,6 +58,7 @@ public class TagController {
 			summary = "Retrieves all tags of certain category", //
 			description = "Returns tag infos of all existing tags by category ID"//
 	)
+	@PermitAll
 	@GetMapping
 	public ResponseEntity<List<TagDto>> getTagsByCategory(//
 			@Schema(//
