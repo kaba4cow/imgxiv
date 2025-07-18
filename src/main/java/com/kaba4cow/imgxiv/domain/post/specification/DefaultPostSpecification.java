@@ -13,7 +13,9 @@ import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
+import lombok.Getter;
 
+@Getter
 public class DefaultPostSpecification implements PostSpecification {
 
 	private static final long serialVersionUID = 1L;
