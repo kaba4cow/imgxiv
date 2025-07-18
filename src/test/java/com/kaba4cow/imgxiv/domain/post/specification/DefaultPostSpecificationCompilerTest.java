@@ -61,11 +61,11 @@ public class DefaultPostSpecificationCompilerTest {
 		assertRequiresNothing();
 		assertExcludesNothing();
 	}
-	
+
 	@Test
 	void compilesDuplicateTags() {
 		compile("a !a");
-		
+
 		assertDoesNotRequire("a");
 		assertExcludes("a");
 	}

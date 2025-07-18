@@ -175,7 +175,7 @@ public class DefaultPostSpecificationTest {
 		user.setUsername("username");
 		user.setEmail("email");
 		user.setPasswordHash("passwordHash");
-		user.setRole(UserRole.USER);;
+		user.setRole(UserRole.USER);
 		return userRepository.saveAndFlush(user);
 	}
 
