@@ -60,7 +60,7 @@ public class TagController {
 	public ResponseEntity<List<TagDto>> getTagsByCategory(//
 			@Schema(//
 					description = "ID of the category to filter tags by", //
-					example = "1234567890"//
+					example = "1"//
 			) //
 			@RequestParam("categoryId") @NotNull Long categoryId) {
 		return ResponseEntity.ok(tagService.findByCategoryId(categoryId));

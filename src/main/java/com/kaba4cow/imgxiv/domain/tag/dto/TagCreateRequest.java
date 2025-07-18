@@ -17,7 +17,6 @@ import lombok.Setter;
 public class TagCreateRequest {
 
 	@NotBlank(message = "Name is required")
-	@Size(min = 2, message = "Name is too short (min 2 characters)")
 	@Size(max = 32, message = "Name is too long (max 32 characters)")
 	@Schema(//
 			description = "Unique name", //
@@ -25,19 +24,17 @@ public class TagCreateRequest {
 	)
 	private String name;
 
-	@NotBlank(message = "Description is required")
-	@Size(min = 8, message = "Description is too short (min 8 characters)")
 	@Size(max = 1024, message = "Description is too long (max 1024 characters)")
 	@Schema(//
 			description = "Description", //
 			example = "tag_description"//
 	)
-	private String description;
+	private String description = "";
 
 	@NotNull(message = "Category ID is required")
 	@Schema(//
 			description = "Category ID", //
-			example = "1234567890"//
+			example = "1"//
 	)
 	private Long categoryId;
 
