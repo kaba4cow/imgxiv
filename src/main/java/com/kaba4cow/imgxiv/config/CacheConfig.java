@@ -1,10 +1,14 @@
 package com.kaba4cow.imgxiv.config;
 
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 @EnableCaching
 @Configuration
@@ -14,7 +18,13 @@ public class CacheConfig {
 
 	@Bean
 	public CacheManager cacheManager() {
-		return new ConcurrentMapCacheManager(POST_SPECIFICATION);
+		CaffeineCacheManager cacheManager = new CaffeineCacheManager(POST_SPECIFICATION);
+		cacheManager.setCaffeine(Caffeine.newBuilder()//
+				.initialCapacity(100)//
+				.maximumSize(1000L)//
+				.expireAfterWrite(5L, TimeUnit.MINUTES)//
+		);
+		return cacheManager;
 	}
 
 }
