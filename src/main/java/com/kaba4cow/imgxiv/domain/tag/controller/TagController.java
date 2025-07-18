@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(//
 		name = "Tags", //
-		description = "Tag creation"//
+		description = "Endpoints for creating and retrieving tags"//
 )
 @RequestMapping("/api/tags")
 @RestController
@@ -35,8 +35,8 @@ public class TagController {
 	private final TagService tagService;
 
 	@Operation(//
-			summary = "Creates new tag", //
-			description = "Creates a new tag and returns tag info"//
+			summary = "Create a new tag", //
+			description = "Creates a new tag with the given name and associated category, then returns its details"//
 	)
 	@CanCreateTag
 	@PostMapping
@@ -45,8 +45,8 @@ public class TagController {
 	}
 
 	@Operation(//
-			summary = "Retrieves all tags", //
-			description = "Returns tag infos of all existing tags"//
+			summary = "Get all tags", //
+			description = "Returns a list of all existing tags"//
 	)
 	@PermitAll
 	@GetMapping("/all")
@@ -55,8 +55,8 @@ public class TagController {
 	}
 
 	@Operation(//
-			summary = "Retrieves all tags of certain category", //
-			description = "Returns tag infos of all existing tags by category ID"//
+			summary = "Get tags by category", //
+			description = "Returns all tags that belong to the specified category by its ID"//
 	)
 	@PermitAll
 	@GetMapping

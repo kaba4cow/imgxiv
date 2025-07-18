@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(//
 		name = "Posts", //
-		description = "Post creation"//
+		description = "Endpoints for post creation and retrieval"//
 )
 @RequestMapping("/api/posts")
 @RestController
@@ -38,8 +38,8 @@ public class PostController {
 	private final CurrentUserService currentUserService;
 
 	@Operation(//
-			summary = "Creates new post", //
-			description = "Creates a new post with given tags and returns post info"//
+			summary = "Create a new post", //
+			description = "Creates a new post with the provided tags and returns the full post data"//
 	)
 	@CanCreatePost
 	@PostMapping
@@ -49,8 +49,13 @@ public class PostController {
 	}
 
 	@Operation(//
-			summary = "Retrieves posts by specified query", //
-			description = "Returns post previews of posts by specified query"//
+			summary = "Search posts by tag query", //
+			description = """
+					Performs a tag-based search and returns a list of post previews.
+
+					The query string can contain required and excluded tags.
+					Example: `"cat cute !boring"` — finds posts tagged with "cat" and "cute" but not "boring".
+					"""//
 	)
 	@PermitAll
 	@PostMapping("/search")
@@ -59,8 +64,8 @@ public class PostController {
 	}
 
 	@Operation(//
-			summary = "Retrieves all existing posts", //
-			description = "Returns post infos of all existing posts"//
+			summary = "Get all posts", //
+			description = "Returns a full list of all existing posts including tag info"//
 	)
 	@PermitAll
 	@GetMapping("/all")
