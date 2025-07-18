@@ -40,7 +40,7 @@ public class TagController {
 	)
 	@CanCreateTag
 	@PostMapping
-	public ResponseEntity<TagDto> createTag(@RequestBody @Valid TagCreateRequest request) {
+	public ResponseEntity<TagDto> createTag(@Valid @RequestBody TagCreateRequest request) {
 		return ResponseEntity.ok(tagService.create(request));
 	}
 

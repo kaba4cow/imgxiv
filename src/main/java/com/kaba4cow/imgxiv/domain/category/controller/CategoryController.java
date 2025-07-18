@@ -37,7 +37,7 @@ public class CategoryController {
 	)
 	@CanCreateCategory
 	@PostMapping
-	public ResponseEntity<CategoryDto> createCategory(@RequestBody @Valid CategoryCreateRequest request) {
+	public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryCreateRequest request) {
 		return ResponseEntity.ok(categoryService.create(request));
 	}
 

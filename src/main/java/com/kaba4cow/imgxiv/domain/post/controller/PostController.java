@@ -41,7 +41,7 @@ public class PostController {
 	)
 	@CanCreatePost
 	@PostMapping
-	public ResponseEntity<PostDto> createPost(@RequestBody @Valid PostCreateRequest request) {
+	public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostCreateRequest request) {
 		User user = currentUserService.getUserOrThrow();
 		return ResponseEntity.ok(postService.create(request, user));
 	}
@@ -52,7 +52,7 @@ public class PostController {
 	)
 	@PermitAll
 	@PostMapping("/search")
-	public ResponseEntity<List<PostDto>> searchPosts(@RequestBody @Valid PostQueryRequest request) {
+	public ResponseEntity<List<PostDto>> searchPosts(@Valid @RequestBody PostQueryRequest request) {
 		return ResponseEntity.ok(postService.findByQuery(request));
 	}
 

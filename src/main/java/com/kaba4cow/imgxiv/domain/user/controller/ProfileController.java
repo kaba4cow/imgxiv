@@ -53,7 +53,7 @@ public class ProfileController {
 	)
 	@IsAuthenticated
 	@PatchMapping("/username")
-	public ResponseEntity<UserDto> changeUsername(@RequestBody @Valid ChangeUsernameRequest request) {
+	public ResponseEntity<UserDto> changeUsername(@Valid @RequestBody ChangeUsernameRequest request) {
 		UserDto result = profileService.changeUsername(request, getUser());
 		return ResponseEntity.ok(result);
 	}
@@ -64,7 +64,7 @@ public class ProfileController {
 	)
 	@IsAuthenticated
 	@PatchMapping("/email")
-	public ResponseEntity<UserDto> changeEmail(@RequestBody @Valid ChangeEmailRequest request) {
+	public ResponseEntity<UserDto> changeEmail(@Valid @RequestBody ChangeEmailRequest request) {
 		UserDto result = profileService.changeEmail(request, getUser());
 		return ResponseEntity.ok(result);
 	}
@@ -75,7 +75,7 @@ public class ProfileController {
 	)
 	@IsAuthenticated
 	@PatchMapping("/password")
-	public ResponseEntity<Void> changePassword(@RequestBody @Valid ChangePasswordRequest request) {
+	public ResponseEntity<Void> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
 		profileService.changePassword(request, getUser());
 		return ResponseEntity.noContent().build();
 	}
