@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.kaba4cow.imgxiv.common.dto.PaginationRequest;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
@@ -24,9 +25,18 @@ public class DefaultPostQueryExecutorService implements PostQueryExecutorService
 	@Override
 	public Stream<Post> executeQuery(PostQueryRequest request) {
 		PostSpecification postSpecification = postSpecificationService.getSpecification(request.getQuery());
-		Sort sort = Sort.by(request.getDirection(), "createdAt.timestamp");
-		PageRequest pageRequest = PageRequest.of(request.getPage(), request.getSize(), sort);
+		PageRequest pageRequest = getPageRequest(request);
 		return postRepository.findAll(postSpecification, pageRequest).stream();
+	}
+
+	private PageRequest getPageRequest(PostQueryRequest request) {
+		PaginationRequest pagination = request.getPagination();
+		Sort sort = getSort(request);
+		return PageRequest.of(pagination.getPage(), pagination.getSize(), sort);
+	}
+
+	private Sort getSort(PostQueryRequest request) {
+		return Sort.by(request.getSorting().getDirection(), "createdAt.timestamp");
 	}
 
 }

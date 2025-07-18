@@ -1,10 +1,10 @@
 package com.kaba4cow.imgxiv.domain.post.dto;
 
-import org.springframework.data.domain.Sort;
+import com.kaba4cow.imgxiv.common.dto.PaginationRequest;
+import com.kaba4cow.imgxiv.common.dto.SortingRequest;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,25 +25,10 @@ public class PostQueryRequest {
 	)
 	private String query = "";
 
-	@Min(value = 0, message = "Page must be 0 or greater")
-	@Schema(//
-			description = "Page number, zero-based", //
-			example = "0" //
-	)
-	private int page = 0;
+	@Valid
+	private PaginationRequest pagination = new PaginationRequest();
 
-	@Min(value = 1, message = "Page size must be at least 1")
-	@Max(value = 100, message = "Page size must not exceed 100")
-	@Schema(//
-			description = "Number of posts per page", //
-			example = "20" //
-	)
-	private int size = 20;
-
-	@Schema(//
-			description = "Sort direction (ASC or DESC)", //
-			example = "DESC" //
-	)
-	private Sort.Direction direction = Sort.Direction.DESC;
+	@Valid
+	private SortingRequest sorting = new SortingRequest();
 
 }
