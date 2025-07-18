@@ -10,6 +10,8 @@ import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostMapper;
+import com.kaba4cow.imgxiv.domain.post.dto.PostPreviewDto;
+import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.tag.service.TagService;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.util.PersistLog;
@@ -23,6 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 public class DefaultPostService implements PostService {
 
 	private final PostRepository postRepository;
+
+	private final PostQueryExecutorService postQueryExecutorService;
 
 	private final TagService tagService;
 
@@ -40,6 +44,13 @@ public class DefaultPostService implements PostService {
 		tagService.findByIdsOrThrow(request.getTagIds())//
 				.forEach(post::addTag);
 		return PersistLog.log(postRepository.save(post));
+	}
+
+	@Override
+	public List<PostPreviewDto> findByQuery(PostQueryRequest request) {
+		return postQueryExecutorService.executeQuery(request)//
+				.map(postMapper::mapToPreviewDto)//
+				.collect(Collectors.toList());
 	}
 
 	@Override

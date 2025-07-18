@@ -50,7 +50,7 @@ public class CategoryControllerTest {
 
 	@Test
 	public void getAllCategories() throws Exception {
-		mockMvc.perform(get("/api/categories"))//
+		mockMvc.perform(get("/api/categories/all"))//
 				.andExpect(status().isOk())//
 				.andExpect(jsonPath("$").isArray());
 	}

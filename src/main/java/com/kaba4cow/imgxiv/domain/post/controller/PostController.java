@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kaba4cow.imgxiv.auth.context.CurrentUserService;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
+import com.kaba4cow.imgxiv.domain.post.dto.PostPreviewDto;
+import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.service.PostService;
 import com.kaba4cow.imgxiv.domain.user.User;
 
@@ -46,10 +48,19 @@ public class PostController {
 	}
 
 	@Operation(//
+			summary = "Retrieves posts by specified query", //
+			description = "Returns post previews of posts by specified query"//
+	)
+	@PostMapping("/search")
+	public ResponseEntity<List<PostPreviewDto>> searchPosts(@RequestBody @Valid PostQueryRequest request) {
+		return ResponseEntity.ok(postService.findByQuery(request));
+	}
+
+	@Operation(//
 			summary = "Retrieves all existing posts", //
 			description = "Returns post infos of all existing posts"//
 	)
-	@GetMapping
+	@GetMapping("/all")
 	public ResponseEntity<List<PostDto>> getAllPosts() {
 		return ResponseEntity.ok(postService.findAll());
 	}

@@ -44,7 +44,7 @@ public class CategoryController {
 			summary = "Retrieves all existing categories", //
 			description = "Returns category infos of all existing categories"//
 	)
-	@GetMapping
+	@GetMapping("/all")
 	public ResponseEntity<List<CategoryDto>> getAllCategories() {
 		return ResponseEntity.ok(categoryService.findAll());
 	}
