@@ -24,6 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class UserAuthorityRegistry {
 
+	private static final String ROLE_PREFIX = "ROLE_";
+
 	private final UserRoleProperties userRoleProperties;
 
 	private final Map<UserRole, Set<? extends GrantedAuthority>> roleAuthorities = new EnumMap<>(UserRole.class);
@@ -31,7 +33,7 @@ public class UserAuthorityRegistry {
 	@PostConstruct
 	public void assignAuthoritiesToRoles() {
 		for (UserRole role : UserRole.values()) {
-			Set<String> authorities = resolveAuthorities(role.name().toLowerCase());
+			Set<String> authorities = resolveAuthorities(role.name());
 			log.info("Assigned authorities to role {}: {}", role, authorities);
 			roleAuthorities.put(role, toGrantedAuthorities(authorities));
 		}
@@ -44,11 +46,14 @@ public class UserAuthorityRegistry {
 	}
 
 	private Set<String> resolveAuthorities(String roleName) {
+		String role = roleName.toLowerCase();
 		Set<String> authorities = new HashSet<>();
-		RoleDefinition roleDefinition = userRoleProperties.getRoleDefinition(roleName);
+		RoleDefinition roleDefinition = userRoleProperties.getRoleDefinition(role);
 		if (Objects.nonNull(roleDefinition)) {
+			authorities.add(ROLE_PREFIX.concat(role));
 			authorities.addAll(roleDefinition.getAuthorities());
-			authorities.addAll(resolveAuthorities(roleDefinition.getParent()));
+			if (roleDefinition.hasParent())
+				authorities.addAll(resolveAuthorities(roleDefinition.getParent()));
 		}
 		return Collections.unmodifiableSet(authorities);
 	}

@@ -10,58 +10,69 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 @AutoConfigureMockMvc
+@Transactional
 @SpringBootTest
 public class AuthControllerTest {
+
+	private static final String REGISTER_REQUEST = """
+				{
+					"username": "%s",
+					"email": "%s",
+					"password": "%s"
+				}
+			""";
+
+	private static final String LOGIN_REQUEST = """
+				{
+				    "usernameOrEmail": "%s",
+				    "password": "%s"
+				}
+			""";
 
 	@Autowired
 	private MockMvc mockMvc;
 
 	@Test
-	public void registerNewUser() throws Exception {
-		String json = """
-				{
-					"username": "reguser",
-					"email": "reg@example.com",
-					"password": "testpass512"
-				}
-				""";
+	public void registerAndLogin() throws Exception {
+		String username = "username";
+		String email = "test@example.com";
+		String password = "password1234";
 
 		mockMvc.perform(post("/api/auth/register")//
 				.contentType(MediaType.APPLICATION_JSON)//
-				.content(json))//
+				.content(REGISTER_REQUEST.formatted(//
+						username, //
+						email, //
+						password//
+				)))//
 				.andExpect(status().isOk())//
-				.andExpect(jsonPath("$.username").value("reguser"));
-	}
-
-	@Test
-	public void registerNewUserAndLogIn() throws Exception {
-		String reg = """
-				{
-				    "username": "loginuser",
-				    "email": "login@example.com",
-				    "password": "testpass512"
-				}
-				""";
-
-		mockMvc.perform(post("/api/auth/register")//
-				.contentType(MediaType.APPLICATION_JSON)//
-				.content(reg))//
-				.andExpect(status().isOk());
-
-		String login = """
-				{
-				    "usernameOrEmail": "loginuser",
-				    "password": "testpass512"
-				}
-				""";
+				.andExpect(jsonPath("$.username").value(username))//
+				.andExpect(jsonPath("$.email").value(email));
 
 		mockMvc.perform(post("/api/auth/login")//
 				.contentType(MediaType.APPLICATION_JSON)//
-				.content(login))//
+				.content(LOGIN_REQUEST.formatted(//
+						username, //
+						password//
+				)))//
 				.andExpect(status().isOk())//
-				.andExpect(jsonPath("$.token").isNotEmpty());
+				.andExpect(jsonPath("$.token").isNotEmpty())//
+				.andExpect(jsonPath("$.user.username").value(username))//
+				.andExpect(jsonPath("$.user.email").value(email));
+
+		mockMvc.perform(post("/api/auth/login")//
+				.contentType(MediaType.APPLICATION_JSON)//
+				.content(LOGIN_REQUEST.formatted(//
+						email, //
+						password//
+				)))//
+				.andExpect(status().isOk())//
+				.andExpect(jsonPath("$.token").isNotEmpty())//
+				.andExpect(jsonPath("$.user.username").value(username))//
+				.andExpect(jsonPath("$.user.email").value(email));
 	}
 
 }

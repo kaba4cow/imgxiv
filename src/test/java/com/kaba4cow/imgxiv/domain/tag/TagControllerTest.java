@@ -23,6 +23,14 @@ import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 @SpringBootTest
 public class TagControllerTest {
 
+	private static final String CREATE_REQUEST = """
+				{
+					"name": "%s",
+					"description": "%s",
+					"categoryId": %s
+				}
+			""";
+
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -41,28 +49,32 @@ public class TagControllerTest {
 	@WithMockUser(authorities = "create-tag")
 	@Test
 	public void createTag() throws Exception {
-		Category category = createTestCategory();
+		String name = "name";
+		String description = "description";
+		Long categoryId = createTestCategory().getId();
+
 		mockMvc.perform(post("/api/tags")//
 				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"name": "tag-name",
-								"description": "tag-description",
-								"categoryId": %s
-							}
-						"""//
-						.formatted(category.getId())))//
+				.content(CREATE_REQUEST.formatted(//
+						name, //
+						description, //
+						categoryId//
+				)))//
 				.andExpect(status().isOk())//
 				.andExpect(jsonPath("$.id").isNumber())//
-				.andExpect(jsonPath("$.name").value("tag-name"))//
-				.andExpect(jsonPath("$.description").value("tag-description"))//
-				.andExpect(jsonPath("$.categoryId").value(category.getId()));
+				.andExpect(jsonPath("$.name").isString())//
+				.andExpect(jsonPath("$.name").value(name))//
+				.andExpect(jsonPath("$.description").isString())//
+				.andExpect(jsonPath("$.description").value(description))//
+				.andExpect(jsonPath("$.categoryId").isNumber())//
+				.andExpect(jsonPath("$.categoryId").value(categoryId));
 	}
 
 	@Test
 	public void getTagsByCategory() throws Exception {
 		Category category = createTestCategory();
 		createTestTag(category);
+
 		mockMvc.perform(get("/api/tags")//
 				.param("categoryId", category.getId().toString()))//
 				.andExpect(status().isOk())//
@@ -72,15 +84,15 @@ public class TagControllerTest {
 
 	private Category createTestCategory() {
 		Category category = new Category();
-		category.getNameAndDescription().setName("category-name");
-		category.getNameAndDescription().setDescription("category-description");
+		category.getNameAndDescription().setName("name");
+		category.getNameAndDescription().setDescription("description");
 		return categoryRepository.save(category);
 	}
 
 	private Tag createTestTag(Category category) {
 		Tag tag = new Tag();
-		tag.getNameAndDescription().setName("tag-name");
-		tag.getNameAndDescription().setDescription("tag-description");
+		tag.getNameAndDescription().setName("name");
+		tag.getNameAndDescription().setDescription("description");
 		tag.setCategory(category);
 		return tagRepository.save(tag);
 	}

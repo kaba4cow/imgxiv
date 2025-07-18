@@ -1,11 +1,12 @@
 package com.kaba4cow.imgxiv.domain.post;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.hamcrest.Matchers.contains;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.hamcrest.Matchers;
+import java.util.Arrays;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,12 @@ import com.kaba4cow.imgxiv.domain.user.role.UserAuthorityRegistry;
 @SpringBootTest
 public class PostControllerTest {
 
+	private static final String CREATE_REQUEST = """
+				{
+					"tagIds": %s
+				}
+			""";
+
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -61,44 +68,34 @@ public class PostControllerTest {
 		Tag tag = createTestTag(category);
 		User author = createTestUser();
 		authenticateTestUser(author);
+
+		Long authorId = author.getId();
+		Long tagId = tag.getId();
+
 		mockMvc.perform(post("/api/posts")//
 				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"tagIds": [%s]
-							}
-						"""//
-						.formatted(tag.getId())))//
+				.content(CREATE_REQUEST.formatted(//
+						Arrays.asList(tag.getId())//
+				)))//
 				.andExpect(status().isOk())//
 				.andExpect(jsonPath("$.id").isNumber())//
 				.andExpect(jsonPath("$.authorId").isNumber())//
-				.andExpect(jsonPath("$.authorId").value(author.getId()))//
+				.andExpect(jsonPath("$.authorId").value(authorId))//
 				.andExpect(jsonPath("$.tagIds").isArray())//
-				.andExpect(jsonPath("$.tagIds").value(Matchers.contains(tag.getId().intValue())));
-	}
-
-	@Test
-	public void getTagsByCategory() throws Exception {
-		Category category = createTestCategory();
-		createTestTag(category);
-		mockMvc.perform(get("/api/tags")//
-				.param("categoryId", category.getId().toString()))//
-				.andExpect(status().isOk())//
-				.andExpect(jsonPath("$").isArray())//
-				.andExpect(jsonPath("$").isNotEmpty());
+				.andExpect(jsonPath("$.tagIds").value(contains(tagId.intValue())));
 	}
 
 	private Category createTestCategory() {
 		Category category = new Category();
-		category.getNameAndDescription().setName("category-name");
-		category.getNameAndDescription().setDescription("category-description");
+		category.getNameAndDescription().setName("name");
+		category.getNameAndDescription().setDescription("description");
 		return categoryRepository.save(category);
 	}
 
 	private Tag createTestTag(Category category) {
 		Tag tag = new Tag();
-		tag.getNameAndDescription().setName("tag-name");
-		tag.getNameAndDescription().setDescription("tag-description");
+		tag.getNameAndDescription().setName("name");
+		tag.getNameAndDescription().setDescription("description");
 		tag.setCategory(category);
 		return tagRepository.save(tag);
 	}
