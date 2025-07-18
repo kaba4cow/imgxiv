@@ -26,7 +26,7 @@ public class ChangePasswordRequest {
 	@Size(max = 64, message = "Password is too long (max 64 characters)")
 	@Schema(//
 			description = "New password", //
-			example = "password1234"//
+			example = "password1234_new"//
 	)
 	private String newPassword;
 

@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Configuration;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @EnableCaching
 @Configuration
 public class CacheConfig {

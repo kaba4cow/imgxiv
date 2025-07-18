@@ -90,7 +90,7 @@ public class DefaultUserAuthServiceTest {
 				.thenAnswer(i -> i.getArgument(0));
 
 		when(userMapper.mapToDto(Mockito.any()))//
-				.thenReturn(new UserDto("user", "mail@mail.com"));
+				.thenReturn(new UserDto(1L, "user", "mail@mail.com"));
 
 		UserDto result = userAuthService.register(request);
 
@@ -112,7 +112,7 @@ public class DefaultUserAuthServiceTest {
 		when(jwtService.generateToken(user))//
 				.thenReturn("mock-token");
 		when(userMapper.mapToDto(user))//
-				.thenReturn(new UserDto("user", "mail@mail.com"));
+				.thenReturn(new UserDto(1L, "user", "mail@mail.com"));
 
 		AuthResponse response = userAuthService.login(new LoginRequest("user", "pass"));
 
