@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @Component
 public class PageRequestExtractor {
 
-	public PageRequest getSortedPageRequest(PageableRequest request, String... properties) {
+	public PageRequest getPageRequest(PageableRequest request, String... properties) {
 		return PageRequest.of(//
 				getPageNumber(request), //
 				getPageSize(request), //
