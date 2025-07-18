@@ -20,6 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 public class CategoryControllerTest {
 
+	private static final String CREATE_REQUEST = """
+				{
+					"name": "%s",
+					"description": "%s"
+				}
+			""";
+
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -34,18 +41,21 @@ public class CategoryControllerTest {
 	@WithMockUser(authorities = "create-category")
 	@Test
 	public void createCategory() throws Exception {
+		String name = "name";
+		String description = "description";
+
 		mockMvc.perform(post("/api/categories")//
 				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"name": "category-name",
-								"description": "category-description"
-							}
-						"""))//
+				.content(CREATE_REQUEST.formatted(//
+						name, //
+						description//
+				)))//
 				.andExpect(status().isOk())//
 				.andExpect(jsonPath("$.id").isNumber())//
-				.andExpect(jsonPath("$.name").value("category-name"))//
-				.andExpect(jsonPath("$.description").value("category-description"));
+				.andExpect(jsonPath("$.name").isString())//
+				.andExpect(jsonPath("$.name").value(name))//
+				.andExpect(jsonPath("$.description").isString())//
+				.andExpect(jsonPath("$.description").value(description));
 	}
 
 	@Test
