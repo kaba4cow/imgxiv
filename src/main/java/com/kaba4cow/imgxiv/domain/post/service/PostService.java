@@ -14,6 +14,4 @@ public interface PostService {
 
 	List<PostPreviewDto> findByQuery(PostQueryRequest request);
 
-	List<PostDto> findAll();
-
 }

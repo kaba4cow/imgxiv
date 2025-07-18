@@ -53,11 +53,4 @@ public class DefaultPostService implements PostService {
 				.collect(Collectors.toList());
 	}
 
-	@Override
-	public List<PostDto> findAll() {
-		return postRepository.findAll().stream()//
-				.map(postMapper::mapToDto)//
-				.collect(Collectors.toList());
-	}
-
 }
