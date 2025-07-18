@@ -24,6 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class UserAuthorityRegistry {
 
+	private static final String ROLE_PREFIX = "ROLE_";
+
 	private final UserRoleProperties userRoleProperties;
 
 	private final Map<UserRole, Set<? extends GrantedAuthority>> roleAuthorities = new EnumMap<>(UserRole.class);
@@ -48,9 +50,10 @@ public class UserAuthorityRegistry {
 		Set<String> authorities = new HashSet<>();
 		RoleDefinition roleDefinition = userRoleProperties.getRoleDefinition(role);
 		if (Objects.nonNull(roleDefinition)) {
-			authorities.add("ROLE_".concat(role));
+			authorities.add(ROLE_PREFIX.concat(role));
 			authorities.addAll(roleDefinition.getAuthorities());
-			authorities.addAll(resolveAuthorities(roleDefinition.getParent()));
+			if (roleDefinition.hasParent())
+				authorities.addAll(resolveAuthorities(roleDefinition.getParent()));
 		}
 		return Collections.unmodifiableSet(authorities);
 	}
