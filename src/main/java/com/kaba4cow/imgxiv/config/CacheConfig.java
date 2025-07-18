@@ -10,9 +10,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CacheConfig {
 
+	public static final String POST_SPECIFICATION = "postSpecification";
+
 	@Bean
 	public CacheManager cacheManager() {
-		return new ConcurrentMapCacheManager("postSpecification");
+		return new ConcurrentMapCacheManager(POST_SPECIFICATION);
 	}
 
 }
