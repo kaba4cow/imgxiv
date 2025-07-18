@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public abstract class PaginationRequest {
+public abstract class PageableRequest {
 
 	@Min(value = 0, message = "Page must be 0 or greater")
 	@Schema(//
