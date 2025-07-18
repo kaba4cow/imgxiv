@@ -13,7 +13,6 @@ import com.kaba4cow.imgxiv.auth.annotation.authority.CanCreatePost;
 import com.kaba4cow.imgxiv.auth.context.CurrentUserService;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
-import com.kaba4cow.imgxiv.domain.post.dto.PostPreviewDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.service.PostService;
 import com.kaba4cow.imgxiv.domain.user.User;
@@ -38,7 +37,7 @@ public class PostController {
 
 	@Operation(//
 			summary = "Create a new post", //
-			description = "Creates a new post with the provided tags and returns the full post data"//
+			description = "Creates a new post with the provided tags and returns the post data"//
 	)
 	@CanCreatePost
 	@PostMapping
@@ -49,11 +48,11 @@ public class PostController {
 
 	@Operation(//
 			summary = "Search posts by tag query", //
-			description = "Performs a tag-based search and returns a list of post previews"//
+			description = "Performs a tag-based search and returns a list of post data"//
 	)
 	@PermitAll
 	@PostMapping("/search")
-	public ResponseEntity<List<PostPreviewDto>> searchPosts(@RequestBody @Valid PostQueryRequest request) {
+	public ResponseEntity<List<PostDto>> searchPosts(@RequestBody @Valid PostQueryRequest request) {
 		return ResponseEntity.ok(postService.findByQuery(request));
 	}
 
