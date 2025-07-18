@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(//
 		name = "Categories", //
-		description = "Category creation"//
+		description = "Endpoints for managing tag categories"//
 )
 @RequestMapping("/api/categories")
 @RestController
@@ -32,18 +32,18 @@ public class CategoryController {
 	private final CategoryService categoryService;
 
 	@Operation(//
-			summary = "Creates new category", //
-			description = "Creates a new category and returns category info"//
+			summary = "Create a new category", //
+			description = "Creates a new tag category and returns its details"//
 	)
 	@CanCreateCategory
 	@PostMapping
-	public ResponseEntity<CategoryDto> createCategory(@RequestBody @Valid CategoryCreateRequest request) {
+	public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryCreateRequest request) {
 		return ResponseEntity.ok(categoryService.create(request));
 	}
 
 	@Operation(//
-			summary = "Retrieves all existing categories", //
-			description = "Returns category infos of all existing categories"//
+			summary = "Get all categories", //
+			description = "Returns a list of all available tag categories"//
 	)
 	@PermitAll
 	@GetMapping("/all")

@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(//
 		name = "Authentication", //
-		description = "User registration and login"//
+		description = "User registration and login endpoints"//
 )
 @RequestMapping("/api/auth")
 @RestController
@@ -30,19 +30,19 @@ public class AuthController {
 
 	@Operation(//
 			summary = "Register new user", //
-			description = "Creates a new user and returns basic user info"//
+			description = "Creates a new user account and returns basic user information"//
 	)
 	@PostMapping("/register")
-	public ResponseEntity<UserDto> register(@RequestBody @Valid RegisterRequest request) {
+	public ResponseEntity<UserDto> registerUser(@RequestBody @Valid RegisterRequest request) {
 		return ResponseEntity.ok(userAuthService.register(request));
 	}
 
 	@Operation(//
-			summary = "Authorizes existing user", //
-			description = "Authorizes a user and returns token and basic user info"//
+			summary = "Authenticate user and return token", //
+			description = "Authenticates the provided credentials and returns a JWT token along with user info"//
 	)
 	@PostMapping("/login")
-	public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+	public ResponseEntity<AuthResponse> authenticateUser(@RequestBody LoginRequest request) {
 		return ResponseEntity.ok(userAuthService.login(request));
 	}
 
