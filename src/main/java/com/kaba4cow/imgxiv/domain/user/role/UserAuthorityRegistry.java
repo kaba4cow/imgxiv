@@ -31,7 +31,7 @@ public class UserAuthorityRegistry {
 	@PostConstruct
 	public void assignAuthoritiesToRoles() {
 		for (UserRole role : UserRole.values()) {
-			Set<String> authorities = resolveAuthorities(role.name().toLowerCase());
+			Set<String> authorities = resolveAuthorities(role.name());
 			log.info("Assigned authorities to role {}: {}", role, authorities);
 			roleAuthorities.put(role, toGrantedAuthorities(authorities));
 		}
@@ -44,9 +44,11 @@ public class UserAuthorityRegistry {
 	}
 
 	private Set<String> resolveAuthorities(String roleName) {
+		String role = roleName.toLowerCase();
 		Set<String> authorities = new HashSet<>();
-		RoleDefinition roleDefinition = userRoleProperties.getRoleDefinition(roleName);
+		RoleDefinition roleDefinition = userRoleProperties.getRoleDefinition(role);
 		if (Objects.nonNull(roleDefinition)) {
+			authorities.add("ROLE_".concat(role));
 			authorities.addAll(roleDefinition.getAuthorities());
 			authorities.addAll(resolveAuthorities(roleDefinition.getParent()));
 		}
