@@ -2,6 +2,7 @@ package com.kaba4cow.imgxiv.domain.category.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +18,7 @@ public class CategoryCreateRequest {
 
 	@NotBlank(message = "Name is required")
 	@Size(max = 32, message = "Name is too long (max 32 characters)")
+	@Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Category name must contain only letters, digits and underscores")
 	@Schema(//
 			description = "Unique name", //
 			example = "category_name"//

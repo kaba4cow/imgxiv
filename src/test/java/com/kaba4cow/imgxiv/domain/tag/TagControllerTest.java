@@ -67,6 +67,15 @@ public class TagControllerTest {
 	@SneakyThrows
 	@WithMockUser(authorities = "create-tag")
 	@Test
+	public void doesNotCreateTagWithInvalidName() {
+		performCreateTag("[tag.]?", "", saveTestCategory("category").getId())//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isBadRequest());
+	}
+
+	@SneakyThrows
+	@WithMockUser(authorities = "create-tag")
+	@Test
 	public void doesNotCreateTagWithTakenName() {
 		Category category = saveTestCategory("category");
 		String name = "name";
