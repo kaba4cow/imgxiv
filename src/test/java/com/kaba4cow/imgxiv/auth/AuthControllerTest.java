@@ -42,6 +42,30 @@ public class AuthControllerTest {
 
 	@SneakyThrows
 	@Test
+	public void doesNotRegisterWithInvalidUsername() {
+		performRegisterUser(//
+				"+-/']!?", //
+				EMAIL, //
+				PASSWORD//
+		)//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isBadRequest());
+	}
+
+	@SneakyThrows
+	@Test
+	public void doesNotRegisterWithInvalidEmail() {
+		performRegisterUser(//
+				USERNAME, //
+				"invalidEmail", //
+				PASSWORD//
+		)//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isBadRequest());
+	}
+
+	@SneakyThrows
+	@Test
 	public void doesNotRegisterWithTakenUsername() {
 		performRegisterUser(//
 				USERNAME, //
