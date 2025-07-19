@@ -2,13 +2,13 @@ package com.kaba4cow.imgxiv.domain.category;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.kaba4cow.imgxiv.common.exception.NameConflictException;
@@ -45,10 +45,10 @@ public class DefaultCategoryServiceTest {
 
 		when(categoryRepository.existsByName("name"))//
 				.thenReturn(false);
-		when(categoryRepository.save(Mockito.any()))//
+		when(categoryRepository.save(any()))//
 				.thenAnswer(i -> i.getArgument(0));
 
-		when(categoryMapper.mapToDto(Mockito.any()))//
+		when(categoryMapper.mapToDto(any()))//
 				.thenReturn(new CategoryDto(0L, "name", "description"));
 
 		CategoryDto result = categoryService.create(request);
