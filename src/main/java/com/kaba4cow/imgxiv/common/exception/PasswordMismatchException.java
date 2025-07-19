@@ -1,8 +1,6 @@
 package com.kaba4cow.imgxiv.common.exception;
 
-import org.springframework.security.authentication.BadCredentialsException;
-
-public class PasswordMismatchException extends BadCredentialsException {
+public class PasswordMismatchException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 1L;
 
