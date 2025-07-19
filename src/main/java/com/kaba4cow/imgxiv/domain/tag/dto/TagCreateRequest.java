@@ -27,7 +27,7 @@ public class TagCreateRequest {
 	@Size(max = 1024, message = "Description is too long (max 1024 characters)")
 	@Schema(//
 			description = "Description", //
-			example = "tag_description"//
+			example = "Tag description"//
 	)
 	private String description = "";
 
