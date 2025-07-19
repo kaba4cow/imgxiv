@@ -26,10 +26,13 @@ public class CategoryControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	@Autowired
+	private CategoryRepository categoryRepository;
+
 	@SneakyThrows
 	@WithMockUser(authorities = "create-category")
 	@Test
-	public void createsCategory() {
+	public void createsCategoryWithAuthority() {
 		String name = "name";
 		String description = "description";
 
@@ -43,28 +46,44 @@ public class CategoryControllerTest {
 	}
 
 	@SneakyThrows
+	@Test
+	public void doesNotCreateCategoryWithoutAuthority() {
+		performCreateCategory("name", "description")//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isForbidden());
+	}
+
+	@SneakyThrows
 	@WithMockUser(authorities = "create-category")
 	@Test
 	public void doesNotCreateCategoryWithTakenName() {
 		String name = "name";
-		performCreateCategory(name, "");
+		saveTestCategory(name);
 		performCreateCategory(name, "")//
 				.andExpect(status().is4xxClientError())//
 				.andExpect(status().isConflict());
 	}
 
 	@SneakyThrows
-	@WithMockUser(authorities = "create-category")
 	@Test
 	public void retrievesAllCategories() {
 		int numberOfCategories = 3;
 		for (int i = 0; i < numberOfCategories; i++)
-			performCreateCategory("name" + i, "");
+			saveTestCategory("name" + i);
 
 		performGetAllCategories()//
 				.andExpect(status().isOk())//
 				.andExpect(jsonPath("$").isArray())//
 				.andExpect(jsonPath("$", hasSize(numberOfCategories)));
+	}
+
+	@SneakyThrows
+	@Test
+	public void retrievesNoCategories() {
+		performGetAllCategories()//
+				.andExpect(status().isOk())//
+				.andExpect(jsonPath("$").isArray())//
+				.andExpect(jsonPath("$", hasSize(0)));
 	}
 
 	@SneakyThrows
@@ -85,6 +104,13 @@ public class CategoryControllerTest {
 	@SneakyThrows
 	private ResultActions performGetAllCategories() {
 		return mockMvc.perform(get("/api/categories/all"));
+	}
+
+	private Category saveTestCategory(String name) {
+		Category category = new Category();
+		category.getNameAndDescription().setName(name);
+		category.getNameAndDescription().setDescription("description");
+		return categoryRepository.saveAndFlush(category);
 	}
 
 }

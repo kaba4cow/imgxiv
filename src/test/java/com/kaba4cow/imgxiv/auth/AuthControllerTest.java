@@ -128,7 +128,7 @@ public class AuthControllerTest {
 				PASSWORD//
 		)//
 				.andExpect(status().is4xxClientError())//
-				.andExpect(status().isNotFound());
+				.andExpect(status().isUnauthorized());
 	}
 
 	@SneakyThrows

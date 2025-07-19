@@ -1,11 +1,13 @@
 package com.kaba4cow.imgxiv.domain.tag;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.BeforeEach;
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,23 +15,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 
+import lombok.SneakyThrows;
+
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
 public class TagControllerTest {
-
-	private static final String CREATE_REQUEST = """
-				{
-					"name": "%s",
-					"description": "%s",
-					"categoryId": %s
-				}
-			""";
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -40,26 +37,15 @@ public class TagControllerTest {
 	@Autowired
 	private TagRepository tagRepository;
 
-	@BeforeEach
-	public void beforeEach() {
-		tagRepository.deleteAll();
-		categoryRepository.deleteAll();
-	}
-
+	@SneakyThrows
 	@WithMockUser(authorities = "create-tag")
 	@Test
-	public void createTag() throws Exception {
+	public void createsTagWithAuthority() {
 		String name = "name";
 		String description = "description";
-		Long categoryId = createTestCategory().getId();
+		Long categoryId = saveTestCategory("name").getId();
 
-		mockMvc.perform(post("/api/tags")//
-				.contentType(MediaType.APPLICATION_JSON)//
-				.content(CREATE_REQUEST.formatted(//
-						name, //
-						description, //
-						categoryId//
-				)))//
+		performCreateTag(name, description, categoryId)//
 				.andExpect(status().isOk())//
 				.andExpect(jsonPath("$.id").isNumber())//
 				.andExpect(jsonPath("$.name").isString())//
@@ -70,31 +56,126 @@ public class TagControllerTest {
 				.andExpect(jsonPath("$.categoryId").value(categoryId));
 	}
 
+	@SneakyThrows
 	@Test
-	public void getTagsByCategory() throws Exception {
-		Category category = createTestCategory();
-		createTestTag(category);
+	public void doesNotCreateTagWithoutAuthority() {
+		performCreateTag("name", "", saveTestCategory("name").getId())//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isForbidden());
+	}
 
-		mockMvc.perform(get("/api/tags")//
-				.param("categoryId", category.getId().toString()))//
+	@SneakyThrows
+	@WithMockUser(authorities = "create-tag")
+	@Test
+	public void doesNotCreateTagWithTakenName() {
+		Category category = saveTestCategory("category");
+		String name = "name";
+		saveTestTag(name, category);
+		performCreateTag(name, "", category.getId())//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isConflict());
+	}
+
+	@SneakyThrows
+	@WithMockUser(authorities = "create-tag")
+	@Test
+	public void doesNotCreateTagWithCategoryNotFound() {
+		performCreateTag("name", "", 0l)//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isNotFound());
+	}
+
+	@SneakyThrows
+	@Test
+	public void retrievesTagsByCategory() {
+		Map<Category, Integer> categoriesWithNumbersOfTags = Map.of(//
+				saveTestCategory("category1"), 3, //
+				saveTestCategory("category2"), 5, //
+				saveTestCategory("category3"), 7, //
+				saveTestCategory("category4"), 11 //
+		);
+		generateTagsForCategories(categoriesWithNumbersOfTags);
+		for (Map.Entry<Category, Integer> entry : categoriesWithNumbersOfTags.entrySet()) {
+			Category category = entry.getKey();
+			int numberOfTags = entry.getValue();
+			performGetTagsByCategory(category.getId())//
+					.andExpect(status().isOk())//
+					.andExpect(jsonPath("$").isArray())//
+					.andExpect(jsonPath("$", hasSize(numberOfTags)));
+		}
+	}
+
+	@SneakyThrows
+	@Test
+	public void retrievesAllTags() {
+		int numberOfTags = 5;
+		generateTagsForCategories(Map.of(saveTestCategory("name"), numberOfTags));
+
+		performGetAllTags()//
 				.andExpect(status().isOk())//
 				.andExpect(jsonPath("$").isArray())//
-				.andExpect(jsonPath("$").isNotEmpty());
+				.andExpect(jsonPath("$", hasSize(numberOfTags)));
 	}
 
-	private Category createTestCategory() {
-		Category category = new Category();
-		category.getNameAndDescription().setName("name");
-		category.getNameAndDescription().setDescription("description");
-		return categoryRepository.save(category);
+	@SneakyThrows
+	@Test
+	public void retrievesNoTags() {
+		performGetAllTags()//
+				.andExpect(status().isOk())//
+				.andExpect(jsonPath("$").isArray())//
+				.andExpect(jsonPath("$", hasSize(0)));
 	}
 
-	private Tag createTestTag(Category category) {
+	@SneakyThrows
+	private ResultActions performCreateTag(String name, String description, Long categoryId) {
+		return mockMvc.perform(post("/api/tags")//
+				.contentType(MediaType.APPLICATION_JSON)//
+				.content("""
+							{
+								"name": "%s",
+								"description": "%s",
+								"categoryId": %s
+							}
+						""".formatted(//
+						name, //
+						description, //
+						categoryId//
+				)));
+	}
+
+	@SneakyThrows
+	private ResultActions performGetTagsByCategory(Long categoryId) {
+		return mockMvc.perform(get("/api/tags")//
+				.param("categoryId", categoryId.toString()));
+	}
+
+	@SneakyThrows
+	private ResultActions performGetAllTags() {
+		return mockMvc.perform(get("/api/tags/all"));
+	}
+
+	private void generateTagsForCategories(Map<Category, Integer> categoriesWithNumbersOfTags) {
+		for (Map.Entry<Category, Integer> entry : categoriesWithNumbersOfTags.entrySet()) {
+			Category category = entry.getKey();
+			int numberOfTags = entry.getValue();
+			for (int i = 0; i < numberOfTags; i++)
+				saveTestTag(category.getNameAndDescription().getName() + "_tag" + i, category);
+		}
+	}
+
+	private Tag saveTestTag(String name, Category category) {
 		Tag tag = new Tag();
-		tag.getNameAndDescription().setName("name");
-		tag.getNameAndDescription().setDescription("description");
 		tag.setCategory(category);
-		return tagRepository.save(tag);
+		tag.getNameAndDescription().setName(name);
+		tag.getNameAndDescription().setDescription("description");
+		return tagRepository.saveAndFlush(tag);
+	}
+
+	private Category saveTestCategory(String name) {
+		Category category = new Category();
+		category.getNameAndDescription().setName(name);
+		category.getNameAndDescription().setDescription("description");
+		return categoryRepository.saveAndFlush(category);
 	}
 
 }
