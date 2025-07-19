@@ -30,7 +30,7 @@ public class AuthControllerTest {
 	@SneakyThrows
 	@Test
 	public void registersNewUser() {
-		performRegister(//
+		performRegisterUser(//
 				USERNAME, //
 				EMAIL, //
 				PASSWORD//
@@ -43,13 +43,13 @@ public class AuthControllerTest {
 	@SneakyThrows
 	@Test
 	public void doesNotRegisterWithTakenUsername() {
-		performRegister(//
+		performRegisterUser(//
 				USERNAME, //
 				EMAIL, //
 				PASSWORD//
 		);
 
-		performRegister(//
+		performRegisterUser(//
 				USERNAME, //
 				"new_" + EMAIL, //
 				PASSWORD//
@@ -61,13 +61,13 @@ public class AuthControllerTest {
 	@SneakyThrows
 	@Test
 	public void doesNotRegisterWithTakenEmail() {
-		performRegister(//
+		performRegisterUser(//
 				USERNAME, //
 				EMAIL, //
 				PASSWORD//
 		);
 
-		performRegister(//
+		performRegisterUser(//
 				"new_" + USERNAME, //
 				EMAIL, //
 				PASSWORD//
@@ -79,13 +79,13 @@ public class AuthControllerTest {
 	@SneakyThrows
 	@Test
 	public void authenticatesByUsername() {
-		performRegister(//
+		performRegisterUser(//
 				USERNAME, //
 				EMAIL, //
 				PASSWORD//
 		);
 
-		performLogin(//
+		performAuthenticateUser(//
 				USERNAME, //
 				PASSWORD//
 		)//
@@ -98,13 +98,13 @@ public class AuthControllerTest {
 	@SneakyThrows
 	@Test
 	public void authenticatesByEmail() {
-		performRegister(//
+		performRegisterUser(//
 				USERNAME, //
 				EMAIL, //
 				PASSWORD//
 		);
 
-		performLogin(//
+		performAuthenticateUser(//
 				EMAIL, //
 				PASSWORD//
 		)//
@@ -117,13 +117,13 @@ public class AuthControllerTest {
 	@SneakyThrows
 	@Test
 	public void doesNotAuthenticateByWrongUsernameOrEmail() {
-		performRegister(//
+		performRegisterUser(//
 				USERNAME, //
 				EMAIL, //
 				PASSWORD//
 		);
 
-		performLogin(//
+		performAuthenticateUser(//
 				"wrongUsernameOrEmail", //
 				PASSWORD//
 		)//
@@ -134,13 +134,13 @@ public class AuthControllerTest {
 	@SneakyThrows
 	@Test
 	public void doesNotAuthenticateByWrongPassword() {
-		performRegister(//
+		performRegisterUser(//
 				USERNAME, //
 				EMAIL, //
 				PASSWORD//
 		);
 
-		performLogin(//
+		performAuthenticateUser(//
 				USERNAME, //
 				"wrongPassword"//
 		)//
@@ -149,7 +149,7 @@ public class AuthControllerTest {
 	}
 
 	@SneakyThrows
-	private ResultActions performRegister(String username, String email, String password) {
+	private ResultActions performRegisterUser(String username, String email, String password) {
 		return mockMvc.perform(post("/api/auth/register")//
 				.contentType(MediaType.APPLICATION_JSON)//
 				.content("""
@@ -166,7 +166,7 @@ public class AuthControllerTest {
 	}
 
 	@SneakyThrows
-	private ResultActions performLogin(String usernameOrEmail, String password) {
+	private ResultActions performAuthenticateUser(String usernameOrEmail, String password) {
 		return mockMvc.perform(post("/api/auth/login")//
 				.contentType(MediaType.APPLICATION_JSON)//
 				.content("""
