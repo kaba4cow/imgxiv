@@ -10,69 +10,174 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.SneakyThrows;
 
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
 public class AuthControllerTest {
 
-	private static final String REGISTER_REQUEST = """
-				{
-					"username": "%s",
-					"email": "%s",
-					"password": "%s"
-				}
-			""";
-
-	private static final String LOGIN_REQUEST = """
-				{
-				    "usernameOrEmail": "%s",
-				    "password": "%s"
-				}
-			""";
+	private static final String USERNAME = "username";
+	private static final String EMAIL = "test@example.com";
+	private static final String PASSWORD = "password1234";
 
 	@Autowired
 	private MockMvc mockMvc;
 
+	@SneakyThrows
 	@Test
-	public void registerAndLogin() throws Exception {
-		String username = "username";
-		String email = "test@example.com";
-		String password = "password1234";
+	public void registersNewUser() {
+		performRegister(//
+				USERNAME, //
+				EMAIL, //
+				PASSWORD//
+		)//
+				.andExpect(status().isOk())//
+				.andExpect(jsonPath("$.username").value(USERNAME))//
+				.andExpect(jsonPath("$.email").value(EMAIL));
+	}
 
-		mockMvc.perform(post("/api/auth/register")//
+	@SneakyThrows
+	@Test
+	public void doesNotRegisterWithTakenUsername() {
+		performRegister(//
+				USERNAME, //
+				EMAIL, //
+				PASSWORD//
+		);
+
+		performRegister(//
+				USERNAME, //
+				"new_" + EMAIL, //
+				PASSWORD//
+		)//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isConflict());
+	}
+
+	@SneakyThrows
+	@Test
+	public void doesNotRegisterWithTakenEmail() {
+		performRegister(//
+				USERNAME, //
+				EMAIL, //
+				PASSWORD//
+		);
+
+		performRegister(//
+				"new_" + USERNAME, //
+				EMAIL, //
+				PASSWORD//
+		)//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isConflict());
+	}
+
+	@SneakyThrows
+	@Test
+	public void authenticatesByUsername() {
+		performRegister(//
+				USERNAME, //
+				EMAIL, //
+				PASSWORD//
+		);
+
+		performLogin(//
+				USERNAME, //
+				PASSWORD//
+		)//
+				.andExpect(status().isOk())//
+				.andExpect(jsonPath("$.token").isNotEmpty())//
+				.andExpect(jsonPath("$.user.username").value(USERNAME))//
+				.andExpect(jsonPath("$.user.email").value(EMAIL));
+	}
+
+	@SneakyThrows
+	@Test
+	public void authenticatesByEmail() {
+		performRegister(//
+				USERNAME, //
+				EMAIL, //
+				PASSWORD//
+		);
+
+		performLogin(//
+				EMAIL, //
+				PASSWORD//
+		)//
+				.andExpect(status().isOk())//
+				.andExpect(jsonPath("$.token").isNotEmpty())//
+				.andExpect(jsonPath("$.user.username").value(USERNAME))//
+				.andExpect(jsonPath("$.user.email").value(EMAIL));
+	}
+
+	@SneakyThrows
+	@Test
+	public void doesNotAuthenticateByWrongUsernameOrEmail() {
+		performRegister(//
+				USERNAME, //
+				EMAIL, //
+				PASSWORD//
+		);
+
+		performLogin(//
+				"wrongUsernameOrEmail", //
+				PASSWORD//
+		)//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isNotFound());
+	}
+
+	@SneakyThrows
+	@Test
+	public void doesNotAuthenticateByWrongPassword() {
+		performRegister(//
+				USERNAME, //
+				EMAIL, //
+				PASSWORD//
+		);
+
+		performLogin(//
+				USERNAME, //
+				"wrongPassword"//
+		)//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isUnauthorized());
+	}
+
+	@SneakyThrows
+	private ResultActions performRegister(String username, String email, String password) {
+		return mockMvc.perform(post("/api/auth/register")//
 				.contentType(MediaType.APPLICATION_JSON)//
-				.content(REGISTER_REQUEST.formatted(//
+				.content("""
+							{
+								"username": "%s",
+								"email": "%s",
+								"password": "%s"
+							}
+						""".formatted(//
 						username, //
 						email, //
 						password//
-				)))//
-				.andExpect(status().isOk())//
-				.andExpect(jsonPath("$.username").value(username))//
-				.andExpect(jsonPath("$.email").value(email));
+				)));
+	}
 
-		mockMvc.perform(post("/api/auth/login")//
+	@SneakyThrows
+	private ResultActions performLogin(String usernameOrEmail, String password) {
+		return mockMvc.perform(post("/api/auth/login")//
 				.contentType(MediaType.APPLICATION_JSON)//
-				.content(LOGIN_REQUEST.formatted(//
-						username, //
+				.content("""
+							{
+							    "usernameOrEmail": "%s",
+							    "password": "%s"
+							}
+						""".formatted(//
+						usernameOrEmail, //
 						password//
-				)))//
-				.andExpect(status().isOk())//
-				.andExpect(jsonPath("$.token").isNotEmpty())//
-				.andExpect(jsonPath("$.user.username").value(username))//
-				.andExpect(jsonPath("$.user.email").value(email));
-
-		mockMvc.perform(post("/api/auth/login")//
-				.contentType(MediaType.APPLICATION_JSON)//
-				.content(LOGIN_REQUEST.formatted(//
-						email, //
-						password//
-				)))//
-				.andExpect(status().isOk())//
-				.andExpect(jsonPath("$.token").isNotEmpty())//
-				.andExpect(jsonPath("$.user.username").value(username))//
-				.andExpect(jsonPath("$.user.email").value(email));
+				)));
 	}
 
 }
