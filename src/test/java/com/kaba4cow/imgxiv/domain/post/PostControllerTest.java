@@ -102,9 +102,9 @@ public class PostControllerTest {
 
 	private User createTestUser() {
 		User user = new User();
-		user.setEmail("test@example.com");
-		user.setUsername("testuser");
-		user.setPasswordHash("password-hash");
+		user.getCredentials().setEmail("test@example.com");
+		user.getCredentials().setUsername("testuser");
+		user.getCredentials().setPasswordHash("password-hash");
 		user.setRole(UserRole.USER);
 		return userRepository.save(user);
 	}

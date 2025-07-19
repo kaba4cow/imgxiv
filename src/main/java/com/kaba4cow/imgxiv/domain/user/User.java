@@ -2,6 +2,7 @@ package com.kaba4cow.imgxiv.domain.user;
 
 import com.kaba4cow.imgxiv.domain.base.EntityWithId;
 import com.kaba4cow.imgxiv.domain.embeddable.CreatedAt;
+import com.kaba4cow.imgxiv.domain.embeddable.Credentials;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -28,14 +29,8 @@ import lombok.ToString;
 })
 public class User extends EntityWithId {
 
-	@Column(name = "column_username", length = 32, nullable = false)
-	private String username;
-
-	@Column(name = "column_email", length = 64, nullable = false)
-	private String email;
-
-	@Column(name = "column_password_hash", nullable = false)
-	private String passwordHash;
+	@Embedded
+	private Credentials credentials = new Credentials();
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "column_role", nullable = false)

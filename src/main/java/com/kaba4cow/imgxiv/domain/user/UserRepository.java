@@ -8,13 +8,16 @@ import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	Optional<User> findByUsername(String username);
+	@Query("SELECT u FROM User u WHERE u.credentials.username = :username")
+	Optional<User> findByUsername(@Param("username") String username);
 
-	@Query("SELECT u FROM User u WHERE u.username = :usernameOrEmail OR u.email = :usernameOrEmail")
+	@Query("SELECT u FROM User u WHERE u.credentials.username = :usernameOrEmail OR u.credentials.email = :usernameOrEmail")
 	Optional<User> findByUsernameOrEmail(@Param("usernameOrEmail") String usernameOrEmail);
 
-	boolean existsByUsername(String username);
+	@Query("SELECT COUNT(u) > 0 FROM User u WHERE u.credentials.username = :username")
+	boolean existsByUsername(@Param("username") String username);
 
-	boolean existsByEmail(String email);
+	@Query("SELECT COUNT(u) > 0 FROM User u WHERE u.credentials.email = :email")
+	boolean existsByEmail(@Param("email") String email);
 
 }

@@ -32,11 +32,11 @@ public class DefaultProfileService implements ProfileService {
 
 	@Override
 	public UserDto changeUsername(ChangeUsernameRequest request, User user) {
-		String originalUsername = user.getUsername();
+		String originalUsername = user.getCredentials().getUsername();
 		String newUsername = request.getUsername();
 		if (!Objects.equals(newUsername, originalUsername)) {
 			userValidationService.ensureUsernameAvailable(newUsername);
-			user.setUsername(newUsername);
+			user.getCredentials().setUsername(newUsername);
 			log.info("User {} changed username: {} -> {}", user.getId(), originalUsername, newUsername);
 			return userMapper.mapToDto(userRepository.save(user));
 		} else
@@ -45,11 +45,11 @@ public class DefaultProfileService implements ProfileService {
 
 	@Override
 	public UserDto changeEmail(ChangeEmailRequest request, User user) {
-		String originalEmail = user.getEmail();
+		String originalEmail = user.getCredentials().getEmail();
 		String newEmail = request.getEmail();
 		if (!Objects.equals(newEmail, originalEmail)) {
 			userValidationService.ensureEmailAvailable(newEmail);
-			user.setEmail(newEmail);
+			user.getCredentials().setEmail(newEmail);
 			log.info("User {} changed email: {} -> {}", user.getId(), originalEmail, newEmail);
 			return userMapper.mapToDto(userRepository.save(user));
 		} else
@@ -58,8 +58,8 @@ public class DefaultProfileService implements ProfileService {
 
 	@Override
 	public void changePassword(ChangePasswordRequest request, User user) {
-		userValidationService.ensurePasswordsMatch(request.getOldPassword(), user.getPasswordHash());
-		user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+		userValidationService.ensurePasswordsMatch(request.getOldPassword(), user.getCredentials().getPasswordHash());
+		user.getCredentials().setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
 		log.info("User {} changed password", user.getId());
 		userRepository.save(user);
 	}

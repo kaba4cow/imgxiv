@@ -45,9 +45,9 @@ public class DefaultUserAuthService implements UserAuthService {
 
 	private User registerUser(RegisterRequest request) {
 		User user = new User();
-		user.setUsername(request.getUsername());
-		user.setEmail(request.getEmail());
-		user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+		user.getCredentials().setUsername(request.getUsername());
+		user.getCredentials().setEmail(request.getEmail());
+		user.getCredentials().setPasswordHash(passwordEncoder.encode(request.getPassword()));
 		user.setRole(UserRole.USER);
 		return PersistLog.log(userRepository.save(user));
 	}
@@ -56,7 +56,7 @@ public class DefaultUserAuthService implements UserAuthService {
 	public AuthResponse login(LoginRequest request) {
 		User user = findByUsernameOrEmail(request.getUsernameOrEmail())//
 				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-		userValidationService.ensurePasswordsMatch(request.getPassword(), user.getPasswordHash());
+		userValidationService.ensurePasswordsMatch(request.getPassword(), user.getCredentials().getPasswordHash());
 		String token = jwtService.generateToken(user);
 		return new AuthResponse(token, userMapper.mapToDto(user));
 	}

@@ -47,9 +47,9 @@ public class AdminUserInitializer implements ApplicationRunner {
 
 	private User createAdmin() {
 		User admin = new User();
-		admin.setUsername(username);
-		admin.setEmail(email);
-		admin.setPasswordHash(passwordEncoder.encode(password));
+		admin.getCredentials().setUsername(username);
+		admin.getCredentials().setEmail(email);
+		admin.getCredentials().setPasswordHash(passwordEncoder.encode(password));
 		admin.setRole(UserRole.ADMIN);
 		return admin;
 	}

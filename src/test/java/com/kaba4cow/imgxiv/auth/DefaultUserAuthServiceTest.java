@@ -101,9 +101,9 @@ public class DefaultUserAuthServiceTest {
 	@Test
 	void registerAndLogin() {
 		User user = new User();
-		user.setUsername("user");
-		user.setEmail("mail@mail.com");
-		user.setPasswordHash("hashed");
+		user.getCredentials().setUsername("user");
+		user.getCredentials().setEmail("mail@mail.com");
+		user.getCredentials().setPasswordHash("hashed");
 
 		when(userRepository.findByUsernameOrEmail("user"))//
 				.thenReturn(Optional.of(user));
