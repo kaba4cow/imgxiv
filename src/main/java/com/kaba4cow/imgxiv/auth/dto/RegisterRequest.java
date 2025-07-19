@@ -17,8 +17,8 @@ import lombok.Setter;
 public class RegisterRequest {
 
 	@NotBlank(message = "Username is required")
-	@Size(min = 2, message = "Username is too short (min 4 characters)")
-	@Size(max = 32, message = "Username is too long (max 50 characters)")
+	@Size(min = 4, message = "Username is too short (min 4 characters)")
+	@Size(max = 32, message = "Username is too long (max 32 characters)")
 	@Schema(//
 			description = "Unique username", //
 			example = "john_doe"//

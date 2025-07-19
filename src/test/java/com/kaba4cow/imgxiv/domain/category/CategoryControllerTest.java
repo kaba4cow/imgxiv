@@ -1,11 +1,11 @@
 package com.kaba4cow.imgxiv.domain.category;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,19 +13,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.SneakyThrows;
 
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
 public class CategoryControllerTest {
-
-	private static final String CREATE_REQUEST = """
-				{
-					"name": "%s",
-					"description": "%s"
-				}
-			""";
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -33,23 +29,14 @@ public class CategoryControllerTest {
 	@Autowired
 	private CategoryRepository categoryRepository;
 
-	@BeforeEach
-	public void beforeEach() {
-		categoryRepository.deleteAll();
-	}
-
+	@SneakyThrows
 	@WithMockUser(authorities = "create-category")
 	@Test
-	public void createCategory() throws Exception {
+	public void createsCategoryWithAuthority() {
 		String name = "name";
 		String description = "description";
 
-		mockMvc.perform(post("/api/categories")//
-				.contentType(MediaType.APPLICATION_JSON)//
-				.content(CREATE_REQUEST.formatted(//
-						name, //
-						description//
-				)))//
+		performCreateCategory(name, description)//
 				.andExpect(status().isOk())//
 				.andExpect(jsonPath("$.id").isNumber())//
 				.andExpect(jsonPath("$.name").isString())//
@@ -58,11 +45,72 @@ public class CategoryControllerTest {
 				.andExpect(jsonPath("$.description").value(description));
 	}
 
+	@SneakyThrows
 	@Test
-	public void getAllCategories() throws Exception {
-		mockMvc.perform(get("/api/categories/all"))//
+	public void doesNotCreateCategoryWithoutAuthority() {
+		performCreateCategory("name", "description")//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isForbidden());
+	}
+
+	@SneakyThrows
+	@WithMockUser(authorities = "create-category")
+	@Test
+	public void doesNotCreateCategoryWithTakenName() {
+		String name = "name";
+		saveTestCategory(name);
+		performCreateCategory(name, "")//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isConflict());
+	}
+
+	@SneakyThrows
+	@Test
+	public void retrievesAllCategories() {
+		int numberOfCategories = 3;
+		for (int i = 0; i < numberOfCategories; i++)
+			saveTestCategory("name" + i);
+
+		performGetAllCategories()//
 				.andExpect(status().isOk())//
-				.andExpect(jsonPath("$").isArray());
+				.andExpect(jsonPath("$").isArray())//
+				.andExpect(jsonPath("$", hasSize(numberOfCategories)));
+	}
+
+	@SneakyThrows
+	@Test
+	public void retrievesNoCategories() {
+		performGetAllCategories()//
+				.andExpect(status().isOk())//
+				.andExpect(jsonPath("$").isArray())//
+				.andExpect(jsonPath("$", hasSize(0)));
+	}
+
+	@SneakyThrows
+	private ResultActions performCreateCategory(String name, String description) {
+		return mockMvc.perform(post("/api/categories")//
+				.contentType(MediaType.APPLICATION_JSON)//
+				.content("""
+							{
+								"name": "%s",
+								"description": "%s"
+							}
+						""".formatted(//
+						name, //
+						description//
+				)));
+	}
+
+	@SneakyThrows
+	private ResultActions performGetAllCategories() {
+		return mockMvc.perform(get("/api/categories/all"));
+	}
+
+	private Category saveTestCategory(String name) {
+		Category category = new Category();
+		category.getNameAndDescription().setName(name);
+		category.getNameAndDescription().setDescription("description");
+		return categoryRepository.saveAndFlush(category);
 	}
 
 }

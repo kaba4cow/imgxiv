@@ -14,12 +14,15 @@ import lombok.ToString;
 @Setter
 @ToString
 @Embeddable
-public class NameAndDescription {
+public class Credentials {
 
-	@Column(name = "column_name", length = 32)
-	private String name;
+	@Column(name = "column_username", length = 32, nullable = false)
+	private String username;
 
-	@Column(name = "column_description", length = 1024)
-	private String description;
+	@Column(name = "column_email", length = 64, nullable = false)
+	private String email;
+
+	@Column(name = "column_password_hash", nullable = false)
+	private String passwordHash;
 
 }

@@ -25,7 +25,7 @@ public class DefaultPostQueryExecutorService implements PostQueryExecutorService
 	public Stream<Post> executeQuery(PostQueryRequest request) {
 		return postRepository.findAll(//
 				postSpecificationService.getSpecification(request.getQuery()), //
-				pageRequestExtractor.getPageRequest(request)//
+				pageRequestExtractor.getPageRequest(request, "createdAt.timestamp")//
 		).stream();
 	}
 

@@ -28,7 +28,7 @@ public class UserDetailsAdapter implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return user.getPasswordHash();
+		return user.getCredentials().getPasswordHash();
 	}
 
 	@Override

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
-import com.kaba4cow.imgxiv.auth.annotation.authority.CanCreatePost;
 import com.kaba4cow.imgxiv.auth.context.CurrentUserService;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
@@ -39,7 +39,7 @@ public class PostController {
 			summary = "Create a new post", //
 			description = "Creates a new post with the provided tags and returns the post data"//
 	)
-	@CanCreatePost
+	@IsAuthenticated
 	@PostMapping
 	public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostCreateRequest request) {
 		User user = currentUserService.getUserOrThrow();

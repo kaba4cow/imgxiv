@@ -31,11 +31,6 @@ public class GlobalExceptionHandler {
 		return defaultResponse(HttpStatus.BAD_REQUEST, exception);
 	}
 
-	@ExceptionHandler(UsernameNotFoundException.class)
-	public ExceptionHandlerResponseEntity handleUsernameNotFound(UsernameNotFoundException exception) {
-		return defaultResponse(HttpStatus.NOT_FOUND, exception);
-	}
-
 	@ExceptionHandler(NotFoundException.class)
 	public ExceptionHandlerResponseEntity handleNotFound(NotFoundException exception) {
 		return defaultResponse(HttpStatus.NOT_FOUND, exception);
@@ -44,6 +39,11 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(ConflictException.class)
 	public ExceptionHandlerResponseEntity handleConflict(ConflictException exception) {
 		return defaultResponse(HttpStatus.CONFLICT, exception);
+	}
+
+	@ExceptionHandler(UsernameNotFoundException.class)
+	public ExceptionHandlerResponseEntity handleUsernameNotFound(UsernameNotFoundException exception) {
+		return defaultResponse(HttpStatus.UNAUTHORIZED, exception);
 	}
 
 	@ExceptionHandler(AuthenticationException.class)

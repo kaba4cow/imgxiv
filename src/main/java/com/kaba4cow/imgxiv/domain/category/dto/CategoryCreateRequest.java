@@ -26,7 +26,7 @@ public class CategoryCreateRequest {
 	@Size(max = 1024, message = "Description is too long (max 1024 characters)")
 	@Schema(//
 			description = "Description", //
-			example = "category_description"//
+			example = "Category description"//
 	)
 	private String description = "";
 

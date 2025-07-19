@@ -24,7 +24,7 @@ public class CurrentUserService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (hasAuthenticatedUser(authentication))
 			return (UserDetails) authentication.getPrincipal();
-		throw new IllegalStateException("No authenticated user found");
+		throw new UsernameNotFoundException("No authenticated user found");
 	}
 
 	private boolean hasAuthenticatedUser(Authentication authentication) {
@@ -43,7 +43,7 @@ public class CurrentUserService {
 	}
 
 	public User getUserOrThrow() {
-		return getUser().orElseThrow(() -> new UsernameNotFoundException("User not found"));
+		return getUser().orElseThrow(() -> new UsernameNotFoundException("No authenticated user found"));
 	}
 
 }
