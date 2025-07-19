@@ -1,11 +1,11 @@
 package com.kaba4cow.imgxiv.domain.category;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,43 +13,27 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.SneakyThrows;
 
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
 public class CategoryControllerTest {
 
-	private static final String CREATE_REQUEST = """
-				{
-					"name": "%s",
-					"description": "%s"
-				}
-			""";
-
 	@Autowired
 	private MockMvc mockMvc;
 
-	@Autowired
-	private CategoryRepository categoryRepository;
-
-	@BeforeEach
-	public void beforeEach() {
-		categoryRepository.deleteAll();
-	}
-
+	@SneakyThrows
 	@WithMockUser(authorities = "create-category")
 	@Test
-	public void createCategory() throws Exception {
+	public void createsCategory() {
 		String name = "name";
 		String description = "description";
 
-		mockMvc.perform(post("/api/categories")//
-				.contentType(MediaType.APPLICATION_JSON)//
-				.content(CREATE_REQUEST.formatted(//
-						name, //
-						description//
-				)))//
+		performCreateCategory(name, description)//
 				.andExpect(status().isOk())//
 				.andExpect(jsonPath("$.id").isNumber())//
 				.andExpect(jsonPath("$.name").isString())//
@@ -58,11 +42,49 @@ public class CategoryControllerTest {
 				.andExpect(jsonPath("$.description").value(description));
 	}
 
+	@SneakyThrows
+	@WithMockUser(authorities = "create-category")
 	@Test
-	public void getAllCategories() throws Exception {
-		mockMvc.perform(get("/api/categories/all"))//
+	public void doesNotCreateCategoryWithTakenName() {
+		String name = "name";
+		performCreateCategory(name, "");
+		performCreateCategory(name, "")//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isConflict());
+	}
+
+	@SneakyThrows
+	@WithMockUser(authorities = "create-category")
+	@Test
+	public void retrievesAllCategories() {
+		int numberOfCategories = 3;
+		for (int i = 0; i < numberOfCategories; i++)
+			performCreateCategory("name" + i, "");
+
+		performGetAllCategories()//
 				.andExpect(status().isOk())//
-				.andExpect(jsonPath("$").isArray());
+				.andExpect(jsonPath("$").isArray())//
+				.andExpect(jsonPath("$", hasSize(numberOfCategories)));
+	}
+
+	@SneakyThrows
+	private ResultActions performCreateCategory(String name, String description) {
+		return mockMvc.perform(post("/api/categories")//
+				.contentType(MediaType.APPLICATION_JSON)//
+				.content("""
+							{
+								"name": "%s",
+								"description": "%s"
+							}
+						""".formatted(//
+						name, //
+						description//
+				)));
+	}
+
+	@SneakyThrows
+	private ResultActions performGetAllCategories() {
+		return mockMvc.perform(get("/api/categories/all"));
 	}
 
 }
