@@ -16,7 +16,7 @@ import lombok.ToString;
 @Embeddable
 public class NameAndDescription {
 
-	@Column(name = "column_name", length = 64)
+	@Column(name = "column_name", length = 32)
 	private String name;
 
 	@Column(name = "column_description", length = 1024)
