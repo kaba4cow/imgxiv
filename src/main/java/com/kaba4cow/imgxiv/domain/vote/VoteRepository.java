@@ -10,7 +10,7 @@ import com.kaba4cow.imgxiv.domain.post.Post;
 
 public interface VoteRepository extends JpaRepository<Vote, VoteId> {
 
-	@Query("SELECT v FROM Vote v WHERE v.postAndUser.post = :post AND v.type = :type")
+	@Query("SELECT v FROM Vote v WHERE v.post = :post AND v.type = :type")
 	List<Vote> findByPostAndType(@Param("post") Post post, @Param("type") VoteType type);
 
 }
