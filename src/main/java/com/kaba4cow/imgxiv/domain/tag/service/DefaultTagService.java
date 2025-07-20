@@ -1,14 +1,11 @@
 package com.kaba4cow.imgxiv.domain.tag.service;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.common.exception.NameConflictException;
-import com.kaba4cow.imgxiv.common.exception.NotFoundException;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
@@ -41,8 +38,7 @@ public class DefaultTagService implements TagService {
 	}
 
 	private Tag createTag(TagCreateRequest request) {
-		Category category = categoryRepository.findById(request.getCategoryId())//
-				.orElseThrow(() -> new NotFoundException("Category not found"));
+		Category category = categoryRepository.findByIdOrThrow(request.getCategoryId());
 		Tag tag = new Tag();
 		tag.getNameAndDescription().setName(request.getName());
 		tag.getNameAndDescription().setDescription(request.getDescription());
@@ -59,23 +55,10 @@ public class DefaultTagService implements TagService {
 
 	@Override
 	public List<TagDto> findByCategoryId(Long categoryId) {
-		return tagRepository.findByCategoryId(categoryId).stream()//
+		Category category = categoryRepository.findByIdOrThrow(categoryId);
+		return tagRepository.findByCategory(category).stream()//
 				.map(tagMapper::mapToDto)//
 				.collect(Collectors.toList());
-	}
-
-	@Override
-	public Set<Tag> findByIdsOrThrow(Collection<? extends Long> ids) {
-		return ids.stream()//
-				.distinct()//
-				.map(this::findByIdOrThrow)//
-				.collect(Collectors.toSet());
-	}
-
-	@Override
-	public Tag findByIdOrThrow(Long id) {
-		return tagRepository.findById(id)//
-				.orElseThrow(() -> new NotFoundException(String.format("Tag not found: %s", id)));
 	}
 
 }

@@ -11,7 +11,7 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostMapper;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
-import com.kaba4cow.imgxiv.domain.tag.service.TagService;
+import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.util.PersistLog;
 
@@ -27,7 +27,7 @@ public class DefaultPostService implements PostService {
 
 	private final PostQueryExecutorService postQueryExecutorService;
 
-	private final TagService tagService;
+	private final TagRepository tagRepository;
 
 	private final PostMapper postMapper;
 
@@ -40,7 +40,7 @@ public class DefaultPostService implements PostService {
 	private Post createPost(PostCreateRequest request, User author) {
 		Post post = new Post();
 		post.setAuthor(author);
-		tagService.findByIdsOrThrow(request.getTagIds())//
+		tagRepository.findByIdsOrThrow(request.getTagIds())//
 				.forEach(post::addTag);
 		return PersistLog.log(postRepository.save(post));
 	}
