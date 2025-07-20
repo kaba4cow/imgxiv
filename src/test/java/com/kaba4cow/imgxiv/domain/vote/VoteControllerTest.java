@@ -1,12 +1,10 @@
-package com.kaba4cow.imgxiv.domain.post;
+package com.kaba4cow.imgxiv.domain.vote;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kaba4cow.imgxiv.auth.userdetails.UserDetailsAdapter;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.post.Post;
+import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
@@ -36,7 +36,7 @@ import lombok.SneakyThrows;
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
-public class PostControllerTest {
+public class VoteControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -54,112 +54,114 @@ public class PostControllerTest {
 	private PostRepository postRepository;
 
 	@Autowired
+	private VoteRepository voteRepository;
+
+	@Autowired
 	private UserAuthorityRegistry userAuthorityRegistry;
 
 	@SneakyThrows
 	@Test
-	public void createsPostWithAuthenticatedUser() {
-		Tag tag = saveTestTag("tag", saveTestCategory());
+	public void createsVoteWithAuthenticatedUser() {
 		User author = authenticateUser(saveTestUser());
+		Post post = saveTestPost(author);
 
-		performCreatePost(Set.of(tag))//
-				.andExpect(status().isOk())//
-				.andExpect(jsonPath("$.id").isNumber())//
-				.andExpect(jsonPath("$.authorId").isNumber())//
-				.andExpect(jsonPath("$.authorId").value(author.getId()))//
-				.andExpect(jsonPath("$.tagIds").isArray())//
-				.andExpect(jsonPath("$.tagIds").value(contains(tag.getId().intValue())));
+		performCreateVote(post.getId(), VoteType.UP)//
+				.andExpect(status().isNoContent());
 	}
 
 	@SneakyThrows
 	@Test
-	public void doesNotCreatePostWithoutAuthenticatedUser() {
-		Tag tag = saveTestTag("tag", saveTestCategory());
+	public void doesNotCreateVoteWithoutAuthenticatedUser() {
+		Post post = saveTestPost(saveTestUser());
 
-		performCreatePost(Set.of(tag))//
+		performCreateVote(post.getId(), VoteType.UP)//
 				.andExpect(status().is4xxClientError())//
 				.andExpect(status().isForbidden());
 	}
 
+	@SneakyThrows
 	@Test
-	public void searchesPosts() {
-		Category category = saveTestCategory();
+	public void deletesVoteWithAuthenticatedUser() {
+		User author = authenticateUser(saveTestUser());
+		Post post = saveTestPost(author);
+		saveTestVote(post, author, VoteType.UP);
+
+		performDeleteVote(post.getId())//
+				.andExpect(status().isNoContent());
+	}
+
+	@SneakyThrows
+	@Test
+	public void doesNotDeleteVoteWithoutAuthenticatedUser() {
 		User author = saveTestUser();
+		Post post = saveTestPost(author);
+		saveTestVote(post, author, VoteType.UP);
 
-		Tag a = saveTestTag("a", category);
-		Tag b = saveTestTag("b", category);
-		Tag c = saveTestTag("c", category);
-		Tag d = saveTestTag("d", category);
-		saveTestTag("e", category);
-
-		saveTestPost(author, Set.of(a));
-		saveTestPost(author, Set.of(a, b));
-		saveTestPost(author, Set.of(a, c));
-		saveTestPost(author, Set.of(a, c, d));
-		saveTestPost(author, Set.of(c, d));
-
-		expectSearchPostsHasSize(4, "a");
-		expectSearchPostsHasSize(1, "b");
-		expectSearchPostsHasSize(3, "c");
-		expectSearchPostsHasSize(2, "d");
-		expectSearchPostsHasSize(0, "e");
-
-		expectSearchPostsHasSize(1, "!a");
-		expectSearchPostsHasSize(4, "!b");
-		expectSearchPostsHasSize(2, "!c");
-		expectSearchPostsHasSize(3, "!d");
-		expectSearchPostsHasSize(5, "!e");
-
-		expectSearchPostsHasSize(2, "a c");
-		expectSearchPostsHasSize(1, "a d");
-		expectSearchPostsHasSize(1, "!a d");
-		expectSearchPostsHasSize(0, "a e");
-		expectSearchPostsHasSize(0, "b c");
-		expectSearchPostsHasSize(2, "c d");
-
-		expectSearchPostsHasSize(2, "a !c");
-		expectSearchPostsHasSize(0, "!a !d");
-		expectSearchPostsHasSize(1, "a b !c");
-		expectSearchPostsHasSize(1, "a c d");
-		expectSearchPostsHasSize(1, "a c !d");
-		expectSearchPostsHasSize(2, "a !c !d");
-
-		expectSearchPostsHasSize(0, "a b c d");
-		expectSearchPostsHasSize(1, "a !b !c !d");
-		expectSearchPostsHasSize(0, "!a !b !c !d");
+		performDeleteVote(post.getId())//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isForbidden());
 	}
 
 	@SneakyThrows
-	private void expectSearchPostsHasSize(int expectedSize, String query) {
-		performSearchPosts(query)//
+	@Test
+	public void retrievesVoteSummary() {
+		User author = saveTestUser();
+		Post post = saveTestPost(author);
+
+		int upVoteCount = 7;
+		int downVoteCount = 3;
+		int totalVoteCount = upVoteCount + downVoteCount;
+
+		int suffix = 0;
+		for (int i = 0; i < upVoteCount; i++)
+			saveTestVote(post, generateTestUser(suffix++), VoteType.UP);
+		for (int i = 0; i < downVoteCount; i++)
+			saveTestVote(post, generateTestUser(suffix++), VoteType.DOWN);
+
+		performGetVoteSummary(post.getId())//
 				.andExpect(status().isOk())//
-				.andExpect(jsonPath("$", hasSize(expectedSize)));
+				.andExpect(jsonPath("$.totalVoteCount").value(totalVoteCount))//
+				.andExpect(jsonPath("$.upVoteCount").value(upVoteCount))//
+				.andExpect(jsonPath("$.downVoteCount").value(downVoteCount));
 	}
 
 	@SneakyThrows
-	private ResultActions performSearchPosts(String query) {
-		return mockMvc.perform(post("/api/posts/search")//
+	private ResultActions performCreateVote(Long postId, VoteType type) {
+		return mockMvc.perform(post("/api/votes")//
 				.contentType(MediaType.APPLICATION_JSON)//
 				.content("""
 							{
-								"query": "%s",
-								"pageSize": 100
+								"postId": %s,
+								"type": "%s"
 							}
 						""".formatted(//
-						query//
+						postId, type//
 				)));
 	}
 
 	@SneakyThrows
-	private ResultActions performCreatePost(Set<Tag> tags) {
-		return mockMvc.perform(post("/api/posts")//
+	private ResultActions performDeleteVote(Long postId) {
+		return mockMvc.perform(delete("/api/votes")//
 				.contentType(MediaType.APPLICATION_JSON)//
 				.content("""
 							{
-								"tagIds": %s
+								"postId": %s
 							}
 						""".formatted(//
-						tags.stream().map(Tag::getId).toList()//
+						postId//
+				)));
+	}
+
+	@SneakyThrows
+	private ResultActions performGetVoteSummary(Long postId) {
+		return mockMvc.perform(get("/api/votes")//
+				.contentType(MediaType.APPLICATION_JSON)//
+				.content("""
+							{
+								"postId": %s
+							}
+						""".formatted(//
+						postId//
 				)));
 	}
 
@@ -168,6 +170,15 @@ public class PostControllerTest {
 		Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		return user;
+	}
+
+	private User generateTestUser(int suffix) {
+		User user = new User();
+		user.getCredentials().setEmail("test" + suffix + "@example.com");
+		user.getCredentials().setUsername("testuser" + suffix);
+		user.getCredentials().setPasswordHash("password-hash");
+		user.setRole(UserRole.USER);
+		return userRepository.saveAndFlush(user);
 	}
 
 	private User saveTestUser() {
@@ -179,18 +190,27 @@ public class PostControllerTest {
 		return userRepository.saveAndFlush(user);
 	}
 
-	private Post saveTestPost(User author, Set<Tag> tags) {
+	private Vote saveTestVote(Post post, User user, VoteType type) {
+		Vote vote = new Vote();
+		vote.setId(VoteId.of(post, user));
+		vote.setPost(post);
+		vote.setUser(user);
+		vote.setType(type);
+		return voteRepository.saveAndFlush(vote);
+	}
+
+	private Post saveTestPost(User author) {
 		Post post = new Post();
 		post.setAuthor(author);
-		tags.forEach(post::addTag);
+		post.addTag(saveTestTag());
 		return postRepository.saveAndFlush(post);
 	}
 
-	private Tag saveTestTag(String name, Category category) {
+	private Tag saveTestTag() {
 		Tag tag = new Tag();
-		tag.getNameAndDescription().setName(name);
+		tag.getNameAndDescription().setName("name");
 		tag.getNameAndDescription().setDescription("description");
-		tag.setCategory(category);
+		tag.setCategory(saveTestCategory());
 		return tagRepository.saveAndFlush(tag);
 	}
 
