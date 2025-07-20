@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
 import com.kaba4cow.imgxiv.auth.dto.AuthResponse;
 import com.kaba4cow.imgxiv.auth.dto.LoginRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
@@ -32,6 +33,7 @@ public class AuthController {
 			summary = "Register new user", //
 			description = "Creates a new user account and returns basic user information"//
 	)
+	@PermitAll
 	@PostMapping("/register")
 	public ResponseEntity<UserDto> registerUser(@RequestBody @Valid RegisterRequest request) {
 		return ResponseEntity.ok(userAuthService.register(request));
@@ -41,6 +43,7 @@ public class AuthController {
 			summary = "Authenticate user and return token", //
 			description = "Authenticates the provided credentials and returns a JWT token along with user info"//
 	)
+	@PermitAll
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> authenticateUser(@RequestBody LoginRequest request) {
 		return ResponseEntity.ok(userAuthService.login(request));
