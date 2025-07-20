@@ -1,8 +1,6 @@
 package com.kaba4cow.imgxiv.domain.post.query;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Component;
@@ -16,10 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 public class DefaultPostQueryCompiler implements PostQueryCompiler {
 
 	@Override
-	public CompiledPostQuery compile(String query) {
+	public CompiledPostQuery compile(NormalizedPostQuery normalizedPostQuery) {
 		QueryBuilder builder = new QueryBuilder();
-		List<String> tags = splitQuery(query);
-		for (String tag : tags) {
+		for (String tag : normalizedPostQuery.getTags()) {
 			boolean exclude = false;
 			while (!tag.isBlank() && tag.startsWith("!")) {
 				exclude = !exclude;
@@ -31,15 +28,9 @@ public class DefaultPostQueryCompiler implements PostQueryCompiler {
 				else
 					builder.requireTag(tag);
 		}
-		CompiledPostQuery postQuery = builder.build();
-		log.info("Compiled query '{}' to {}", query, postQuery);
-		return postQuery;
-	}
-
-	private List<String> splitQuery(String query) {
-		return Arrays.stream(query.split("\\s+"))//
-				.distinct()//
-				.toList();
+		CompiledPostQuery compiledPostQuery = builder.build();
+		log.info("Compiled query {} to {}", normalizedPostQuery, compiledPostQuery);
+		return compiledPostQuery;
 	}
 
 	private static class QueryBuilder {
