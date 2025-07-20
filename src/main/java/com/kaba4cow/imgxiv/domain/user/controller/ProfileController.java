@@ -2,13 +2,14 @@ package com.kaba4cow.imgxiv.domain.user.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
-import com.kaba4cow.imgxiv.auth.context.CurrentUserService;
+import com.kaba4cow.imgxiv.common.controller.CurrentUserAwareController;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeEmailRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangePasswordRequest;
@@ -29,9 +30,7 @@ import lombok.RequiredArgsConstructor;
 )
 @RequestMapping("/api/profile")
 @RestController
-public class ProfileController {
-
-	private final CurrentUserService currentUserService;
+public class ProfileController extends CurrentUserAwareController {
 
 	private final ProfileService profileService;
 
@@ -43,8 +42,8 @@ public class ProfileController {
 	)
 	@IsAuthenticated
 	@GetMapping("/me")
-	public ResponseEntity<UserDto> getCurrentUser() {
-		return ResponseEntity.ok(userMapper.mapToDto(getUser()));
+	public ResponseEntity<UserDto> getCurrentUser(@ModelAttribute User currentUser) {
+		return ResponseEntity.ok(userMapper.mapToDto(currentUser));
 	}
 
 	@Operation(//
@@ -53,8 +52,9 @@ public class ProfileController {
 	)
 	@IsAuthenticated
 	@PatchMapping("/username")
-	public ResponseEntity<UserDto> changeUsername(@Valid @RequestBody ChangeUsernameRequest request) {
-		UserDto result = profileService.changeUsername(request, getUser());
+	public ResponseEntity<UserDto> changeUsername(@Valid @RequestBody ChangeUsernameRequest request,
+			@ModelAttribute User currentUser) {
+		UserDto result = profileService.changeUsername(request, currentUser);
 		return ResponseEntity.ok(result);
 	}
 
@@ -64,8 +64,9 @@ public class ProfileController {
 	)
 	@IsAuthenticated
 	@PatchMapping("/email")
-	public ResponseEntity<UserDto> changeEmail(@Valid @RequestBody ChangeEmailRequest request) {
-		UserDto result = profileService.changeEmail(request, getUser());
+	public ResponseEntity<UserDto> changeEmail(@Valid @RequestBody ChangeEmailRequest request,
+			@ModelAttribute User currentUser) {
+		UserDto result = profileService.changeEmail(request, currentUser);
 		return ResponseEntity.ok(result);
 	}
 
@@ -75,13 +76,10 @@ public class ProfileController {
 	)
 	@IsAuthenticated
 	@PatchMapping("/password")
-	public ResponseEntity<Void> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
-		profileService.changePassword(request, getUser());
+	public ResponseEntity<Void> changePassword(@Valid @RequestBody ChangePasswordRequest request,
+			@ModelAttribute User currentUser) {
+		profileService.changePassword(request, currentUser);
 		return ResponseEntity.noContent().build();
-	}
-
-	private User getUser() {
-		return currentUserService.getUserOrThrow();
 	}
 
 }
