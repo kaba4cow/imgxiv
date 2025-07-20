@@ -19,4 +19,12 @@ public class PostQuery {
 		this.excludedTags = Set.copyOf(excludedTags);
 	}
 
+	public boolean hasRequiredTags() {
+		return !requiredTags.isEmpty();
+	}
+
+	public boolean hasExcludedTags() {
+		return !excludedTags.isEmpty();
+	}
+
 }
