@@ -1,0 +1,22 @@
+package com.kaba4cow.imgxiv.domain.post.query;
+
+import java.util.Collection;
+import java.util.Set;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
+@Getter
+@EqualsAndHashCode
+public class PostQuery {
+
+	private final Set<String> requiredTags;
+
+	private final Set<String> excludedTags;
+
+	public PostQuery(Collection<String> requiredTags, Collection<String> excludedTags) {
+		this.requiredTags = Set.copyOf(requiredTags);
+		this.excludedTags = Set.copyOf(excludedTags);
+	}
+
+}
