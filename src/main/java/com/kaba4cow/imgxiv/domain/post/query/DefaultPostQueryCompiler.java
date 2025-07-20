@@ -1,8 +1,6 @@
 package com.kaba4cow.imgxiv.domain.post.query;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Component;
@@ -16,30 +14,23 @@ import lombok.extern.slf4j.Slf4j;
 public class DefaultPostQueryCompiler implements PostQueryCompiler {
 
 	@Override
-	public PostQuery compile(String query) {
+	public CompiledPostQuery compileQuery(NormalizedPostQuery normalizedQuery) {
 		QueryBuilder builder = new QueryBuilder();
-		List<String> tags = splitQuery(query);
-		for (String tag : tags) {
+		for (String token : normalizedQuery.getTokens()) {
 			boolean exclude = false;
-			while (!tag.isBlank() && tag.startsWith("!")) {
+			while (!token.isBlank() && token.startsWith("!")) {
 				exclude = !exclude;
-				tag = tag.substring(1);
+				token = token.substring(1);
 			}
-			if (!tag.isBlank())
+			if (!token.isBlank())
 				if (exclude)
-					builder.excludeTag(tag);
+					builder.excludeTag(token);
 				else
-					builder.requireTag(tag);
+					builder.requireTag(token);
 		}
-		PostQuery postQuery = builder.build();
-		log.info("Compiled query '{}' to {}", query, postQuery);
-		return postQuery;
-	}
-
-	private List<String> splitQuery(String query) {
-		return Arrays.stream(query.split("\\s+"))//
-				.distinct()//
-				.toList();
+		CompiledPostQuery compiledQuery = builder.build();
+		log.info("Compiled query {} to {}", normalizedQuery, compiledQuery);
+		return compiledQuery;
 	}
 
 	private static class QueryBuilder {
@@ -60,8 +51,8 @@ public class DefaultPostQueryCompiler implements PostQueryCompiler {
 			excludedTags.add(tag);
 		}
 
-		private PostQuery build() {
-			return new PostQuery(requiredTags, excludedTags);
+		private CompiledPostQuery build() {
+			return new CompiledPostQuery(requiredTags, excludedTags);
 		}
 
 	}

@@ -2,7 +2,7 @@ package com.kaba4cow.imgxiv.domain.post.specification;
 
 import org.springframework.stereotype.Component;
 
-import com.kaba4cow.imgxiv.domain.post.query.PostQuery;
+import com.kaba4cow.imgxiv.domain.post.query.CompiledPostQuery;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 public class DefaultPostSpecificationFactory implements PostSpecificationFactory {
 
 	@Override
-	public PostSpecification createPostSpecification(PostQuery postQuery) {
-		PostSpecification postSpecification = new PostSpecification(postQuery);
-		log.info("Created PostSpecification for {}", postQuery);
+	public PostSpecification createPostSpecification(CompiledPostQuery compiledQuery) {
+		PostSpecification postSpecification = new PostSpecification(compiledQuery);
+		log.info("Created PostSpecification for {}", compiledQuery);
 		return postSpecification;
 	}
 
