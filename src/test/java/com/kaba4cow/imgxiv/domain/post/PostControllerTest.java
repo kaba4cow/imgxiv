@@ -78,7 +78,7 @@ public class PostControllerTest {
 
 		performCreatePost(Set.of(tag))//
 				.andExpect(status().is4xxClientError())//
-				.andExpect(status().isForbidden());
+				.andExpect(status().isUnauthorized());
 	}
 
 	@Test
