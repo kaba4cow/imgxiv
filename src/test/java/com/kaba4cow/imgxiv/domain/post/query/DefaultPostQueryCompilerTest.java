@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.post.specification;
+package com.kaba4cow.imgxiv.domain.post.query;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -7,11 +7,11 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-public class DefaultPostSpecificationCompilerTest {
+public class DefaultPostQueryCompilerTest {
 
-	private static final DefaultPostSpecificationCompiler compiler = new DefaultPostSpecificationCompiler();
+	private static final DefaultPostQueryCompiler compiler = new DefaultPostQueryCompiler();
 
-	private static DefaultPostSpecification specification;
+	private static PostQuery postQuery;
 
 	@Test
 	void compilesRequired() {
@@ -71,31 +71,31 @@ public class DefaultPostSpecificationCompilerTest {
 	}
 
 	private static void assertRequires(String... tags) {
-		assertTrue(specification.getRequiredTags().containsAll(List.of(tags)));
+		assertTrue(postQuery.getRequiredTags().containsAll(List.of(tags)));
 	}
 
 	private static void assertRequiresNothing() {
-		assertTrue(specification.getRequiredTags().isEmpty());
+		assertTrue(postQuery.getRequiredTags().isEmpty());
 	}
 
 	private static void assertDoesNotRequire(String... tags) {
-		assertFalse(specification.getRequiredTags().containsAll(List.of(tags)));
+		assertFalse(postQuery.getRequiredTags().containsAll(List.of(tags)));
 	}
 
 	private static void assertExcludes(String... tags) {
-		assertTrue(specification.getExcludedTags().containsAll(List.of(tags)));
+		assertTrue(postQuery.getExcludedTags().containsAll(List.of(tags)));
 	}
 
 	private static void assertExcludesNothing() {
-		assertTrue(specification.getExcludedTags().isEmpty());
+		assertTrue(postQuery.getExcludedTags().isEmpty());
 	}
 
 	private static void assertDoesNotExclude(String... tags) {
-		assertFalse(specification.getExcludedTags().containsAll(List.of(tags)));
+		assertFalse(postQuery.getExcludedTags().containsAll(List.of(tags)));
 	}
 
 	private static void compile(String query) {
-		specification = (DefaultPostSpecification) compiler.compile(query);
+		postQuery = compiler.compile(query);
 	}
 
 }

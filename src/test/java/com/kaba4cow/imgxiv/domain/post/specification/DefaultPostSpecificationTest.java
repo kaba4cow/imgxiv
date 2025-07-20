@@ -15,6 +15,7 @@ import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
+import com.kaba4cow.imgxiv.domain.post.query.PostQuery;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
@@ -137,7 +138,7 @@ public class DefaultPostSpecificationTest {
 	}
 
 	private List<Post> findPosts(Set<String> requiredTags, Set<String> excludedTags) {
-		return postRepository.findAll(new DefaultPostSpecification(requiredTags, excludedTags));
+		return postRepository.findAll(new PostSpecification(new PostQuery(requiredTags, excludedTags)));
 	}
 
 	private Post createPost(String... tags) {
