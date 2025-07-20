@@ -1,0 +1,210 @@
+package com.kaba4cow.imgxiv.domain.comment;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.kaba4cow.imgxiv.auth.userdetails.UserDetailsAdapter;
+import com.kaba4cow.imgxiv.domain.category.Category;
+import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.post.Post;
+import com.kaba4cow.imgxiv.domain.post.PostRepository;
+import com.kaba4cow.imgxiv.domain.tag.Tag;
+import com.kaba4cow.imgxiv.domain.tag.TagRepository;
+import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.user.UserRepository;
+import com.kaba4cow.imgxiv.domain.user.UserRole;
+import com.kaba4cow.imgxiv.domain.user.role.UserAuthorityRegistry;
+
+import lombok.SneakyThrows;
+
+@AutoConfigureMockMvc
+@Transactional
+@SpringBootTest
+public class CommentControllerTest {
+
+	private static final String COMMENT_TEXT = "Hello World!";
+
+	@Autowired
+	private MockMvc mockMvc;
+
+	@Autowired
+	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private TagRepository tagRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private PostRepository postRepository;
+
+	@Autowired
+	private CommentRepository commentRepository;
+
+	@Autowired
+	private UserAuthorityRegistry userAuthorityRegistry;
+
+	@SneakyThrows
+	@Test
+	public void createsCommentWithAuthenticatedUser() {
+		User author = authenticateUser(saveTestUser());
+		Post post = saveTestPost(author);
+
+		performCreateComment(post.getId(), COMMENT_TEXT)//
+				.andExpect(status().isOk());
+	}
+
+	@SneakyThrows
+	@Test
+	public void doesNotCreateCommentWithoutAuthenticatedUser() {
+		Post post = saveTestPost(saveTestUser());
+
+		performCreateComment(post.getId(), COMMENT_TEXT)//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isForbidden());
+	}
+
+	@SneakyThrows
+	@Test
+	public void deletesCommentWithAuthenticatedUser() {
+		User author = authenticateUser(saveTestUser());
+		Post post = saveTestPost(author);
+		Comment comment = saveTestComment(post, author, COMMENT_TEXT);
+
+		performDeleteComment(comment.getId())//
+				.andExpect(status().isNoContent());
+	}
+
+	@SneakyThrows
+	@Test
+	public void doesNotDeleteCommentWithoutAuthenticatedUser() {
+		User author = saveTestUser();
+		Post post = saveTestPost(author);
+		Comment comment = saveTestComment(post, author, COMMENT_TEXT);
+
+		performDeleteComment(comment.getId())//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isForbidden());
+	}
+
+	@SneakyThrows
+	@Test
+	public void doesNotDeleteCommentWithNonAuthorUser() {
+		User author = saveTestUser();
+		Post post = saveTestPost(author);
+		Comment comment = saveTestComment(post, author, COMMENT_TEXT);
+		authenticateUser(saveTestUser("testuser2", "test2@example.com"));
+
+		performDeleteComment(comment.getId())//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isForbidden());
+	}
+
+	@SneakyThrows
+	private ResultActions performCreateComment(Long postId, String text) {
+		return mockMvc.perform(post("/api/comments")//
+				.contentType(MediaType.APPLICATION_JSON)//
+				.content("""
+							{
+								"postId": %s,
+								"text": "%s"
+							}
+						""".formatted(//
+						postId, text//
+				)));
+	}
+
+	@SneakyThrows
+	private ResultActions performEditComment(Long id, String text) {
+		return mockMvc.perform(patch("/api/comments")//
+				.contentType(MediaType.APPLICATION_JSON)//
+				.content("""
+							{
+								"id": %s,
+								"text": "%s"
+							}
+						""".formatted(//
+						id, text//
+				)));
+	}
+
+	@SneakyThrows
+	private ResultActions performDeleteComment(Long id) {
+		return mockMvc.perform(delete("/api/comments")//
+				.param("id", id.toString()));
+	}
+
+	@SneakyThrows
+	private ResultActions performGetCommentsByPost(Long postId) {
+		return mockMvc.perform(get("/api/comments")//
+				.param("postId", postId.toString()));
+	}
+
+	private User authenticateUser(User user) {
+		UserDetails userDetails = UserDetailsAdapter.of(user, userAuthorityRegistry);
+		Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(auth);
+		return user;
+	}
+
+	private User saveTestUser(String username, String email) {
+		User user = new User();
+		user.getCredentials().setEmail(email);
+		user.getCredentials().setUsername(username);
+		user.getCredentials().setPasswordHash("password-hash");
+		user.setRole(UserRole.USER);
+		return userRepository.saveAndFlush(user);
+	}
+
+	private User saveTestUser() {
+		return saveTestUser("testuser", "test@example.com");
+	}
+
+	private Comment saveTestComment(Post post, User user, String text) {
+		Comment comment = new Comment();
+		comment.getPostAndUser().setPost(post);
+		comment.getPostAndUser().setUser(user);
+		comment.setText(text);
+		return commentRepository.saveAndFlush(comment);
+	}
+
+	private Post saveTestPost(User author) {
+		Post post = new Post();
+		post.setAuthor(author);
+		post.addTag(saveTestTag());
+		return postRepository.saveAndFlush(post);
+	}
+
+	private Tag saveTestTag() {
+		Tag tag = new Tag();
+		tag.getNameAndDescription().setName("name");
+		tag.getNameAndDescription().setDescription("description");
+		tag.setCategory(saveTestCategory());
+		return tagRepository.saveAndFlush(tag);
+	}
+
+	private Category saveTestCategory() {
+		Category category = new Category();
+		category.getNameAndDescription().setName("name");
+		category.getNameAndDescription().setDescription("description");
+		return categoryRepository.saveAndFlush(category);
+	}
+
+}
