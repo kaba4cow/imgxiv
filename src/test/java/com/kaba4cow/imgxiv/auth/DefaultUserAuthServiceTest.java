@@ -22,7 +22,7 @@ import com.kaba4cow.imgxiv.auth.service.DefaultUserAuthService;
 import com.kaba4cow.imgxiv.auth.service.JwtService;
 import com.kaba4cow.imgxiv.common.exception.EmailConflictException;
 import com.kaba4cow.imgxiv.common.exception.UsernameConflictException;
-import com.kaba4cow.imgxiv.common.validation.DefaultUserValidationService;
+import com.kaba4cow.imgxiv.common.validation.UserValidationService;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
@@ -44,7 +44,7 @@ public class DefaultUserAuthServiceTest {
 	private UserMapper userMapper;
 
 	@InjectMocks
-	private DefaultUserValidationService userValidationService;
+	private UserValidationService userValidationService;
 
 	private DefaultUserAuthService userAuthService;
 
