@@ -1,13 +1,17 @@
 package com.kaba4cow.imgxiv.domain.vote;
 
-import com.kaba4cow.imgxiv.domain.base.EntityWithId;
-import com.kaba4cow.imgxiv.domain.embeddable.PostAndUser;
+import com.kaba4cow.imgxiv.domain.post.Post;
+import com.kaba4cow.imgxiv.domain.tag.Tag;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,10 +26,20 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "table_vote")
-public class Vote extends EntityWithId {
+public class Vote {
 
-	@Embedded
-	private PostAndUser postAndUser = new PostAndUser();
+	@EmbeddedId
+	private VoteId id;
+
+	@MapsId("postId")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "column_post_id")
+	private Post post;
+
+	@MapsId("tagId")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "column_tag_id")
+	private Tag tag;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "column_type")
