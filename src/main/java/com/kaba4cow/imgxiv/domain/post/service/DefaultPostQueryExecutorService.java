@@ -2,6 +2,7 @@ package com.kaba4cow.imgxiv.domain.post.service;
 
 import java.util.stream.Stream;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.common.dto.PageRequestExtractor;
@@ -29,9 +30,10 @@ public class DefaultPostQueryExecutorService implements PostQueryExecutorService
 	public Stream<Post> executeQuery(PostQueryRequest request) {
 		PostQuery postQuery = postQueryService.getPostQuery(request.getQuery());
 		PostSpecification postSpecification = postSpecificationService.getPostSpecification(postQuery);
+		PageRequest pageRequest = pageRequestExtractor.getPageRequest(request, "createdAt.timestamp");
 		return postRepository.findAll(//
 				postSpecification, //
-				pageRequestExtractor.getPageRequest(request, "createdAt.timestamp")//
+				pageRequest//
 		).stream();
 	}
 
