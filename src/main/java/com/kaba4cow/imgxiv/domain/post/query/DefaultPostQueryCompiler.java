@@ -2,8 +2,8 @@ package com.kaba4cow.imgxiv.domain.post.query;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ public class DefaultPostQueryCompiler implements PostQueryCompiler {
 	@Override
 	public PostQuery compile(String query) {
 		QueryBuilder builder = new QueryBuilder();
-		Set<String> tags = splitQuery(normalizeQuery(query));
+		List<String> tags = splitQuery(normalizeQuery(query));
 		for (String tag : tags) {
 			boolean exclude = false;
 			while (!tag.isBlank() && tag.startsWith("!")) {
@@ -29,9 +29,10 @@ public class DefaultPostQueryCompiler implements PostQueryCompiler {
 		return builder.build();
 	}
 
-	private Set<String> splitQuery(String query) {
+	private List<String> splitQuery(String query) {
 		return Arrays.stream(query.split("\\s+"))//
-				.collect(Collectors.toSet());
+				.distinct()//
+				.toList();
 	}
 
 	private String normalizeQuery(String query) {
