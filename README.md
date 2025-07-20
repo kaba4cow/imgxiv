@@ -11,15 +11,10 @@
 
 - JWT-based authentication
 - Tag-based post querying
+- Voting system
 - In-memory caching
 - Swagger UI for testing the API
 - Role-based access control
-
-### Planned
-
-- Comments and voting system
-- Image upload
-- Content moderation
 
 ## Getting Started
 
@@ -60,35 +55,35 @@ This project includes an automatically generated Swagger UI for testing the API.
 
 ### Database
 
-- [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
-- [Hibernate ORM](https://hibernate.org/orm/)
-- [PostgreSQL](https://www.postgresql.org/)
-- [H2 Database](https://www.h2database.com/html/main.html) for development and testing
+- [Spring Data JPA](https://github.com/spring-projects/spring-data-jpa)
+- [Hibernate ORM](https://github.com/hibernate/hibernate-orm)
+- [PostgreSQL](https://github.com/postgres/postgres)
+- [H2 Database](https://github.com/h2database/h2database) for development and testing
 
 ### Web
 
-- [Spring Web](https://docs.spring.io/spring-boot/reference/web/index.html) for building REST controllers
-- [Spring Validation](https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-validation.html) for validating user input
-- [Springdoc OpenAPI](https://springdoc.org/) with [Swagger UI](https://swagger.io/tools/swagger-ui/)
+- Spring Web for building REST controllers
+- [Hibernate Validation](https://github.com/hibernate/hibernate-validator) for validating user input
+- [Springdoc OpenAPI](https://github.com/springdoc/springdoc-openapi) with [Swagger UI](https://github.com/swagger-api/swagger-ui)
 
 ### Security
 
-- [Spring Security](https://spring.io/projects/spring-security)
+- [Spring Security](https://github.com/spring-projects/spring-security)
 - [JJWT](https://github.com/jwtk/jjwt) for JSON Web Token authentication
 
 ### Caching
 
-- [Spring Cache](https://spring.io/guides/gs/caching)
+- Spring Cache
 - [Caffeine](https://github.com/ben-manes/caffeine) for in-memory caching
 
 ### Testing
 
-- [Spring Boot Test](https://docs.spring.io/spring-boot/reference/testing/index.html)
-- [MockMvc](https://docs.spring.io/spring-framework/reference/6.1/testing/spring-mvc-test-framework.html) for REST API testing
+- Spring Boot Test
+- MockMvc for REST API testing
 
 ### Misc
 
-- [Lombok](https://projectlombok.org/) for boilerplate reduction
+- [Lombok](https://github.com/projectlombok/lombok) for boilerplate reduction
 
 ## License
 

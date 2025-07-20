@@ -17,16 +17,26 @@ import com.kaba4cow.imgxiv.domain.vote.dto.VoteRequest;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryDto;
 import com.kaba4cow.imgxiv.domain.vote.service.VoteService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Tag(//
+		name = "Votes", //
+		description = "Endpoints for voting on posts"//
+)
 @RequestMapping("/api/votes")
 @RestController
 public class VoteController extends CurrentUserAwareController {
 
 	private final VoteService voteService;
 
+	@Operation(//
+			summary = "Create or update vote", //
+			description = "Creates a new vote or replaces an existing one by the current user for the specified post"//
+	)
 	@IsAuthenticated
 	@PostMapping
 	public ResponseEntity<Void> createVote(@Valid @RequestBody VoteCreateRequest request) {
@@ -34,6 +44,10 @@ public class VoteController extends CurrentUserAwareController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@Operation(//
+			summary = "Delete vote", //
+			description = "Deletes the current user's vote for the specified post"//
+	)
 	@IsAuthenticated
 	@DeleteMapping
 	public ResponseEntity<Void> deleteVote(@Valid @RequestBody VoteDeleteRequest request) {
@@ -41,6 +55,10 @@ public class VoteController extends CurrentUserAwareController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@Operation(//
+			summary = "Get vote summary", //
+			description = "Returns the total, up, and down vote counts for a specific post"//
+	)
 	@PermitAll
 	@GetMapping
 	public ResponseEntity<VoteSummaryDto> getVoteSummary(@Valid @RequestBody VoteRequest request) {
