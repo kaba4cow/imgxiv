@@ -1,7 +1,7 @@
 package com.kaba4cow.imgxiv.domain.vote;
 
 import com.kaba4cow.imgxiv.domain.post.Post;
-import com.kaba4cow.imgxiv.domain.tag.Tag;
+import com.kaba4cow.imgxiv.domain.user.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
@@ -36,10 +36,10 @@ public class Vote {
 	@JoinColumn(name = "column_post_id")
 	private Post post;
 
-	@MapsId("tagId")
+	@MapsId("userId")
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "column_tag_id")
-	private Tag tag;
+	@JoinColumn(name = "column_user_id")
+	private User user;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "column_type")
