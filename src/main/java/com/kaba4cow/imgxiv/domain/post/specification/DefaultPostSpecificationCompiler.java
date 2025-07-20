@@ -51,7 +51,7 @@ public class DefaultPostSpecificationCompiler implements PostSpecificationCompil
 		}
 
 		public Specification<Post> build() {
-			return new DefaultPostSpecification(requiredTags, excludedTags);
+			return new PostSpecification(requiredTags, excludedTags);
 		}
 
 	}

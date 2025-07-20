@@ -18,7 +18,7 @@ import jakarta.persistence.criteria.Subquery;
 import lombok.Getter;
 
 @Getter
-public class DefaultPostSpecification implements Specification<Post> {
+public class PostSpecification implements Specification<Post> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,7 +26,7 @@ public class DefaultPostSpecification implements Specification<Post> {
 
 	private final Set<String> excludedTags;
 
-	public DefaultPostSpecification(Collection<String> requiredTags, Collection<String> excludedTags) {
+	public PostSpecification(Collection<String> requiredTags, Collection<String> excludedTags) {
 		this.requiredTags = Set.copyOf(requiredTags);
 		this.excludedTags = Set.copyOf(excludedTags);
 	}

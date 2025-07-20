@@ -137,7 +137,7 @@ public class DefaultPostSpecificationTest {
 	}
 
 	private List<Post> findPosts(Set<String> requiredTags, Set<String> excludedTags) {
-		return postRepository.findAll(new DefaultPostSpecification(requiredTags, excludedTags));
+		return postRepository.findAll(new PostSpecification(requiredTags, excludedTags));
 	}
 
 	private Post createPost(String... tags) {

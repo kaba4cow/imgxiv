@@ -11,7 +11,7 @@ public class DefaultPostSpecificationCompilerTest {
 
 	private static final DefaultPostSpecificationCompiler compiler = new DefaultPostSpecificationCompiler();
 
-	private static DefaultPostSpecification specification;
+	private static PostSpecification specification;
 
 	@Test
 	void compilesRequired() {
@@ -95,7 +95,7 @@ public class DefaultPostSpecificationCompilerTest {
 	}
 
 	private static void compile(String query) {
-		specification = (DefaultPostSpecification) compiler.compile(query);
+		specification = (PostSpecification) compiler.compile(query);
 	}
 
 }
