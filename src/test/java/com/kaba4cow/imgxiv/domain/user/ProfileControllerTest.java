@@ -124,7 +124,7 @@ public class ProfileControllerTest {
 
 		performChangePassword(NEW_PASSWORD, NEW_PASSWORD)//
 				.andExpect(status().is4xxClientError())//
-				.andExpect(status().isUnauthorized());
+				.andExpect(status().isBadRequest());
 		ensureUserCredentialsEquals(OLD_PASSWORD, Credentials::getPasswordHash, user);
 	}
 

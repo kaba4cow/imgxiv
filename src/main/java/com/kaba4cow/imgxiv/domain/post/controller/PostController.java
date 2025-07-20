@@ -3,7 +3,6 @@ package com.kaba4cow.imgxiv.domain.post.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +15,6 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.service.PostService;
-import com.kaba4cow.imgxiv.domain.user.User;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,8 +38,8 @@ public class PostController extends CurrentUserAwareController {
 	)
 	@IsAuthenticated
 	@PostMapping
-	public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostCreateRequest request, @ModelAttribute User currentUser) {
-		return ResponseEntity.ok(postService.create(request, currentUser));
+	public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostCreateRequest request) {
+		return ResponseEntity.ok(postService.create(request, getCurrentUser()));
 	}
 
 	@Operation(//
