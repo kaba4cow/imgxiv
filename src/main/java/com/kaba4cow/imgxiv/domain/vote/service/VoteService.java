@@ -1,9 +1,9 @@
 package com.kaba4cow.imgxiv.domain.vote.service;
 
-import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteCreateRequest;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteDeleteRequest;
+import com.kaba4cow.imgxiv.domain.vote.dto.VoteRequest;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryDto;
 
 public interface VoteService {
@@ -12,6 +12,6 @@ public interface VoteService {
 
 	void deleteVote(VoteDeleteRequest request, User user);
 
-	VoteSummaryDto getVoteSummary(Post post);
+	VoteSummaryDto getVoteSummary(VoteRequest request);
 
 }

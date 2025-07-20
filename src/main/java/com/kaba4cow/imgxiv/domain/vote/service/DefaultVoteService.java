@@ -11,6 +11,7 @@ import com.kaba4cow.imgxiv.domain.vote.VoteId;
 import com.kaba4cow.imgxiv.domain.vote.VoteRepository;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteCreateRequest;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteDeleteRequest;
+import com.kaba4cow.imgxiv.domain.vote.dto.VoteRequest;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryDto;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryMapper;
 
@@ -28,18 +29,13 @@ public class DefaultVoteService implements VoteService {
 
 	@Override
 	public void createVote(VoteCreateRequest request, User user) {
-		Post post = getPost(request.getPostId());
+		Post post = getPost(request);
 		Vote vote = new Vote();
 		vote.setId(VoteId.of(post, user));
 		vote.setPost(post);
 		vote.setUser(user);
 		vote.setType(request.getType());
 		voteRepository.save(vote);
-	}
-
-	private Post getPost(Long postId) {
-		return postRepository.findById(postId)//
-				.orElseThrow(() -> new NotFoundException("Post not found"));
 	}
 
 	@Override
@@ -49,8 +45,14 @@ public class DefaultVoteService implements VoteService {
 	}
 
 	@Override
-	public VoteSummaryDto getVoteSummary(Post post) {
+	public VoteSummaryDto getVoteSummary(VoteRequest request) {
+		Post post = getPost(request);
 		return voteSummaryMapper.mapToDto(voteRepository.getVoteSummary(post), post);
+	}
+
+	private Post getPost(VoteRequest request) {
+		return postRepository.findById(request.getPostId())//
+				.orElseThrow(() -> new NotFoundException("Post not found"));
 	}
 
 }
