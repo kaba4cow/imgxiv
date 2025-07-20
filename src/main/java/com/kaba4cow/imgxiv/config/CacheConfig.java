@@ -17,11 +17,13 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 public class CacheConfig {
 
+	public static final String POST_QUERY = "postQuery";
+
 	public static final String POST_SPECIFICATION = "postSpecification";
 
 	@Bean
 	public CacheManager cacheManager() {
-		CaffeineCacheManager cacheManager = new CaffeineCacheManager(POST_SPECIFICATION);
+		CaffeineCacheManager cacheManager = new CaffeineCacheManager(POST_QUERY, POST_SPECIFICATION);
 		cacheManager.setCaffeine(Caffeine.newBuilder()//
 				.initialCapacity(100)//
 				.maximumSize(1000L)//
