@@ -8,7 +8,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Schema(description = "Request for clearing a vote")
-public class VoteClearRequest extends AbstractVoteRequest {
+@Schema(description = "Request for deleting a vote")
+public class VoteDeleteRequest extends AbstractVoteRequest {
 
 }
