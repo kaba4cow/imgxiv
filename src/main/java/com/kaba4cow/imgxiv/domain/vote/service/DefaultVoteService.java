@@ -2,7 +2,6 @@ package com.kaba4cow.imgxiv.domain.vote.service;
 
 import org.springframework.stereotype.Service;
 
-import com.kaba4cow.imgxiv.common.exception.NotFoundException;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
@@ -29,7 +28,7 @@ public class DefaultVoteService implements VoteService {
 
 	@Override
 	public void createVote(VoteCreateRequest request, User user) {
-		Post post = getPost(request);
+		Post post = postRepository.findByIdOrThrow(request.getPostId());
 		Vote vote = new Vote();
 		vote.setId(VoteId.of(post, user));
 		vote.setPost(post);
@@ -46,13 +45,8 @@ public class DefaultVoteService implements VoteService {
 
 	@Override
 	public VoteSummaryDto getVoteSummary(VoteRequest request) {
-		Post post = getPost(request);
+		Post post = postRepository.findByIdOrThrow(request.getPostId());
 		return voteSummaryMapper.mapToDto(voteRepository.getVoteSummary(post), post);
-	}
-
-	private Post getPost(VoteRequest request) {
-		return postRepository.findById(request.getPostId())//
-				.orElseThrow(() -> new NotFoundException("Post not found"));
 	}
 
 }
