@@ -11,10 +11,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Schema(description = "Request for creating an UP_VOTE vote")
-public class UpVoteCreateRequest extends AbstractVoteRequest {
+public class UpVoteCreateRequest extends TypedVoteCreateRequest {
 
+	@Override
 	public VoteType getVoteType() {
-		return VoteType.UP_VOTE;
+		return VoteType.UP;
 	}
 
 }
