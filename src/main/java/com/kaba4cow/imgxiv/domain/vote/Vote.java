@@ -42,7 +42,7 @@ public class Vote {
 	private User user;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "column_type")
+	@Column(name = "column_type", nullable = false)
 	private VoteType type;
 
 }
