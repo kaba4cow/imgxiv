@@ -10,6 +10,7 @@ import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.query.PostQuery;
+import com.kaba4cow.imgxiv.domain.post.query.PostQueryNormalizer;
 import com.kaba4cow.imgxiv.domain.post.specification.PostSpecification;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ public class DefaultPostQueryExecutorService implements PostQueryExecutorService
 
 	private final PostRepository postRepository;
 
+	private final PostQueryNormalizer postQueryNormalizer;
+
 	private final PostQueryService postQueryService;
 
 	private final PostSpecificationService postSpecificationService;
@@ -28,7 +31,8 @@ public class DefaultPostQueryExecutorService implements PostQueryExecutorService
 
 	@Override
 	public Stream<Post> executeQuery(PostQueryRequest request) {
-		PostQuery postQuery = postQueryService.getPostQuery(request.getQuery());
+		String normalizedQuery = postQueryNormalizer.normalizeQuery(request.getQuery());
+		PostQuery postQuery = postQueryService.getPostQuery(normalizedQuery);
 		PostSpecification postSpecification = postSpecificationService.getPostSpecification(postQuery);
 		PageRequest pageRequest = pageRequestExtractor.getPageRequest(request, "createdAt.timestamp");
 		return postRepository.findAll(//
