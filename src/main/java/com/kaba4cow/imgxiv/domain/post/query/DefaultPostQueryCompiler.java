@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DefaultPostQueryCompiler implements PostQueryCompiler {
 
 	@Override
-	public PostQuery compile(String query) {
+	public CompiledPostQuery compile(String query) {
 		QueryBuilder builder = new QueryBuilder();
 		List<String> tags = splitQuery(query);
 		for (String tag : tags) {
@@ -31,7 +31,7 @@ public class DefaultPostQueryCompiler implements PostQueryCompiler {
 				else
 					builder.requireTag(tag);
 		}
-		PostQuery postQuery = builder.build();
+		CompiledPostQuery postQuery = builder.build();
 		log.info("Compiled query '{}' to {}", query, postQuery);
 		return postQuery;
 	}
@@ -60,8 +60,8 @@ public class DefaultPostQueryCompiler implements PostQueryCompiler {
 			excludedTags.add(tag);
 		}
 
-		private PostQuery build() {
-			return new PostQuery(requiredTags, excludedTags);
+		private CompiledPostQuery build() {
+			return new CompiledPostQuery(requiredTags, excludedTags);
 		}
 
 	}

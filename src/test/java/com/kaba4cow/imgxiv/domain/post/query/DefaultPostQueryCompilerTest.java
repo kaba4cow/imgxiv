@@ -11,7 +11,7 @@ public class DefaultPostQueryCompilerTest {
 
 	private static final DefaultPostQueryCompiler compiler = new DefaultPostQueryCompiler();
 
-	private static PostQuery postQuery;
+	private static CompiledPostQuery postQuery;
 
 	@Test
 	void compilesRequired() {

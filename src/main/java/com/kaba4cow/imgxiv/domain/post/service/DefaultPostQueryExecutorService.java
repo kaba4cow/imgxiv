@@ -9,7 +9,7 @@ import com.kaba4cow.imgxiv.common.dto.PageRequestExtractor;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
-import com.kaba4cow.imgxiv.domain.post.query.PostQuery;
+import com.kaba4cow.imgxiv.domain.post.query.CompiledPostQuery;
 import com.kaba4cow.imgxiv.domain.post.query.PostQueryNormalizer;
 import com.kaba4cow.imgxiv.domain.post.specification.PostSpecification;
 
@@ -32,7 +32,7 @@ public class DefaultPostQueryExecutorService implements PostQueryExecutorService
 	@Override
 	public Stream<Post> executeQuery(PostQueryRequest request) {
 		String normalizedQuery = postQueryNormalizer.normalizeQuery(request.getQuery());
-		PostQuery postQuery = postQueryService.getPostQuery(normalizedQuery);
+		CompiledPostQuery postQuery = postQueryService.getPostQuery(normalizedQuery);
 		PostSpecification postSpecification = postSpecificationService.getPostSpecification(postQuery);
 		PageRequest pageRequest = pageRequestExtractor.getPageRequest(request, "createdAt.timestamp");
 		return postRepository.findAll(//
