@@ -5,7 +5,6 @@ import java.util.Objects;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.kaba4cow.imgxiv.common.exception.PasswordMismatchException;
 import com.kaba4cow.imgxiv.common.validation.UserValidationService;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
@@ -59,11 +58,8 @@ public class DefaultProfileService implements ProfileService {
 
 	@Override
 	public void changePassword(ChangePasswordRequest request, User user) {
-		try {
-			userValidationService.ensurePasswordsMatch(request.getOldPassword(), user.getCredentials().getPasswordHash());
-		} catch (PasswordMismatchException exception) {
-			throw new IllegalArgumentException(exception);
-		}
+		userValidationService.ensurePasswordsMatchOrThrow(request.getOldPassword(), user.getCredentials().getPasswordHash(),
+				IllegalArgumentException::new);
 		user.getCredentials().setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
 		log.info("User {} changed password", user.getId());
 		userRepository.save(user);
