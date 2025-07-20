@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.user.validation;
+package com.kaba4cow.imgxiv.common.validation;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

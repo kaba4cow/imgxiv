@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.common.exception.PasswordMismatchException;
+import com.kaba4cow.imgxiv.common.validation.UserValidationService;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeEmailRequest;
@@ -13,7 +14,6 @@ import com.kaba4cow.imgxiv.domain.user.dto.ChangePasswordRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeUsernameRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 import com.kaba4cow.imgxiv.domain.user.dto.UserMapper;
-import com.kaba4cow.imgxiv.domain.user.validation.UserValidationService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

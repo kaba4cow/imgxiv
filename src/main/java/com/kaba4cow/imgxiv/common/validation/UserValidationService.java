@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.user.validation;
+package com.kaba4cow.imgxiv.common.validation;
 
 import com.kaba4cow.imgxiv.common.exception.EmailConflictException;
 import com.kaba4cow.imgxiv.common.exception.PasswordMismatchException;
