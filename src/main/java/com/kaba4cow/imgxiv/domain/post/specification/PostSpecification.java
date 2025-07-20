@@ -1,12 +1,10 @@
 package com.kaba4cow.imgxiv.domain.post.specification;
 
-import java.util.Collection;
-import java.util.Set;
-
 import org.springframework.data.jpa.domain.Specification;
 
 import com.kaba4cow.imgxiv.domain.link.posttag.PostTag;
 import com.kaba4cow.imgxiv.domain.post.Post;
+import com.kaba4cow.imgxiv.domain.post.query.PostQuery;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -16,20 +14,15 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Getter
 public class PostSpecification implements Specification<Post> {
 
 	private static final long serialVersionUID = 1L;
 
-	private final Set<String> requiredTags;
-
-	private final Set<String> excludedTags;
-
-	public PostSpecification(Collection<String> requiredTags, Collection<String> excludedTags) {
-		this.requiredTags = Set.copyOf(requiredTags);
-		this.excludedTags = Set.copyOf(excludedTags);
-	}
+	private final PostQuery postQuery;
 
 	@Override
 	public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -40,10 +33,10 @@ public class PostSpecification implements Specification<Post> {
 	}
 
 	private Predicate toRequiredPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-		if (requiredTags.isEmpty())
+		if (!postQuery.hasRequiredTags())
 			return cb.conjunction();
 		Predicate requiredPredicate = cb.conjunction();
-		for (String tag : requiredTags)
+		for (String tag : postQuery.getRequiredTags())
 			requiredPredicate = cb.and(//
 					requiredPredicate, //
 					cb.exists(toRequiredSubquery(tag, root, query, cb))//
@@ -62,9 +55,9 @@ public class PostSpecification implements Specification<Post> {
 	}
 
 	private Predicate toExcludedPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-		return excludedTags.isEmpty()//
-				? cb.conjunction()//
-				: cb.not(cb.exists(toExcludedSubquery(root, query, cb)));
+		return postQuery.hasExcludedTags()//
+				? cb.not(cb.exists(toExcludedSubquery(root, query, cb)))//
+				: cb.conjunction();
 	}
 
 	private Subquery<Long> toExcludedSubquery(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -73,7 +66,7 @@ public class PostSpecification implements Specification<Post> {
 		return subquery.select(idOf(postTag.get("post")))//
 				.where(//
 						cb.equal(idOf(postTag.get("post")), idOf(root)), //
-						nameOf(postTag.get("tag")).in(excludedTags)//
+						nameOf(postTag.get("tag")).in(postQuery.getExcludedTags())//
 				);
 	}
 
