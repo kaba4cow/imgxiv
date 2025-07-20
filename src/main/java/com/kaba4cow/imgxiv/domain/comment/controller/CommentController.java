@@ -16,10 +16,15 @@ import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentEditRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Tag(//
+		name = "Comments", //
+		description = "Endpoints for commenting on posts"//
+)
 @RequestMapping("/api/comments")
 @RestController
 public class CommentController extends CurrentUserAwareController {
