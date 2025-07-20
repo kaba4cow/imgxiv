@@ -78,13 +78,13 @@ public class PostControllerTest {
 
 		performCreatePost(Set.of(tag))//
 				.andExpect(status().is4xxClientError())//
-				.andExpect(status().isUnauthorized());
+				.andExpect(status().isForbidden());
 	}
 
 	@Test
 	public void searchesPosts() {
 		Category category = saveTestCategory();
-		User author = authenticateUser(saveTestUser());
+		User author = saveTestUser();
 
 		Tag a = saveTestTag("a", category);
 		Tag b = saveTestTag("b", category);
