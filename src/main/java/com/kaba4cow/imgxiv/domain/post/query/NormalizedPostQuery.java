@@ -12,10 +12,10 @@ import lombok.ToString;
 @ToString
 public class NormalizedPostQuery {
 
-	private final List<String> tags;
+	private final List<String> tokens;
 
-	public NormalizedPostQuery(List<String> tags) {
-		this.tags = Collections.unmodifiableList(tags);
+	public NormalizedPostQuery(List<String> tokens) {
+		this.tokens = Collections.unmodifiableList(tokens);
 	}
 
 }
