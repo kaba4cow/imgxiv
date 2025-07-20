@@ -9,6 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Schema(description = "Request for deleting a vote")
-public class VoteDeleteRequest extends AbstractVoteRequest {
+public class VoteDeleteRequest extends VoteRequest {
 
 }

@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public abstract class AbstractVoteRequest {
+public class VoteRequest {
 
 	@NotNull(message = "Post ID is required")
 	@Schema(//
