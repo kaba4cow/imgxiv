@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DefaultPostQueryCompiler implements PostQueryCompiler {
 
 	@Override
-	public CompiledPostQuery compile(NormalizedPostQuery normalizedQuery) {
+	public CompiledPostQuery compileQuery(NormalizedPostQuery normalizedQuery) {
 		QueryBuilder builder = new QueryBuilder();
 		for (String tag : normalizedQuery.getTags()) {
 			boolean exclude = false;
