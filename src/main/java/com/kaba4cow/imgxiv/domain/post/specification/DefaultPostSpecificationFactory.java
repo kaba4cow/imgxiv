@@ -13,9 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 public class DefaultPostSpecificationFactory implements PostSpecificationFactory {
 
 	@Override
-	public PostSpecification createPostSpecification(CompiledPostQuery postQuery) {
-		PostSpecification postSpecification = new PostSpecification(postQuery);
-		log.info("Created PostSpecification for {}", postQuery);
+	public PostSpecification createPostSpecification(CompiledPostQuery compiledQuery) {
+		PostSpecification postSpecification = new PostSpecification(compiledQuery);
+		log.info("Created PostSpecification for {}", compiledQuery);
 		return postSpecification;
 	}
 

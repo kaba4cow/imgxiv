@@ -5,6 +5,6 @@ import com.kaba4cow.imgxiv.domain.post.query.NormalizedPostQuery;
 
 public interface PostQueryService {
 
-	CompiledPostQuery getPostQuery(NormalizedPostQuery normalizedPostQuery);
+	CompiledPostQuery getCompiledQuery(NormalizedPostQuery normalizedQuery);
 
 }

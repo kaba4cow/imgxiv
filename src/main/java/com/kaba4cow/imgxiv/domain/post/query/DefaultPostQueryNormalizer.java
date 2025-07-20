@@ -20,9 +20,9 @@ public class DefaultPostQueryNormalizer implements PostQueryNormalizer {
 		List<String> tags = splitQuery(query);
 		for (String tag : tags)
 			builder.addTag(tag);
-		NormalizedPostQuery postQuery = builder.build();
-		log.info("Normalized query '{}' to {}", query, postQuery);
-		return postQuery;
+		NormalizedPostQuery normalizedQuery = builder.build();
+		log.info("Normalized query '{}' to {}", query, normalizedQuery);
+		return normalizedQuery;
 	}
 
 	private List<String> splitQuery(String query) {

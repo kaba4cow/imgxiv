@@ -18,8 +18,8 @@ public class CachedPostSpecificationService implements PostSpecificationService 
 
 	@Cacheable(value = CacheConfig.POST_SPECIFICATION, key = "#postQuery")
 	@Override
-	public PostSpecification getPostSpecification(CompiledPostQuery postQuery) {
-		return postSpecificationFactory.createPostSpecification(postQuery);
+	public PostSpecification getPostSpecification(CompiledPostQuery compiledQuery) {
+		return postSpecificationFactory.createPostSpecification(compiledQuery);
 	}
 
 }

@@ -14,9 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 public class DefaultPostQueryCompiler implements PostQueryCompiler {
 
 	@Override
-	public CompiledPostQuery compile(NormalizedPostQuery normalizedPostQuery) {
+	public CompiledPostQuery compile(NormalizedPostQuery normalizedQuery) {
 		QueryBuilder builder = new QueryBuilder();
-		for (String tag : normalizedPostQuery.getTags()) {
+		for (String tag : normalizedQuery.getTags()) {
 			boolean exclude = false;
 			while (!tag.isBlank() && tag.startsWith("!")) {
 				exclude = !exclude;
@@ -28,9 +28,9 @@ public class DefaultPostQueryCompiler implements PostQueryCompiler {
 				else
 					builder.requireTag(tag);
 		}
-		CompiledPostQuery compiledPostQuery = builder.build();
-		log.info("Compiled query {} to {}", normalizedPostQuery, compiledPostQuery);
-		return compiledPostQuery;
+		CompiledPostQuery compiledQuery = builder.build();
+		log.info("Compiled query {} to {}", normalizedQuery, compiledQuery);
+		return compiledQuery;
 	}
 
 	private static class QueryBuilder {

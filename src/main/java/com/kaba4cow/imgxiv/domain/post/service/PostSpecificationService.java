@@ -5,6 +5,6 @@ import com.kaba4cow.imgxiv.domain.post.specification.PostSpecification;
 
 public interface PostSpecificationService {
 
-	PostSpecification getPostSpecification(CompiledPostQuery postQuery);
+	PostSpecification getPostSpecification(CompiledPostQuery compiledQuery);
 
 }

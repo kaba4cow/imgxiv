@@ -33,7 +33,7 @@ public class DefaultPostQueryExecutorService implements PostQueryExecutorService
 	@Override
 	public Stream<Post> executeQuery(PostQueryRequest request) {
 		NormalizedPostQuery normalizedQuery = postQueryNormalizer.normalizeQuery(request.getQuery());
-		CompiledPostQuery compiledQuery = postQueryService.getPostQuery(normalizedQuery);
+		CompiledPostQuery compiledQuery = postQueryService.getCompiledQuery(normalizedQuery);
 		PostSpecification postSpecification = postSpecificationService.getPostSpecification(compiledQuery);
 		PageRequest pageRequest = pageRequestExtractor.getPageRequest(request, "createdAt.timestamp");
 		return postRepository.findAll(//
