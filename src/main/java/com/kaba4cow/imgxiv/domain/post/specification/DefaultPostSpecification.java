@@ -3,6 +3,8 @@ package com.kaba4cow.imgxiv.domain.post.specification;
 import java.util.Collection;
 import java.util.Set;
 
+import org.springframework.data.jpa.domain.Specification;
+
 import com.kaba4cow.imgxiv.domain.link.posttag.PostTag;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
@@ -16,7 +18,7 @@ import jakarta.persistence.criteria.Subquery;
 import lombok.Getter;
 
 @Getter
-public class DefaultPostSpecification implements PostSpecification {
+public class DefaultPostSpecification implements Specification<Post> {
 
 	private static final long serialVersionUID = 1L;
 

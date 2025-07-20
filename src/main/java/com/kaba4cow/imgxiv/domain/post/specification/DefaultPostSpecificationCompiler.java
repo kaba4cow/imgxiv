@@ -5,13 +5,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+
+import com.kaba4cow.imgxiv.domain.post.Post;
 
 @Component
 public class DefaultPostSpecificationCompiler implements PostSpecificationCompiler {
 
 	@Override
-	public PostSpecification compile(String query) {
+	public Specification<Post> compile(String query) {
 		SpecificationBuilder builder = new SpecificationBuilder();
 		List<String> tags = Arrays.asList(query.split("\\s+"));
 		for (String tag : tags) {
@@ -47,7 +50,7 @@ public class DefaultPostSpecificationCompiler implements PostSpecificationCompil
 			excludedTags.add(tag);
 		}
 
-		public PostSpecification build() {
+		public Specification<Post> build() {
 			return new DefaultPostSpecification(requiredTags, excludedTags);
 		}
 

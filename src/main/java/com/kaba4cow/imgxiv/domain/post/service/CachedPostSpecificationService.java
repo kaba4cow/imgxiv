@@ -1,10 +1,11 @@
 package com.kaba4cow.imgxiv.domain.post.service;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.config.CacheConfig;
-import com.kaba4cow.imgxiv.domain.post.specification.PostSpecification;
+import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.specification.PostSpecificationCompiler;
 
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,8 @@ public class CachedPostSpecificationService implements PostSpecificationService 
 
 	@Cacheable(value = CacheConfig.POST_SPECIFICATION, key = "#query")
 	@Override
-	public PostSpecification getSpecification(String query) {
-		PostSpecification postSpecification = postSpecificationCompiler.compile(query);
+	public Specification<Post> getSpecification(String query) {
+		Specification<Post> postSpecification = postSpecificationCompiler.compile(query);
 		log.info("Compiled specification for query: {}", query);
 		return postSpecification;
 	}
