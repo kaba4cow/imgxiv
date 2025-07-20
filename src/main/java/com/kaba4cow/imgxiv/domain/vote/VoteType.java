@@ -2,6 +2,6 @@ package com.kaba4cow.imgxiv.domain.vote;
 
 public enum VoteType {
 
-	UPVOTE, DOWNVOTE;
+	UP_VOTE, DOWN_VOTE;
 
 }
