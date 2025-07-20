@@ -18,6 +18,7 @@ import com.kaba4cow.imgxiv.common.controller.CurrentUserAwareController;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentEditRequest;
+import com.kaba4cow.imgxiv.domain.comment.service.CommentService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,6 +36,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class CommentController extends CurrentUserAwareController {
 
+	private final CommentService commentService;
+
 	@Operation(//
 			summary = "Create comment", //
 			description = "Creates a new comment"//
@@ -42,7 +45,7 @@ public class CommentController extends CurrentUserAwareController {
 	@IsAuthenticated
 	@PostMapping
 	public ResponseEntity<CommentDto> createComment(@Valid @RequestBody CommentCreateRequest request) {
-		throw new UnsupportedOperationException();
+		return ResponseEntity.ok(commentService.createComment(request, getCurrentUser()));
 	}
 
 	@Operation(//
@@ -52,7 +55,7 @@ public class CommentController extends CurrentUserAwareController {
 	@IsAuthenticated
 	@PatchMapping
 	public ResponseEntity<CommentDto> editComment(@Valid @RequestBody CommentEditRequest request) {
-		throw new UnsupportedOperationException();
+		return ResponseEntity.ok(commentService.editComment(request, getCurrentUser()));
 	}
 
 	@Operation(//
@@ -67,7 +70,7 @@ public class CommentController extends CurrentUserAwareController {
 					example = "1"//
 			) //
 			@RequestParam("id") @NotNull Long id) {
-		throw new UnsupportedOperationException();
+		return ResponseEntity.ok(commentService.deleteComment(id, getCurrentUser()));
 	}
 
 	@Operation(//
@@ -82,7 +85,7 @@ public class CommentController extends CurrentUserAwareController {
 					example = "1"//
 			) //
 			@RequestParam("postId") @NotNull Long postId) {
-		throw new UnsupportedOperationException();
+		return ResponseEntity.ok(commentService.getCommentsByPost(postId));
 	}
 
 }
