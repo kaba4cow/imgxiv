@@ -9,9 +9,11 @@ import org.junit.jupiter.api.Test;
 
 public class DefaultPostQueryCompilerTest {
 
+	private static final DefaultPostQueryNormalizer normalizer = new DefaultPostQueryNormalizer();
+
 	private static final DefaultPostQueryCompiler compiler = new DefaultPostQueryCompiler();
 
-	private static CompiledPostQuery postQuery;
+	private static CompiledPostQuery compiledQuery;
 
 	@Test
 	void compilesRequired() {
@@ -71,31 +73,31 @@ public class DefaultPostQueryCompilerTest {
 	}
 
 	private static void assertRequires(String... tags) {
-		assertTrue(postQuery.getRequiredTags().containsAll(List.of(tags)));
+		assertTrue(compiledQuery.getRequiredTags().containsAll(List.of(tags)));
 	}
 
 	private static void assertRequiresNothing() {
-		assertTrue(postQuery.getRequiredTags().isEmpty());
+		assertTrue(compiledQuery.getRequiredTags().isEmpty());
 	}
 
 	private static void assertDoesNotRequire(String... tags) {
-		assertFalse(postQuery.getRequiredTags().containsAll(List.of(tags)));
+		assertFalse(compiledQuery.getRequiredTags().containsAll(List.of(tags)));
 	}
 
 	private static void assertExcludes(String... tags) {
-		assertTrue(postQuery.getExcludedTags().containsAll(List.of(tags)));
+		assertTrue(compiledQuery.getExcludedTags().containsAll(List.of(tags)));
 	}
 
 	private static void assertExcludesNothing() {
-		assertTrue(postQuery.getExcludedTags().isEmpty());
+		assertTrue(compiledQuery.getExcludedTags().isEmpty());
 	}
 
 	private static void assertDoesNotExclude(String... tags) {
-		assertFalse(postQuery.getExcludedTags().containsAll(List.of(tags)));
+		assertFalse(compiledQuery.getExcludedTags().containsAll(List.of(tags)));
 	}
 
 	private static void compile(String query) {
-		postQuery = compiler.compile(query);
+		compiledQuery = compiler.compileQuery(normalizer.normalizeQuery(query));
 	}
 
 }
