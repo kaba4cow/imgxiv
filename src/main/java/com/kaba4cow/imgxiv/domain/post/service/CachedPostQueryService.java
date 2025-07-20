@@ -16,7 +16,7 @@ public class CachedPostQueryService implements PostQueryService {
 
 	private final PostQueryCompiler postQueryCompiler;
 
-	@Cacheable(value = CacheConfig.POST_QUERY, key = "#query")
+	@Cacheable(value = CacheConfig.POST_QUERY, key = "#normalizedQuery")
 	@Override
 	public CompiledPostQuery getCompiledQuery(NormalizedPostQuery normalizedQuery) {
 		return postQueryCompiler.compileQuery(normalizedQuery);
