@@ -16,17 +16,17 @@ public class DefaultPostQueryCompiler implements PostQueryCompiler {
 	@Override
 	public CompiledPostQuery compileQuery(NormalizedPostQuery normalizedQuery) {
 		QueryBuilder builder = new QueryBuilder();
-		for (String tag : normalizedQuery.getTags()) {
+		for (String token : normalizedQuery.getTokens()) {
 			boolean exclude = false;
-			while (!tag.isBlank() && tag.startsWith("!")) {
+			while (!token.isBlank() && token.startsWith("!")) {
 				exclude = !exclude;
-				tag = tag.substring(1);
+				token = token.substring(1);
 			}
-			if (!tag.isBlank())
+			if (!token.isBlank())
 				if (exclude)
-					builder.excludeTag(tag);
+					builder.excludeTag(token);
 				else
-					builder.requireTag(tag);
+					builder.requireTag(token);
 		}
 		CompiledPostQuery compiledQuery = builder.build();
 		log.info("Compiled query {} to {}", normalizedQuery, compiledQuery);
