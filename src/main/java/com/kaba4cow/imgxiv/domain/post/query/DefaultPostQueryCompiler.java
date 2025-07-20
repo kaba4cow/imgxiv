@@ -7,13 +7,18 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RequiredArgsConstructor
 @Component
 public class DefaultPostQueryCompiler implements PostQueryCompiler {
 
 	@Override
 	public PostQuery compile(String query) {
 		QueryBuilder builder = new QueryBuilder();
-		List<String> tags = splitQuery(normalizeQuery(query));
+		List<String> tags = splitQuery(query);
 		for (String tag : tags) {
 			boolean exclude = false;
 			while (!tag.isBlank() && tag.startsWith("!")) {
@@ -26,17 +31,15 @@ public class DefaultPostQueryCompiler implements PostQueryCompiler {
 				else
 					builder.requireTag(tag);
 		}
-		return builder.build();
+		PostQuery postQuery = builder.build();
+		log.info("Compiled query '{}' to {}", query, postQuery);
+		return postQuery;
 	}
 
 	private List<String> splitQuery(String query) {
 		return Arrays.stream(query.split("\\s+"))//
 				.distinct()//
 				.toList();
-	}
-
-	private String normalizeQuery(String query) {
-		return query.toLowerCase();
 	}
 
 	private static class QueryBuilder {
