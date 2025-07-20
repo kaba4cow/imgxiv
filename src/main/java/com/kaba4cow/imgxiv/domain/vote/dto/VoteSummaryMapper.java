@@ -14,6 +14,7 @@ public class VoteSummaryMapper {
 	public VoteSummaryDto mapToDto(VoteSummary voteSummary, Post post) {
 		return new VoteSummaryDto(//
 				post.getId(), //
+				voteSummary.getTotalVoteCount(), //
 				voteSummary.getUpVoteCount(), //
 				voteSummary.getDownVoteCount()//
 		);

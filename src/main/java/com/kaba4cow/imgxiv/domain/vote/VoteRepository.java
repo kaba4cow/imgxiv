@@ -10,6 +10,7 @@ public interface VoteRepository extends JpaRepository<Vote, VoteId> {
 
 	@Query("""
 			SELECT
+				COUNT(*) AS totalVoteCount,
 				SUM(CASE WHEN v.type = 'UP' THEN 1 ELSE 0 END) AS upVoteCount,
 				SUM(CASE WHEN v.type = 'DOWN' THEN 1 ELSE 0 END) AS downVoteCount
 			FROM Vote v WHERE v.post = :post

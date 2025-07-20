@@ -13,6 +13,8 @@ public class VoteSummaryDto {
 
 	private Long postId;
 
+	private Long totalVoteCount;
+
 	private Long upVoteCount;
 
 	private Long downVoteCount;
