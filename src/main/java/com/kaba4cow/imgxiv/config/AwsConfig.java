@@ -1,9 +1,8 @@
 package com.kaba4cow.imgxiv.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.kaba4cow.imgxiv.aws.AwsProperties;
 
 import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -16,16 +15,17 @@ import software.amazon.awssdk.services.s3.S3Client;
 @Configuration
 public class AwsConfig {
 
-	private final AwsProperties awsProperties;
-
 	@Bean
-	public S3Client s3Client() {
+	public S3Client s3Client(//
+			@Value("${aws.region}") String region, //
+			@Value("${aws.access-key}") String accessKey, //
+			@Value("${aws.secret-key}") String secretKey) {
 		AwsCredentials credentials = AwsBasicCredentials.builder()//
-				.accessKeyId(awsProperties.getAccessKey())//
-				.secretAccessKey(awsProperties.getSecretKey())//
+				.accessKeyId(accessKey)//
+				.secretAccessKey(secretKey)//
 				.build();
 		return S3Client.builder()//
-				.region(Region.of(awsProperties.getRegion()))//
+				.region(Region.of(region))//
 				.credentialsProvider(StaticCredentialsProvider.create(credentials))//
 				.build();
 	}
