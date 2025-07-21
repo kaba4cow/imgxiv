@@ -24,7 +24,7 @@ public class AwsImageStorageService implements ImageStorageService {
 	private String bucketName;
 
 	@Override
-	public void uploadImage(String storageKey, InputStream input, long contentLength, String contentType) {
+	public void uploadImage(String storageKey, String contentType, long contentLength, InputStream input) {
 		try {
 			s3Client.putObject(//
 					buildRequestHeader(storageKey, contentLength, contentType), //

@@ -4,6 +4,6 @@ import java.io.InputStream;
 
 public interface ImageStorageService {
 
-	void uploadImage(String storageKey, InputStream input, long contentLength, String contentType);
+	void uploadImage(String storageKey, String contentType, long contentLength, InputStream input);
 
 }
