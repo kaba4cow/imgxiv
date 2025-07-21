@@ -70,7 +70,8 @@ public class CommentController extends CurrentUserAwareController {
 					example = "1"//
 			) //
 			@RequestParam("id") @NotNull Long id) {
-		return ResponseEntity.ok(commentService.deleteComment(id, getCurrentUser()));
+		commentService.deleteComment(id, getCurrentUser());
+		return ResponseEntity.noContent().build();
 	}
 
 	@Operation(//
