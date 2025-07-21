@@ -1,5 +1,6 @@
 package com.kaba4cow.imgxiv.domain.post.dto;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import lombok.AllArgsConstructor;
@@ -18,5 +19,9 @@ public class PostDto {
 	private Long authorId;
 
 	private Set<Long> tagIds;
+
+	private LocalDateTime createdAt;
+
+	private LocalDateTime updatedAt;
 
 }
