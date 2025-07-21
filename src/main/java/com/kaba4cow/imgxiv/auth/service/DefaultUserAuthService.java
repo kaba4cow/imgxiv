@@ -15,7 +15,6 @@ import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.UserRole;
 import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 import com.kaba4cow.imgxiv.domain.user.dto.UserMapper;
-import com.kaba4cow.imgxiv.util.PersistLog;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,17 +38,14 @@ public class DefaultUserAuthService implements UserAuthService {
 	public UserDto register(RegisterRequest request) {
 		userValidationService.ensureUsernameAvailable(request.getUsername());
 		userValidationService.ensureEmailAvailable(request.getEmail());
-		User user = registerUser(request);
-		return userMapper.mapToDto(user);
-	}
-
-	private User registerUser(RegisterRequest request) {
 		User user = new User();
 		user.getCredentials().setUsername(request.getUsername());
 		user.getCredentials().setEmail(request.getEmail());
 		user.getCredentials().setPasswordHash(passwordEncoder.encode(request.getPassword()));
 		user.setRole(UserRole.USER);
-		return PersistLog.log(userRepository.save(user));
+		User saved = userRepository.save(user);
+		log.info("Registered new user: {}", saved);
+		return userMapper.mapToDto(saved);
 	}
 
 	@Override

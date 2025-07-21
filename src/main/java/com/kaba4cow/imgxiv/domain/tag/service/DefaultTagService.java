@@ -13,7 +13,6 @@ import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagCreateRequest;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagMapper;
-import com.kaba4cow.imgxiv.util.PersistLog;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,17 +32,13 @@ public class DefaultTagService implements TagService {
 	public TagDto create(TagCreateRequest request) {
 		if (tagRepository.existsByName(request.getName()))
 			throw new NameConflictException("Tag with this name already exists");
-		Tag tag = createTag(request);
-		return tagMapper.mapToDto(tag);
-	}
-
-	private Tag createTag(TagCreateRequest request) {
 		Category category = categoryRepository.findByIdOrThrow(request.getCategoryId());
 		Tag tag = new Tag();
 		tag.getNameAndDescription().setName(request.getName());
 		tag.getNameAndDescription().setDescription(request.getDescription());
 		tag.setCategory(category);
-		return PersistLog.log(tagRepository.save(tag));
+		Tag saved = tagRepository.save(tag);
+		return tagMapper.mapToDto(saved);
 	}
 
 	@Override

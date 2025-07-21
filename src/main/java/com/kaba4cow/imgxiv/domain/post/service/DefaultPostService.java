@@ -13,7 +13,6 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostMapper;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
-import com.kaba4cow.imgxiv.util.PersistLog;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,16 +32,13 @@ public class DefaultPostService implements PostService {
 
 	@Override
 	public PostDto create(PostCreateRequest request, User author) {
-		Post post = createPost(request, author);
-		return postMapper.mapToDto(post);
-	}
-
-	private Post createPost(PostCreateRequest request, User author) {
 		Post post = new Post();
 		post.setAuthor(author);
 		tagRepository.findByIdsOrThrow(request.getTagIds())//
 				.forEach(post::addTag);
-		return PersistLog.log(postRepository.save(post));
+		Post saved = postRepository.save(post);
+		log.info("Created new post: {}", saved);
+		return postMapper.mapToDto(saved);
 	}
 
 	@Override
