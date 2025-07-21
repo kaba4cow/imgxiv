@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
-import com.kaba4cow.imgxiv.common.controller.CurrentUserAwareController;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentEditRequest;
 import com.kaba4cow.imgxiv.domain.comment.service.CommentService;
+import com.kaba4cow.imgxiv.domain.user.User;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 )
 @RequestMapping("/api/comments")
 @RestController
-public class CommentController extends CurrentUserAwareController {
+public class CommentController {
 
 	private final CommentService commentService;
 
@@ -44,8 +45,8 @@ public class CommentController extends CurrentUserAwareController {
 	)
 	@IsAuthenticated
 	@PostMapping
-	public ResponseEntity<CommentDto> createComment(@Valid @RequestBody CommentCreateRequest request) {
-		return ResponseEntity.ok(commentService.createComment(request, getCurrentUser()));
+	public ResponseEntity<CommentDto> createComment(@Valid @RequestBody CommentCreateRequest request, @CurrentUser User user) {
+		return ResponseEntity.ok(commentService.createComment(request, user));
 	}
 
 	@Operation(//
