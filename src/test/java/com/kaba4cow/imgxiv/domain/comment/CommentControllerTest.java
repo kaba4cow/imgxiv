@@ -110,10 +110,11 @@ public class CommentControllerTest {
 
 	@SneakyThrows
 	@Test
-	public void editsCommentWithAuthenticatedUser() {
-		User author = authenticateUser(saveTestUser());
+	public void editsCommentWithAuthenticatedUserAsAuthor() {
+		User author = saveTestUser();
 		Post post = saveTestPost(author);
 		Comment comment = saveTestComment(post, author, OLD_COMMENT_TEXT);
+		authenticateUser(author);
 
 		performEditComment(comment.getId(), NEW_COMMENT_TEXT)//
 				.andExpect(status().isOk())//
@@ -135,25 +136,25 @@ public class CommentControllerTest {
 
 	@SneakyThrows
 	@Test
+	public void doesNotEditCommentWithAuthenticatedUserAsNonAuthor() {
+		User author = saveTestUser();
+		Post post = saveTestPost(author);
+		Comment comment = saveTestComment(post, author, OLD_COMMENT_TEXT);
+		authenticateUser(saveTestUser("non-author", "na@example.com", UserRole.USER));
+
+		performEditComment(comment.getId(), NEW_COMMENT_TEXT)//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isForbidden());
+	}
+
+	@SneakyThrows
+	@Test
 	public void doesNotEditCommentOnCommentNotFound() {
 		authenticateUser(saveTestUser());
 
 		performEditComment(1l, NEW_COMMENT_TEXT)//
 				.andExpect(status().is4xxClientError())//
 				.andExpect(status().isNotFound());
-	}
-
-	@SneakyThrows
-	@Test
-	public void doesNotEditCommentByNonAuthorUser() {
-		User author = saveTestUser();
-		Post post = saveTestPost(author);
-		Comment comment = saveTestComment(post, author, OLD_COMMENT_TEXT);
-		authenticateUser(saveTestUser("testuser2", "test2@example.com"));
-
-		performEditComment(comment.getId(), NEW_COMMENT_TEXT)//
-				.andExpect(status().is4xxClientError())//
-				.andExpect(status().isForbidden());
 	}
 
 	@SneakyThrows
@@ -172,10 +173,22 @@ public class CommentControllerTest {
 
 	@SneakyThrows
 	@Test
-	public void deletesCommentWithAuthenticatedUser() {
+	public void deletesCommentWithAuthenticatedUserAsAuthor() {
 		User author = authenticateUser(saveTestUser());
 		Post post = saveTestPost(author);
 		Comment comment = saveTestComment(post, author, OLD_COMMENT_TEXT);
+
+		performDeleteComment(comment.getId())//
+				.andExpect(status().isNoContent());
+	}
+
+	@SneakyThrows
+	@Test
+	public void deletesCommentWithAuthenticatedUserAsModerator() {
+		User author = saveTestUser();
+		Post post = saveTestPost(author);
+		Comment comment = saveTestComment(post, author, OLD_COMMENT_TEXT);
+		authenticateUser(saveTestUser("moderator", "mod@example.com", UserRole.MODERATOR));
 
 		performDeleteComment(comment.getId())//
 				.andExpect(status().isNoContent());
@@ -195,25 +208,25 @@ public class CommentControllerTest {
 
 	@SneakyThrows
 	@Test
+	public void doesNotDeleteCommentWithAuthenticatedUserAsNonAuthorNorModerator() {
+		User author = saveTestUser();
+		Post post = saveTestPost(author);
+		Comment comment = saveTestComment(post, author, OLD_COMMENT_TEXT);
+		authenticateUser(saveTestUser("non-author", "na@example.com", UserRole.USER));
+
+		performDeleteComment(comment.getId())//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isForbidden());
+	}
+
+	@SneakyThrows
+	@Test
 	public void doesNotDeleteCommentOnCommentNotFound() {
 		authenticateUser(saveTestUser());
 
 		performDeleteComment(1l)//
 				.andExpect(status().is4xxClientError())//
 				.andExpect(status().isNotFound());
-	}
-
-	@SneakyThrows
-	@Test
-	public void doesNotDeleteCommentByNonAuthorUser() {
-		User author = saveTestUser();
-		Post post = saveTestPost(author);
-		Comment comment = saveTestComment(post, author, OLD_COMMENT_TEXT);
-		authenticateUser(saveTestUser("testuser2", "test2@example.com"));
-
-		performDeleteComment(comment.getId())//
-				.andExpect(status().is4xxClientError())//
-				.andExpect(status().isForbidden());
 	}
 
 	@SneakyThrows
@@ -224,7 +237,7 @@ public class CommentControllerTest {
 
 	@SneakyThrows
 	@Test
-	public void retrievesCommentsByPost() {
+	public void retrievesAllCommentsByPost() {
 		User author = saveTestUser();
 		Post post = saveTestPost(author);
 
@@ -236,6 +249,18 @@ public class CommentControllerTest {
 				.andExpect(status().isOk())//
 				.andExpect(jsonPath("$").isArray())//
 				.andExpect(jsonPath("$", hasSize(commentCount)));
+	}
+
+	@SneakyThrows
+	@Test
+	public void retrievesNoCommentsByPost() {
+		User author = saveTestUser();
+		Post post = saveTestPost(author);
+
+		performGetCommentsByPost(post.getId())//
+				.andExpect(status().isOk())//
+				.andExpect(jsonPath("$").isArray())//
+				.andExpect(jsonPath("$", hasSize(0)));
 	}
 
 	@SneakyThrows
@@ -259,23 +284,23 @@ public class CommentControllerTest {
 		return user;
 	}
 
-	private User saveTestUser(String username, String email) {
+	private User saveTestUser(String username, String email, UserRole role) {
 		User user = new User();
 		user.getCredentials().setEmail(email);
 		user.getCredentials().setUsername(username);
 		user.getCredentials().setPasswordHash("password-hash");
-		user.setRole(UserRole.USER);
+		user.setRole(role);
 		return userRepository.saveAndFlush(user);
 	}
 
 	private User saveTestUser() {
-		return saveTestUser("testuser", "test@example.com");
+		return saveTestUser("testuser", "test@example.com", UserRole.USER);
 	}
 
-	private Comment saveTestComment(Post post, User user, String text) {
+	private Comment saveTestComment(Post post, User author, String text) {
 		Comment comment = new Comment();
-		comment.getPostAndUser().setPost(post);
-		comment.getPostAndUser().setUser(user);
+		comment.setPost(post);
+		comment.setAuthor(author);
 		comment.setText(text);
 		return commentRepository.saveAndFlush(comment);
 	}

@@ -9,7 +9,7 @@ import com.kaba4cow.imgxiv.domain.user.User;
 
 public interface CommentService {
 
-	CommentDto createComment(CommentCreateRequest request, User user);
+	CommentDto createComment(CommentCreateRequest request, User author);
 
 	CommentDto editComment(CommentEditRequest request, User user);
 
