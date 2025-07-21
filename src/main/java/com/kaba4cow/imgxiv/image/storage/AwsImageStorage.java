@@ -4,6 +4,7 @@ import java.io.InputStream;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kaba4cow.imgxiv.common.exception.ImageUploadException;
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
@@ -27,11 +28,13 @@ public class AwsImageStorage implements ImageStorage {
 	private String bucketName;
 
 	@Override
-	public void uploadImage(String storageKey, String contentType, long contentLength, InputStream input) {
+	public void uploadImage(String storageKey, MultipartFile file) {
+		String contentType = file.getContentType();
+		long contentLength = file.getSize();
 		try {
 			s3Client.putObject(//
 					buildPutRequest(storageKey, contentLength, contentType), //
-					buildPutRequestBody(input, contentLength)//
+					buildPutRequestBody(file.getInputStream(), contentLength)//
 			);
 			log.info("Image upload successfull: storageKey={} contentType={} contentLength={}", storageKey, contentType,
 					contentLength);
