@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
+import com.kaba4cow.imgxiv.image.storage.StorageKeyGenerator;
 
 import jakarta.persistence.Column;
 import lombok.SneakyThrows;
