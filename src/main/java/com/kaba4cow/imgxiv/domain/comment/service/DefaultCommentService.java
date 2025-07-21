@@ -10,10 +10,10 @@ import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentEditRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentMapper;
+import com.kaba4cow.imgxiv.domain.comment.factory.CommentFactory;
 import com.kaba4cow.imgxiv.domain.comment.security.CommentSecurity;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
-import com.kaba4cow.imgxiv.util.PersistLog;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,17 +25,15 @@ public class DefaultCommentService implements CommentService {
 
 	private final CommentRepository commentRepository;
 
+	private final CommentFactory commentFactory;
+
 	private final CommentSecurity commentSecurity;
 
 	private final CommentMapper commentMapper;
 
 	@Override
 	public CommentDto createComment(CommentCreateRequest request, User author) {
-		Comment comment = new Comment();
-		comment.setPost(postRepository.findByIdOrThrow(request.getPostId()));
-		comment.setAuthor(author);
-		comment.setText(request.getText());
-		return commentMapper.mapToDto(PersistLog.log(commentRepository.save(comment)));
+		return commentMapper.mapToDto(commentFactory.createComment(request, author));
 	}
 
 	@Override
