@@ -1,11 +1,10 @@
 package com.kaba4cow.imgxiv.image.service;
 
-import java.io.InputStream;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
+import com.kaba4cow.imgxiv.image.ImageResource;
 import com.kaba4cow.imgxiv.image.storage.ImageStorage;
 import com.kaba4cow.imgxiv.image.storage.StorageKeyGenerator;
 
@@ -32,8 +31,12 @@ public class DefaultImageService implements ImageService {
 	}
 
 	@Override
-	public InputStream getImage(PostImage postImage) {
-		return imageStorage.getImage(postImage.getStorageKey());
+	public ImageResource getImage(PostImage postImage) {
+		return new ImageResource(//
+				imageStorage.getImage(postImage.getStorageKey()), //
+				postImage.getFileSize(), //
+				postImage.getContentType()//
+		);
 	}
 
 	@Override
