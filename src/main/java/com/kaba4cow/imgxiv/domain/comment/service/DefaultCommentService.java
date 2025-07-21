@@ -1,7 +1,9 @@
 package com.kaba4cow.imgxiv.domain.comment.service;
 
 import java.util.List;
+import java.util.Objects;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.domain.comment.Comment;
@@ -28,25 +30,26 @@ public class DefaultCommentService implements CommentService {
 
 	@Override
 	public CommentDto createComment(CommentCreateRequest request, User user) {
-		return commentMapper.mapToDto(PersistLog.log(saveComment(request, user)));
-	}
-
-	private Comment saveComment(CommentCreateRequest request, User user) {
 		Comment comment = new Comment();
 		comment.getPostAndUser().setPost(postRepository.findByIdOrThrow(request.getPostId()));
 		comment.getPostAndUser().setUser(user);
 		comment.setText(request.getText());
-		return commentRepository.save(comment);
+		return commentMapper.mapToDto(PersistLog.log(commentRepository.save(comment)));
 	}
 
 	@Override
 	public CommentDto editComment(CommentEditRequest request, User user) {
-		throw new UnsupportedOperationException();
+		Comment comment = commentRepository.findByIdOrThrow(request.getId());
+		ensureUserIsAuthor(user, comment);
+		comment.setText(request.getText());
+		return commentMapper.mapToDto(commentRepository.save(comment));
 	}
 
 	@Override
-	public CommentDto deleteComment(Long id, User user) {
-		throw new UnsupportedOperationException();
+	public void deleteComment(Long id, User user) {
+		Comment comment = commentRepository.findByIdOrThrow(id);
+		ensureUserIsAuthor(user, comment);
+		commentRepository.delete(comment);
 	}
 
 	@Override
@@ -54,6 +57,11 @@ public class DefaultCommentService implements CommentService {
 		return commentRepository.findByPost(postRepository.findByIdOrThrow(postId)).stream()//
 				.map(commentMapper::mapToDto)//
 				.toList();
+	}
+
+	private void ensureUserIsAuthor(User user, Comment comment) {
+		if (!Objects.equals(user.getId(), comment.getPostAndUser().getUser().getId()))
+			throw new AccessDeniedException("Access denied. Not an author");
 	}
 
 }
