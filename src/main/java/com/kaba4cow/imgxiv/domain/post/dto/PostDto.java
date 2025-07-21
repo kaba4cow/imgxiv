@@ -20,6 +20,8 @@ public class PostDto {
 
 	private Set<Long> tagIds;
 
+	private String imageUrl;
+
 	private LocalDateTime createdAt;
 
 	private LocalDateTime updatedAt;
