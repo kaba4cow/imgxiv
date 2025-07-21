@@ -1,7 +1,6 @@
 package com.kaba4cow.imgxiv.common.advice;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,7 +15,7 @@ import com.kaba4cow.imgxiv.common.exception.ConflictException;
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends AbstractExceptionHandler {
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ExceptionHandlerResponseEntity handleMethodArgumentNotValid(MethodArgumentNotValidException exception) {
@@ -64,20 +63,6 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	public ExceptionHandlerResponseEntity handleAll(Exception exception) {
 		return defaultResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error");
-	}
-
-	private ExceptionHandlerResponseEntity defaultResponse(HttpStatusCode status, Exception exception) {
-		return new ExceptionHandlerResponseBuilder()//
-				.status(status)//
-				.error(exception)//
-				.build();
-	}
-
-	private ExceptionHandlerResponseEntity defaultResponse(HttpStatusCode status, String error) {
-		return new ExceptionHandlerResponseBuilder()//
-				.status(status)//
-				.error("error", error)//
-				.build();
 	}
 
 }
