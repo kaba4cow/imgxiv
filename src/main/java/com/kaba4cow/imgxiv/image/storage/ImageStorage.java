@@ -12,4 +12,6 @@ public interface ImageStorage {
 
 	void deleteImage(String storageKey);
 
+	void clearStorage();
+
 }
