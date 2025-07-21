@@ -18,3 +18,10 @@ springdoc:
     swagger-ui:
         path: /docs
         display-operation-id: true
+
+feature:
+    posts:
+        query-caching:
+            enable: true
+        specification-caching:
+            enable: true
