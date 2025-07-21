@@ -13,7 +13,7 @@ public interface CommentService {
 
 	CommentDto editComment(CommentEditRequest request, User user);
 
-	CommentDto deleteComment(Long id, User user);
+	void deleteComment(Long id, User user);
 
 	List<CommentDto> getCommentsByPost(Long postId);
 
