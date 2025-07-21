@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.kaba4cow.imgxiv.domain.base.EntityWithId;
 import com.kaba4cow.imgxiv.domain.embeddable.CreatedAt;
+import com.kaba4cow.imgxiv.domain.embeddable.UpdatedAt;
 import com.kaba4cow.imgxiv.domain.link.posttag.PostTag;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.user.User;
@@ -46,6 +47,9 @@ public class Post extends EntityWithId {
 
 	@Embedded
 	private CreatedAt createdAt = new CreatedAt();
+
+	@Embedded
+	private UpdatedAt updatedAt = new UpdatedAt();
 
 	public Set<Tag> getTags() {
 		return postTags.stream()//

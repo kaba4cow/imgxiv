@@ -16,7 +16,9 @@ public class PostMapper {
 				post.getAuthor().getId(), //
 				post.getTags().stream()//
 						.map(Tag::getId)//
-						.collect(Collectors.toSet())//
+						.collect(Collectors.toSet()), //
+				post.getCreatedAt().getTimestamp(), //
+				post.getUpdatedAt().getTimestamp()//
 		);
 	}
 
