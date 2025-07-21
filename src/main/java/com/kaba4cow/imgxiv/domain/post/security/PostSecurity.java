@@ -14,7 +14,7 @@ public class PostSecurity {
 
 	private final PostRepository postRepository;
 
-	@PostAuthorize("returnObject.author.id == principal.id")
+	@PostAuthorize("returnObject.author.id == principal.id or hasRole('moderator')")
 	public Post getPostToEdit(Long id) {
 		return postRepository.findByIdOrThrow(id);
 	}
