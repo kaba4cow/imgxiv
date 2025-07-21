@@ -12,11 +12,11 @@ import com.kaba4cow.imgxiv.domain.user.User;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-	@Query("SELECT c FROM Comment c WHERE c.postAndUser.post = :post")
+	@Query("SELECT c FROM Comment c WHERE c.post = :post")
 	List<Comment> findByPost(@Param("post") Post post);
 
-	@Query("SELECT c FROM Comment c WHERE c.postAndUser.user = :user")
-	List<Comment> findByUser(@Param("user") User user);
+	@Query("SELECT c FROM Comment c WHERE c.author = :author")
+	List<Comment> findByAuthor(@Param("author") User author);
 
 	default Comment findByIdOrThrow(Long id) {
 		return findById(id).orElseThrow(() -> new NotFoundException(String.format("Comment not found: %s", id)));
