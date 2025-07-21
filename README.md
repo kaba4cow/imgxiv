@@ -11,7 +11,7 @@
 
 - JWT-based authentication
 - Tag-based post querying
-- Voting system
+- Commenting and voting on posts
 - In-memory caching
 - Swagger UI for testing the API
 - Role-based access control

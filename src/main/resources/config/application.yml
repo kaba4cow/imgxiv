@@ -6,7 +6,6 @@ spring:
     config:
         import:
             - secret.yml
-            - roles.yml
     jpa:
         show-sql: false
         properties:
