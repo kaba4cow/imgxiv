@@ -12,6 +12,7 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.query.CompiledPostQuery;
 import com.kaba4cow.imgxiv.domain.post.query.NormalizedPostQuery;
 import com.kaba4cow.imgxiv.domain.post.query.PostQueryNormalizer;
+import com.kaba4cow.imgxiv.domain.post.service.query.PostQueryService;
 import com.kaba4cow.imgxiv.domain.post.specification.PostSpecification;
 
 import lombok.RequiredArgsConstructor;

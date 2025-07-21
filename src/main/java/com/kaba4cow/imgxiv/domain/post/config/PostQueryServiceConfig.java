@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.kaba4cow.imgxiv.domain.post.service.CachedPostQueryService;
-import com.kaba4cow.imgxiv.domain.post.service.DefaultPostQueryService;
-import com.kaba4cow.imgxiv.domain.post.service.PostQueryService;
+import com.kaba4cow.imgxiv.domain.post.service.query.CachedPostQueryService;
+import com.kaba4cow.imgxiv.domain.post.service.query.DefaultPostQueryService;
+import com.kaba4cow.imgxiv.domain.post.service.query.PostQueryService;
 
 import lombok.RequiredArgsConstructor;
 
