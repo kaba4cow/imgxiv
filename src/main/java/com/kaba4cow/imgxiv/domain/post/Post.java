@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.kaba4cow.imgxiv.domain.base.EntityWithId;
 import com.kaba4cow.imgxiv.domain.embeddable.CreatedAt;
+import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
 import com.kaba4cow.imgxiv.domain.embeddable.UpdatedAt;
 import com.kaba4cow.imgxiv.domain.link.posttag.PostTag;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
@@ -44,6 +45,9 @@ public class Post extends EntityWithId {
 	@ToString.Exclude
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<PostTag> postTags = new HashSet<>();
+
+	@Embedded
+	private PostImage postImage = new PostImage();
 
 	@Embedded
 	private CreatedAt createdAt = new CreatedAt();
