@@ -3,7 +3,7 @@ package com.kaba4cow.imgxiv.storage;
 import java.io.InputStream;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.kaba4cow.imgxiv.common.exception.ImageUploadException;
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
@@ -18,7 +18,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Slf4j
 @RequiredArgsConstructor
-@Service
+@Component
 public class AwsImageStorage implements ImageStorage {
 
 	private final S3Client s3Client;
