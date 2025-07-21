@@ -19,7 +19,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class AwsImageStorageService implements ImageStorageService {
+public class AwsImageStorage implements ImageStorage {
 
 	private final S3Client s3Client;
 
