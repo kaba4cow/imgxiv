@@ -10,14 +10,13 @@ import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentEditRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentMapper;
+import com.kaba4cow.imgxiv.domain.comment.factory.CommentFactory;
 import com.kaba4cow.imgxiv.domain.comment.security.CommentSecurity;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class DefaultCommentService implements CommentService {
@@ -26,19 +25,15 @@ public class DefaultCommentService implements CommentService {
 
 	private final CommentRepository commentRepository;
 
+	private final CommentFactory commentFactory;
+
 	private final CommentSecurity commentSecurity;
 
 	private final CommentMapper commentMapper;
 
 	@Override
 	public CommentDto createComment(CommentCreateRequest request, User author) {
-		Comment comment = new Comment();
-		comment.setPost(postRepository.findByIdOrThrow(request.getPostId()));
-		comment.setAuthor(author);
-		comment.setText(request.getText());
-		Comment saved = commentRepository.save(comment);
-		log.info("Created new comment: {}", saved);
-		return commentMapper.mapToDto(saved);
+		return commentMapper.mapToDto(commentFactory.createComment(request, author));
 	}
 
 	@Override
