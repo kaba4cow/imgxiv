@@ -36,6 +36,11 @@ public class GlobalExceptionHandler {
 		return defaultResponse(HttpStatus.NOT_FOUND, exception);
 	}
 
+	@ExceptionHandler(UnsupportedOperationException.class)
+	public ExceptionHandlerResponseEntity handleUnsupportedOperation(UnsupportedOperationException exception) {
+		return defaultResponse(HttpStatus.NOT_IMPLEMENTED, exception);
+	}
+
 	@ExceptionHandler(ConflictException.class)
 	public ExceptionHandlerResponseEntity handleConflict(ConflictException exception) {
 		return defaultResponse(HttpStatus.CONFLICT, exception);
