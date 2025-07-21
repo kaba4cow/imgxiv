@@ -31,10 +31,10 @@ public class AwsImageStorage implements ImageStorage {
 	public void uploadImage(String storageKey, MultipartFile file) {
 		String contentType = file.getContentType();
 		long contentLength = file.getSize();
-		try {
+		try (InputStream input = file.getInputStream()) {
 			s3Client.putObject(//
 					buildPutRequest(storageKey, contentLength, contentType), //
-					buildPutRequestBody(file.getInputStream(), contentLength)//
+					buildPutRequestBody(input, contentLength)//
 			);
 			log.info("Image upload successfull: storageKey={} contentType={} contentLength={}", storageKey, contentType,
 					contentLength);
