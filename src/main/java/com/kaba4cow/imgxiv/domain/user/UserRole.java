@@ -14,7 +14,13 @@ public enum UserRole {
 	)), //
 	MODERATOR("moderator", Set.of(//
 			"create-category", //
-			"create-tag"//
+
+			"create-tag", //
+
+			"edit-post-na", //
+			"delete-post-na", //
+
+			"delete-comment-na" //
 	)), //
 	ADMIN("admin", Set.of(//
 			"assign-moderator"//
