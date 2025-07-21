@@ -16,12 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kaba4cow.imgxiv.auth.userdetails.UserDetailsAdapter;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.post.Post;
@@ -31,7 +29,6 @@ import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.UserRole;
-import com.kaba4cow.imgxiv.domain.user.role.UserAuthorityRegistry;
 
 import lombok.SneakyThrows;
 
@@ -60,9 +57,6 @@ public class CommentControllerTest {
 
 	@Autowired
 	private CommentRepository commentRepository;
-
-	@Autowired
-	private UserAuthorityRegistry userAuthorityRegistry;
 
 	@SneakyThrows
 	@Test
@@ -278,8 +272,7 @@ public class CommentControllerTest {
 	}
 
 	private User authenticateUser(User user) {
-		UserDetails userDetails = UserDetailsAdapter.of(user, userAuthorityRegistry);
-		Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+		Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		return user;
 	}
