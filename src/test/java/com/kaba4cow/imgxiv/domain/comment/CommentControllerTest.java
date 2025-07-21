@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,11 +80,10 @@ public class CommentControllerTest {
 	}
 
 	@SneakyThrows
+	@WithMockUser
 	@Test
 	public void doesNotCreateCommentOnPostNotFound() {
-		authenticateUser(saveTestUser());
-
-		performCreateComment(1l, OLD_COMMENT_TEXT)//
+		performCreateComment(Long.MAX_VALUE, OLD_COMMENT_TEXT)//
 				.andExpect(status().is4xxClientError())//
 				.andExpect(status().isNotFound());
 	}
@@ -142,11 +142,10 @@ public class CommentControllerTest {
 	}
 
 	@SneakyThrows
+	@WithMockUser
 	@Test
 	public void doesNotEditCommentOnCommentNotFound() {
-		authenticateUser(saveTestUser());
-
-		performEditComment(1l, NEW_COMMENT_TEXT)//
+		performEditComment(Long.MAX_VALUE, NEW_COMMENT_TEXT)//
 				.andExpect(status().is4xxClientError())//
 				.andExpect(status().isNotFound());
 	}
@@ -214,11 +213,12 @@ public class CommentControllerTest {
 	}
 
 	@SneakyThrows
+	@WithMockUser
 	@Test
 	public void doesNotDeleteCommentOnCommentNotFound() {
 		authenticateUser(saveTestUser());
 
-		performDeleteComment(1l)//
+		performDeleteComment(Long.MAX_VALUE)//
 				.andExpect(status().is4xxClientError())//
 				.andExpect(status().isNotFound());
 	}
