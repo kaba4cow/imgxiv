@@ -55,7 +55,7 @@ public class CommentController extends CurrentUserAwareController {
 	@IsAuthenticated
 	@PatchMapping
 	public ResponseEntity<CommentDto> editComment(@Valid @RequestBody CommentEditRequest request) {
-		return ResponseEntity.ok(commentService.editComment(request, getCurrentUser()));
+		return ResponseEntity.ok(commentService.editComment(request));
 	}
 
 	@Operation(//
@@ -70,7 +70,7 @@ public class CommentController extends CurrentUserAwareController {
 					example = "1"//
 			) //
 			@RequestParam("id") @NotNull Long id) {
-		commentService.deleteComment(id, getCurrentUser());
+		commentService.deleteComment(id);
 		return ResponseEntity.noContent().build();
 	}
 

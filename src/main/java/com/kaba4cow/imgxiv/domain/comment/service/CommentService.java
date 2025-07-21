@@ -11,9 +11,9 @@ public interface CommentService {
 
 	CommentDto createComment(CommentCreateRequest request, User author);
 
-	CommentDto editComment(CommentEditRequest request, User user);
+	CommentDto editComment(CommentEditRequest request);
 
-	void deleteComment(Long id, User user);
+	void deleteComment(Long id);
 
 	List<CommentDto> getCommentsByPost(Long postId);
 
