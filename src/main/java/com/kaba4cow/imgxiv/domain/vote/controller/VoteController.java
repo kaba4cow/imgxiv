@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
-import com.kaba4cow.imgxiv.common.controller.CurrentUserAwareController;
+import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteCreateRequest;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteDeleteRequest;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteRequest;
@@ -29,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 )
 @RequestMapping("/api/votes")
 @RestController
-public class VoteController extends CurrentUserAwareController {
+public class VoteController {
 
 	private final VoteService voteService;
 
@@ -39,8 +40,8 @@ public class VoteController extends CurrentUserAwareController {
 	)
 	@IsAuthenticated
 	@PostMapping
-	public ResponseEntity<Void> createVote(@Valid @RequestBody VoteCreateRequest request) {
-		voteService.createVote(request, getCurrentUser());
+	public ResponseEntity<Void> createVote(@Valid @RequestBody VoteCreateRequest request, @CurrentUser User user) {
+		voteService.createVote(request, user);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -50,8 +51,8 @@ public class VoteController extends CurrentUserAwareController {
 	)
 	@IsAuthenticated
 	@DeleteMapping
-	public ResponseEntity<Void> deleteVote(@Valid @RequestBody VoteDeleteRequest request) {
-		voteService.deleteVote(request, getCurrentUser());
+	public ResponseEntity<Void> deleteVote(@Valid @RequestBody VoteDeleteRequest request, @CurrentUser User user) {
+		voteService.deleteVote(request, user);
 		return ResponseEntity.noContent().build();
 	}
 
