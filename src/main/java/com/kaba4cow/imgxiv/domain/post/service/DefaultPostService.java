@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
@@ -15,6 +16,7 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.security.PostSecurity;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.image.service.ImageService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,14 +32,17 @@ public class DefaultPostService implements PostService {
 
 	private final TagRepository tagRepository;
 
+	private final ImageService imageService;
+
 	private final PostSecurity postSecurity;
 
 	private final PostMapper postMapper;
 
 	@Override
-	public PostDto createPost(PostCreateRequest request, User author) {
+	public PostDto createPost(PostCreateRequest request, MultipartFile image, User author) {
 		Post post = Post.builder()//
 				.author(author)//
+				.postImage(imageService.createImage(image))//
 				.build();
 		tagRepository.findByIdsOrThrow(request.getTagIds())//
 				.forEach(post::addTag);
