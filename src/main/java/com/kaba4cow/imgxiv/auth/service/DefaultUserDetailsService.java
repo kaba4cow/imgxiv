@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.auth.userdetails;
+package com.kaba4cow.imgxiv.auth.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
