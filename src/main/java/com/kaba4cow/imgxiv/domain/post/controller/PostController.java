@@ -5,20 +5,17 @@ import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
-import com.kaba4cow.imgxiv.common.validation.jakarta.ContentType;
-import com.kaba4cow.imgxiv.common.validation.jakarta.FileSize;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostEditRequest;
@@ -50,15 +47,8 @@ public class PostController {
 	)
 	@IsAuthenticated
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<PostDto> createPost(//
-			@Valid @RequestPart("post") PostCreateRequest request, //
-
-			@FileSize(max = 16L * 1024L * 1024L, message = "File size must not exceed 16MB") //
-			@ContentType(allowed = { "image/jpeg", "image/png" }, message = "Unsupported content type") //
-			@RequestPart("image") MultipartFile image, //
-
-			@CurrentUser User user) {
-		return ResponseEntity.ok(postService.createPost(request, image, user));
+	public ResponseEntity<PostDto> createPost(@Valid @ModelAttribute PostCreateRequest request, @CurrentUser User user) {
+		return ResponseEntity.ok(postService.createPost(request, user));
 	}
 
 	@Operation(//
