@@ -1,5 +1,10 @@
 package com.kaba4cow.imgxiv.domain.user;
 
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.kaba4cow.imgxiv.domain.base.EntityWithId;
 import com.kaba4cow.imgxiv.domain.embeddable.CreatedAt;
 import com.kaba4cow.imgxiv.domain.embeddable.Credentials;
@@ -27,7 +32,9 @@ import lombok.ToString;
 		@UniqueConstraint(columnNames = "column_username"), //
 		@UniqueConstraint(columnNames = "column_email") //
 })
-public class User extends EntityWithId {
+public class User extends EntityWithId implements UserDetails {
+
+	private static final long serialVersionUID = 1L;
 
 	@Embedded
 	private Credentials credentials = new Credentials();
@@ -38,5 +45,20 @@ public class User extends EntityWithId {
 
 	@Embedded
 	private CreatedAt createdAt = new CreatedAt();
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return role.getAuthorities();
+	}
+
+	@Override
+	public String getPassword() {
+		return getCredentials().getPasswordHash();
+	}
+
+	@Override
+	public String getUsername() {
+		return getId().toString();
+	}
 
 }
