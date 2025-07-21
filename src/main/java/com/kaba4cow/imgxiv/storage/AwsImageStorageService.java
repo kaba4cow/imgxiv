@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
@@ -65,6 +66,18 @@ public class AwsImageStorageService implements ImageStorageService {
 
 	private GetObjectRequest buildGetObjectRequest(String storageKey) {
 		return GetObjectRequest.builder()//
+				.bucket(bucketName)//
+				.key(storageKey)//
+				.build();
+	}
+
+	@Override
+	public void deleteImage(String storageKey) {
+		s3Client.deleteObject(buildDeleteObjectRequest(storageKey));
+	}
+
+	private DeleteObjectRequest buildDeleteObjectRequest(String storageKey) {
+		return DeleteObjectRequest.builder()//
 				.bucket(bucketName)//
 				.key(storageKey)//
 				.build();

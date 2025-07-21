@@ -8,4 +8,6 @@ public interface ImageStorageService {
 
 	InputStream getImage(String storageKey);
 
+	void deleteImage(String storageKey);
+
 }
