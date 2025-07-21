@@ -23,6 +23,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,6 +34,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@Builder
 @Entity
 @Table(name = "table_post")
 public class Post extends EntityWithId {
@@ -43,15 +45,19 @@ public class Post extends EntityWithId {
 	private User author;
 
 	@ToString.Exclude
+	@Builder.Default
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<PostTag> postTags = new HashSet<>();
 
+	@Builder.Default
 	@Embedded
 	private PostImage postImage = new PostImage();
 
+	@Builder.Default
 	@Embedded
 	private CreatedAt createdAt = new CreatedAt();
 
+	@Builder.Default
 	@Embedded
 	private UpdatedAt updatedAt = new UpdatedAt();
 

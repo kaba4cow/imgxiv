@@ -36,8 +36,9 @@ public class DefaultPostService implements PostService {
 
 	@Override
 	public PostDto createPost(PostCreateRequest request, User author) {
-		Post post = new Post();
-		post.setAuthor(author);
+		Post post = Post.builder()//
+				.author(author)//
+				.build();
 		tagRepository.findByIdsOrThrow(request.getTagIds())//
 				.forEach(post::addTag);
 		Post saved = postRepository.save(post);
