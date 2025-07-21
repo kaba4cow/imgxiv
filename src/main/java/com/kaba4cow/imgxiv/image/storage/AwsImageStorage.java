@@ -43,10 +43,10 @@ public class AwsImageStorage implements ImageStorage {
 					buildPutRequest(storageKey, contentLength, contentType), //
 					buildPutRequestBody(input, contentLength)//
 			);
-			log.info("Image upload successful: storageKey={} contentType={} contentLength={}", storageKey, contentType,
+			log.info("Image upload successful: storageKey={}, contentType={}, contentLength={}", storageKey, contentType,
 					contentLength);
 		} catch (Exception exception) {
-			log.info("Image upload failed: storageKey={} contentType={} contentLength={}. Cause: {}", storageKey, contentType,
+			log.info("Image upload failed: storageKey={}, contentType={}, contentLength={}. Cause: {}", storageKey, contentType,
 					contentLength, exception.getMessage(), exception);
 			throw new ImageUploadException("Failed to upload image to S3", exception);
 		}
