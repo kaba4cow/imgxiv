@@ -25,12 +25,12 @@ public class DefaultPostService implements PostService {
 	private final PostMapper postMapper;
 
 	@Override
-	public PostDto create(PostCreateRequest request, User author) {
+	public PostDto createPost(PostCreateRequest request, User author) {
 		return postMapper.mapToDto(postFactory.createPost(request, author));
 	}
 
 	@Override
-	public List<PostDto> findByQuery(PostQueryRequest request) {
+	public List<PostDto> findPostsByQuery(PostQueryRequest request) {
 		return postQueryExecutorService.executeQuery(request)//
 				.map(postMapper::mapToDto)//
 				.collect(Collectors.toList());

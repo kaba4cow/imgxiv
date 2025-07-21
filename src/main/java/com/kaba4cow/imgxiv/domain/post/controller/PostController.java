@@ -40,7 +40,7 @@ public class PostController {
 	@IsAuthenticated
 	@PostMapping
 	public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostCreateRequest request, @CurrentUser User user) {
-		return ResponseEntity.ok(postService.create(request, user));
+		return ResponseEntity.ok(postService.createPost(request, user));
 	}
 
 	@Operation(//
@@ -50,7 +50,7 @@ public class PostController {
 	@PermitAll
 	@PostMapping("/search")
 	public ResponseEntity<List<PostDto>> searchPosts(@Valid @RequestBody PostQueryRequest request) {
-		return ResponseEntity.ok(postService.findByQuery(request));
+		return ResponseEntity.ok(postService.findPostsByQuery(request));
 	}
 
 }
