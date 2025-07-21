@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.kaba4cow.imgxiv.auth.userdetails.UserDetailsAdapter;
 import com.kaba4cow.imgxiv.domain.user.User;
 
 import lombok.RequiredArgsConstructor;
@@ -37,8 +36,8 @@ public class CurrentUserService {
 
 	public Optional<User> getUser() {
 		UserDetails userDetails = getDetails();
-		if (userDetails instanceof UserDetailsAdapter adapter)
-			return Optional.of(adapter.getUser());
+		if (userDetails instanceof User user)
+			return Optional.of((User) userDetails);
 		return Optional.empty();
 	}
 
