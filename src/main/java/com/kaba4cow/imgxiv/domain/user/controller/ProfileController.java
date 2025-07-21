@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
-import com.kaba4cow.imgxiv.common.controller.CurrentUserAwareController;
+import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeEmailRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangePasswordRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeUsernameRequest;
@@ -28,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 )
 @RequestMapping("/api/profile")
 @RestController
-public class ProfileController extends CurrentUserAwareController {
+public class ProfileController {
 
 	private final ProfileService profileService;
 
@@ -40,8 +41,8 @@ public class ProfileController extends CurrentUserAwareController {
 	)
 	@IsAuthenticated
 	@GetMapping("/me")
-	public ResponseEntity<UserDto> getUserInfo() {
-		return ResponseEntity.ok(userMapper.mapToDto(getCurrentUser()));
+	public ResponseEntity<UserDto> getUserInfo(@CurrentUser User user) {
+		return ResponseEntity.ok(userMapper.mapToDto(user));
 	}
 
 	@Operation(//
@@ -50,8 +51,8 @@ public class ProfileController extends CurrentUserAwareController {
 	)
 	@IsAuthenticated
 	@PatchMapping("/username")
-	public ResponseEntity<UserDto> changeUsername(@Valid @RequestBody ChangeUsernameRequest request) {
-		UserDto result = profileService.changeUsername(request, getCurrentUser());
+	public ResponseEntity<UserDto> changeUsername(@Valid @RequestBody ChangeUsernameRequest request, @CurrentUser User user) {
+		UserDto result = profileService.changeUsername(request, user);
 		return ResponseEntity.ok(result);
 	}
 
@@ -61,8 +62,8 @@ public class ProfileController extends CurrentUserAwareController {
 	)
 	@IsAuthenticated
 	@PatchMapping("/email")
-	public ResponseEntity<UserDto> changeEmail(@Valid @RequestBody ChangeEmailRequest request) {
-		UserDto result = profileService.changeEmail(request, getCurrentUser());
+	public ResponseEntity<UserDto> changeEmail(@Valid @RequestBody ChangeEmailRequest request, @CurrentUser User user) {
+		UserDto result = profileService.changeEmail(request, user);
 		return ResponseEntity.ok(result);
 	}
 
@@ -72,8 +73,8 @@ public class ProfileController extends CurrentUserAwareController {
 	)
 	@IsAuthenticated
 	@PatchMapping("/password")
-	public ResponseEntity<Void> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
-		profileService.changePassword(request, getCurrentUser());
+	public ResponseEntity<Void> changePassword(@Valid @RequestBody ChangePasswordRequest request, @CurrentUser User user) {
+		profileService.changePassword(request, user);
 		return ResponseEntity.noContent().build();
 	}
 
