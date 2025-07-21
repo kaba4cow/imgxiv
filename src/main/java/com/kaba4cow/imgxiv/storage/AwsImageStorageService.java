@@ -24,16 +24,17 @@ public class AwsImageStorageService implements ImageStorageService {
 	private String bucketName;
 
 	@Override
-	public void uploadImage(String key, InputStream input, long contentLength, String contentType) {
+	public void uploadImage(String storageKey, InputStream input, long contentLength, String contentType) {
 		try {
 			s3Client.putObject(//
-					buildRequestHeader(key, contentLength, contentType), //
+					buildRequestHeader(storageKey, contentLength, contentType), //
 					buildRequestBody(input, contentLength)//
 			);
-			log.info("Image upload successfull: key={} contentType={} contentLength={}", key, contentType, contentLength);
+			log.info("Image upload successfull: storageKey={} contentType={} contentLength={}", storageKey, contentType,
+					contentLength);
 		} catch (Exception exception) {
-			log.info("Image upload failed: key={} contentType={} contentLength={}. Cause: {}", key, contentType, contentLength,
-					exception.getMessage());
+			log.info("Image upload failed: storageKey={} contentType={} contentLength={}. Cause: {}", storageKey, contentType,
+					contentLength, exception.getMessage());
 			throw new ImageUploadException("Failed to upload image to S3", exception);
 		}
 	}
