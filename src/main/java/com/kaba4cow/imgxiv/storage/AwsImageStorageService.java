@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import com.kaba4cow.imgxiv.common.exception.ImageUploadException;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class AwsImageStorageService implements ImageStorageService {
@@ -33,7 +35,10 @@ public class AwsImageStorageService implements ImageStorageService {
 							.build(), //
 					RequestBody.fromInputStream(input, contentLength)//
 			);
+			log.info("Image upload successfull: key={} contentType={} contentLength={}", key, contentType, contentLength);
 		} catch (Exception exception) {
+			log.info("Image upload failed: key={} contentType={} contentLength={}. Cause: {}", key, contentType, contentLength,
+					exception.getMessage());
 			throw new ImageUploadException("Failed to upload image to S3", exception);
 		}
 	}
