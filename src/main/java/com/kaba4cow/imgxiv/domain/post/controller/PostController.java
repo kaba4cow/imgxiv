@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
-import com.kaba4cow.imgxiv.common.controller.CurrentUserAwareController;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.service.PostService;
+import com.kaba4cow.imgxiv.domain.user.User;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 )
 @RequestMapping("/api/posts")
 @RestController
-public class PostController extends CurrentUserAwareController {
+public class PostController {
 
 	private final PostService postService;
 
@@ -38,8 +39,8 @@ public class PostController extends CurrentUserAwareController {
 	)
 	@IsAuthenticated
 	@PostMapping
-	public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostCreateRequest request) {
-		return ResponseEntity.ok(postService.create(request, getCurrentUser()));
+	public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostCreateRequest request, @CurrentUser User user) {
+		return ResponseEntity.ok(postService.create(request, user));
 	}
 
 	@Operation(//

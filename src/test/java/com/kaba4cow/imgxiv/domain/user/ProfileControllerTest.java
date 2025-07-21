@@ -18,15 +18,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kaba4cow.imgxiv.auth.userdetails.UserDetailsAdapter;
 import com.kaba4cow.imgxiv.domain.embeddable.Credentials;
-import com.kaba4cow.imgxiv.domain.user.role.UserAuthorityRegistry;
 
 import lombok.SneakyThrows;
 
@@ -49,9 +46,6 @@ public class ProfileControllerTest {
 
 	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
-	private UserAuthorityRegistry userAuthorityRegistry;
 
 	@SneakyThrows
 	@Test
@@ -173,8 +167,7 @@ public class ProfileControllerTest {
 	}
 
 	private User authenticateUser(User user) {
-		UserDetails userDetails = UserDetailsAdapter.of(user, userAuthorityRegistry);
-		Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+		Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		return user;
 	}
