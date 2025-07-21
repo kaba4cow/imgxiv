@@ -2,8 +2,8 @@ package com.kaba4cow.imgxiv.domain.comment.security;
 
 import org.springframework.stereotype.Component;
 
-import com.kaba4cow.imgxiv.auth.annotation.authority.CanDeleteComment;
-import com.kaba4cow.imgxiv.auth.annotation.authority.CanEditComment;
+import com.kaba4cow.imgxiv.auth.annotation.security.IsCommentDeletable;
+import com.kaba4cow.imgxiv.auth.annotation.security.IsCommentEditable;
 import com.kaba4cow.imgxiv.domain.comment.Comment;
 import com.kaba4cow.imgxiv.domain.comment.CommentRepository;
 
@@ -15,12 +15,12 @@ public class CommentSecurity {
 
 	private final CommentRepository commentRepository;
 
-	@CanEditComment
+	@IsCommentEditable
 	public Comment getCommentToEdit(Long id) {
 		return commentRepository.findByIdOrThrow(id);
 	}
 
-	@CanDeleteComment
+	@IsCommentDeletable
 	public Comment getCommentToDelete(Long id) {
 		return commentRepository.findByIdOrThrow(id);
 	}

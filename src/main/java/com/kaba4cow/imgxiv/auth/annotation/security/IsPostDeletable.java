@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.auth.annotation.authority;
+package com.kaba4cow.imgxiv.auth.annotation.security;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
@@ -13,5 +13,5 @@ import org.springframework.security.access.prepost.PostAuthorize;
 @Documented
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
-@PostAuthorize("returnObject.author.id == principal.id or hasAuthority('delete-comment-na')")
-public @interface CanDeleteComment {}
+@PostAuthorize("returnObject.author.id == principal.id or hasAuthority('delete-post-na')")
+public @interface IsPostDeletable {}

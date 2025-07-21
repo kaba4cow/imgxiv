@@ -2,8 +2,8 @@ package com.kaba4cow.imgxiv.domain.post.security;
 
 import org.springframework.stereotype.Component;
 
-import com.kaba4cow.imgxiv.auth.annotation.authority.CanDeletePost;
-import com.kaba4cow.imgxiv.auth.annotation.authority.CanEditPost;
+import com.kaba4cow.imgxiv.auth.annotation.security.IsPostDeletable;
+import com.kaba4cow.imgxiv.auth.annotation.security.IsPostEditable;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 
@@ -15,12 +15,12 @@ public class PostSecurity {
 
 	private final PostRepository postRepository;
 
-	@CanEditPost
+	@IsPostEditable
 	public Post getPostToEdit(Long id) {
 		return postRepository.findByIdOrThrow(id);
 	}
 
-	@CanDeletePost
+	@IsPostDeletable
 	public Post getPostToDelete(Long id) {
 		return postRepository.findByIdOrThrow(id);
 	}
