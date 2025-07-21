@@ -8,7 +8,7 @@ import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
 
 public interface ImageService {
 
-	void uploadImage(MultipartFile file);
+	PostImage uploadImage(MultipartFile file);
 
 	InputStream getImage(PostImage postImage);
 
