@@ -3,6 +3,7 @@ package com.kaba4cow.imgxiv.domain.comment;
 import com.kaba4cow.imgxiv.domain.base.EntityWithId;
 import com.kaba4cow.imgxiv.domain.embeddable.CreatedAt;
 import com.kaba4cow.imgxiv.domain.embeddable.PostAndUser;
+import com.kaba4cow.imgxiv.domain.embeddable.UpdatedAt;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -31,5 +32,8 @@ public class Comment extends EntityWithId {
 
 	@Embedded
 	private CreatedAt createdAt = new CreatedAt();
+
+	@Embedded
+	private UpdatedAt updatedAt = new UpdatedAt();
 
 }
