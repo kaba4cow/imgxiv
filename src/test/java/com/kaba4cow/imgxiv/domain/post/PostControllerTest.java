@@ -2,6 +2,8 @@ package com.kaba4cow.imgxiv.domain.post;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,6 +76,184 @@ public class PostControllerTest {
 		performCreatePost(Set.of(tag))//
 				.andExpect(status().is4xxClientError())//
 				.andExpect(status().isForbidden());
+	}
+
+	@SneakyThrows
+	@WithMockUser
+	@Test
+	public void doesNotCreatePostOnTagNotFound() {
+		Tag tag = new Tag();
+		tag.setId(Long.MAX_VALUE);
+		performCreatePost(Set.of(tag))//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isNotFound());
+	}
+
+	@SneakyThrows
+	private ResultActions performCreatePost(Set<Tag> tags) {
+		return mockMvc.perform(post("/api/posts")//
+				.contentType(MediaType.APPLICATION_JSON)//
+				.content("""
+							{
+								"tagIds": %s
+							}
+						""".formatted(//
+						tags.stream().map(Tag::getId).toList()//
+				)));
+	}
+
+	@SneakyThrows
+	@Test
+	public void editsPostWithAuthenticatedUserAsAuthor() {
+		Category category = saveTestCategory();
+		Tag tag1 = saveTestTag("tag1", category);
+		Tag tag2 = saveTestTag("tag2", category);
+		User author = saveTestUser();
+		Post post = saveTestPost(author, Set.of(tag1));
+		authenticateUser(author);
+
+		performEditPost(post.getId(), Set.of(tag2))//
+				.andExpect(status().isOk())//
+				.andExpect(jsonPath("$.id").isNumber())//
+				.andExpect(jsonPath("$.authorId").isNumber())//
+				.andExpect(jsonPath("$.authorId").value(author.getId()))//
+				.andExpect(jsonPath("$.tagIds").isArray())//
+				.andExpect(jsonPath("$.tagIds").value(contains(tag2.getId().intValue())));
+	}
+
+	@SneakyThrows
+	@Test
+	public void editsPostWithAuthenticatedUserAsModerator() {
+		Category category = saveTestCategory();
+		Tag tag1 = saveTestTag("tag1", category);
+		Tag tag2 = saveTestTag("tag2", category);
+		User author = saveTestUser();
+		Post post = saveTestPost(author, Set.of(tag1));
+		authenticateUser(saveTestUser("moderator", "mod@example.com", UserRole.MODERATOR));
+
+		performEditPost(post.getId(), Set.of(tag2))//
+				.andExpect(status().isOk())//
+				.andExpect(jsonPath("$.id").isNumber())//
+				.andExpect(jsonPath("$.authorId").isNumber())//
+				.andExpect(jsonPath("$.authorId").value(author.getId()))//
+				.andExpect(jsonPath("$.tagIds").isArray())//
+				.andExpect(jsonPath("$.tagIds").value(contains(tag2.getId().intValue())));
+	}
+
+	@SneakyThrows
+	@Test
+	public void doesNotEditPostWithoutAuthenticatedUser() {
+		Category category = saveTestCategory();
+		Set<Tag> tags = Set.of(saveTestTag("tag2", category));
+		User author = saveTestUser();
+		Post post = saveTestPost(author, tags);
+
+		performEditPost(post.getId(), tags)//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isForbidden());
+	}
+
+	@SneakyThrows
+	@Test
+	public void doesNotEditPostWithAuthenticatedUserAsNonAuthorNorModerator() {
+		Set<Tag> tags = Set.of(saveTestTag("tag", saveTestCategory()));
+		User author = saveTestUser();
+		Post post = saveTestPost(author, tags);
+		authenticateUser(saveTestUser("non-author", "na@example.com", UserRole.USER));
+
+		performEditPost(post.getId(), tags)//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isForbidden());
+	}
+
+	@SneakyThrows
+	@WithMockUser
+	@Test
+	public void doesNotEditPostOnPostNotFound() {
+		Set<Tag> tags = Set.of(saveTestTag("tag", saveTestCategory()));
+		performEditPost(Long.MAX_VALUE, tags)//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isNotFound());
+	}
+
+	@SneakyThrows
+	private ResultActions performEditPost(Long id, Set<Tag> tags) {
+		return mockMvc.perform(patch("/api/posts")//
+				.contentType(MediaType.APPLICATION_JSON)//
+				.content("""
+							{
+								"id": %s,
+								"tagIds": %s
+							}
+						""".formatted(//
+						id, //
+						tags.stream().map(Tag::getId).toList()//
+				)));
+	}
+
+	@SneakyThrows
+	@Test
+	public void deletesPostWithAuthenticatedUserAsAuthor() {
+		User author = authenticateUser(saveTestUser());
+		Set<Tag> tags = Set.of(saveTestTag("tag2", saveTestCategory()));
+		Post post = saveTestPost(author, tags);
+
+		performDeletePost(post.getId())//
+				.andExpect(status().isNoContent());
+	}
+
+	@SneakyThrows
+	@Test
+	public void deletesPostWithAuthenticatedUserAsModerator() {
+		User author = saveTestUser();
+		Set<Tag> tags = Set.of(saveTestTag("tag2", saveTestCategory()));
+		Post post = saveTestPost(author, tags);
+		authenticateUser(saveTestUser("moderator", "mod@example.com", UserRole.MODERATOR));
+
+		performDeletePost(post.getId())//
+				.andExpect(status().isNoContent());
+	}
+
+	@SneakyThrows
+	@Test
+	public void doesNotDeletePostWithoutAuthenticatedUser() {
+		User author = saveTestUser();
+		Set<Tag> tags = Set.of(saveTestTag("tag2", saveTestCategory()));
+		Post post = saveTestPost(author, tags);
+
+		performDeletePost(post.getId())//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isForbidden());
+	}
+
+	@SneakyThrows
+	@Test
+	public void doesNotDeletePostWithAuthenticatedUserAsNonAuthorNorModerator() {
+		User author = saveTestUser();
+		Set<Tag> tags = Set.of(saveTestTag("tag2", saveTestCategory()));
+		Post post = saveTestPost(author, tags);
+		authenticateUser(saveTestUser("non-author", "na@example.com", UserRole.USER));
+
+		performDeletePost(post.getId())//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isForbidden());
+	}
+
+	@SneakyThrows
+	@WithMockUser
+	@Test
+	public void doesNotDeletePostOnPostNotFound() {
+		authenticateUser(saveTestUser());
+
+		performDeletePost(Long.MAX_VALUE)//
+				.andExpect(status().is4xxClientError())//
+				.andExpect(status().isNotFound());
+	}
+
+	@SneakyThrows
+	private ResultActions performDeletePost(Long id) {
+		return mockMvc.perform(delete("/api/posts")//
+				.param("id", id.toString()));
 	}
 
 	@Test
@@ -144,32 +325,23 @@ public class PostControllerTest {
 				)));
 	}
 
-	@SneakyThrows
-	private ResultActions performCreatePost(Set<Tag> tags) {
-		return mockMvc.perform(post("/api/posts")//
-				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"tagIds": %s
-							}
-						""".formatted(//
-						tags.stream().map(Tag::getId).toList()//
-				)));
-	}
-
 	private User authenticateUser(User user) {
 		Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		return user;
 	}
 
-	private User saveTestUser() {
+	private User saveTestUser(String username, String email, UserRole role) {
 		User user = new User();
-		user.getCredentials().setEmail("test@example.com");
-		user.getCredentials().setUsername("testuser");
+		user.getCredentials().setEmail(email);
+		user.getCredentials().setUsername(username);
 		user.getCredentials().setPasswordHash("password-hash");
-		user.setRole(UserRole.USER);
+		user.setRole(role);
 		return userRepository.saveAndFlush(user);
+	}
+
+	private User saveTestUser() {
+		return saveTestUser("testuser", "test@example.com", UserRole.USER);
 	}
 
 	private Post saveTestPost(User author, Set<Tag> tags) {

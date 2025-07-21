@@ -65,12 +65,13 @@ public class CommentController {
 	)
 	@IsAuthenticated
 	@DeleteMapping
-	public ResponseEntity<CommentDto> deleteComment(//
+	public ResponseEntity<Void> deleteComment(//
+			@NotNull(message = "Comment ID is required") //
 			@Schema(//
 					description = "ID of the comment", //
 					example = "1"//
 			) //
-			@RequestParam("id") @NotNull Long id) {
+			@RequestParam("id") Long id) {
 		commentService.deleteComment(id);
 		return ResponseEntity.noContent().build();
 	}

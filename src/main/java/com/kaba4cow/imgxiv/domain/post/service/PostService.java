@@ -4,13 +4,18 @@ import java.util.List;
 
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
+import com.kaba4cow.imgxiv.domain.post.dto.PostEditRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.user.User;
 
 public interface PostService {
 
-	PostDto create(PostCreateRequest request, User author);
+	PostDto createPost(PostCreateRequest request, User author);
 
-	List<PostDto> findByQuery(PostQueryRequest request);
+	PostDto editPost(PostEditRequest request);
+
+	void deletePost(Long id);
+
+	List<PostDto> findPostsByQuery(PostQueryRequest request);
 
 }
