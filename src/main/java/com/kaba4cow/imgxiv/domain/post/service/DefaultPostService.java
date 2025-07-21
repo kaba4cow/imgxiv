@@ -12,24 +12,27 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostEditRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostMapper;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
-import com.kaba4cow.imgxiv.domain.post.factory.PostFactory;
 import com.kaba4cow.imgxiv.domain.post.security.PostSecurity;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.image.ImageResource;
+import com.kaba4cow.imgxiv.image.service.ImageService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class DefaultPostService implements PostService {
 
 	private final PostQueryExecutorService postQueryExecutorService;
 
-	private final PostFactory postFactory;
-
 	private final PostRepository postRepository;
 
 	private final TagRepository tagRepository;
+
+	private final ImageService imageService;
 
 	private final PostSecurity postSecurity;
 
@@ -37,7 +40,20 @@ public class DefaultPostService implements PostService {
 
 	@Override
 	public PostDto createPost(PostCreateRequest request, User author) {
-		return postMapper.mapToDto(postFactory.createPost(request, author));
+		Post post = Post.builder()//
+				.author(author)//
+				.postImage(imageService.createImage(request.getImage()))//
+				.build();
+		tagRepository.findByIdsOrThrow(request.getTagIds())//
+				.forEach(post::addTag);
+		Post saved = postRepository.save(post);
+		log.info("Created new post: {}", saved);
+		return postMapper.mapToDto(saved);
+	}
+
+	@Override
+	public ImageResource getPostImage(Long id) {
+		return imageService.getImage(postRepository.findByIdOrThrow(id).getPostImage());
 	}
 
 	@Override

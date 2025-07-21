@@ -19,6 +19,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,13 +30,16 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@Builder
 @Entity
 @Table(name = "table_tag", uniqueConstraints = @UniqueConstraint(columnNames = "column_name"))
 public class Tag extends EntityWithId {
 
+	@Builder.Default
 	@Embedded
 	private NameAndDescription nameAndDescription = new NameAndDescription();
 
+	@Builder.Default
 	@ToString.Exclude
 	@OneToMany(mappedBy = "tag")
 	private Set<PostTag> postTags = new HashSet<>();

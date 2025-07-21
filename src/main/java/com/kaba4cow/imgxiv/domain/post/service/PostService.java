@@ -7,10 +7,13 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostEditRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.image.ImageResource;
 
 public interface PostService {
 
 	PostDto createPost(PostCreateRequest request, User author);
+
+	ImageResource getPostImage(Long id);
 
 	PostDto editPost(PostEditRequest request);
 
