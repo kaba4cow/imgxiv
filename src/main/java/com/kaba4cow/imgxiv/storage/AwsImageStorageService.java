@@ -27,13 +27,8 @@ public class AwsImageStorageService implements ImageStorageService {
 	public void uploadImage(String key, InputStream input, long contentLength, String contentType) {
 		try {
 			s3Client.putObject(//
-					PutObjectRequest.builder()//
-							.bucket(bucketName)//
-							.key(key)//
-							.contentLength(contentLength)//
-							.contentType(contentType)//
-							.build(), //
-					RequestBody.fromInputStream(input, contentLength)//
+					buildRequestHeader(key, contentLength, contentType), //
+					buildRequestBody(input, contentLength)//
 			);
 			log.info("Image upload successfull: key={} contentType={} contentLength={}", key, contentType, contentLength);
 		} catch (Exception exception) {
@@ -41,6 +36,19 @@ public class AwsImageStorageService implements ImageStorageService {
 					exception.getMessage());
 			throw new ImageUploadException("Failed to upload image to S3", exception);
 		}
+	}
+
+	private PutObjectRequest buildRequestHeader(String key, long contentLength, String contentType) {
+		return PutObjectRequest.builder()//
+				.bucket(bucketName)//
+				.key(key)//
+				.contentLength(contentLength)//
+				.contentType(contentType)//
+				.build();
+	}
+
+	private RequestBody buildRequestBody(InputStream input, long contentLength) {
+		return RequestBody.fromInputStream(input, contentLength);
 	}
 
 }
