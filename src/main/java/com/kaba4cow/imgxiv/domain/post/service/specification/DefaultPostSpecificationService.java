@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.post.service;
+package com.kaba4cow.imgxiv.domain.post.service.specification;
 
 import org.springframework.stereotype.Service;
 
