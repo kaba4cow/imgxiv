@@ -15,6 +15,7 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.security.PostSecurity;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.image.ImageResource;
 import com.kaba4cow.imgxiv.image.service.ImageService;
 
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,11 @@ public class DefaultPostService implements PostService {
 		Post saved = postRepository.save(post);
 		log.info("Created new post: {}", saved);
 		return postMapper.mapToDto(saved);
+	}
+
+	@Override
+	public ImageResource getPostImage(Long id) {
+		return imageService.getImage(postRepository.findByIdOrThrow(id).getPostImage());
 	}
 
 	@Override
