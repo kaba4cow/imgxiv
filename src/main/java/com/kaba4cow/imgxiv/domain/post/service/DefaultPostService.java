@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
@@ -39,10 +38,10 @@ public class DefaultPostService implements PostService {
 	private final PostMapper postMapper;
 
 	@Override
-	public PostDto createPost(PostCreateRequest request, MultipartFile image, User author) {
+	public PostDto createPost(PostCreateRequest request, User author) {
 		Post post = Post.builder()//
 				.author(author)//
-				.postImage(imageService.createImage(image))//
+				.postImage(imageService.createImage(request.getImage()))//
 				.build();
 		tagRepository.findByIdsOrThrow(request.getTagIds())//
 				.forEach(post::addTag);
