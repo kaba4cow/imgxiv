@@ -9,7 +9,7 @@ import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
 import com.kaba4cow.imgxiv.auth.dto.AuthDto;
 import com.kaba4cow.imgxiv.auth.dto.AuthRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
-import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
+import com.kaba4cow.imgxiv.domain.user.dto.ProfileDto;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,12 +27,12 @@ public interface AuthControllerApiDoc {
 	@Operation(//
 			summary = "Register new user", //
 			description = """
-					Creates a new user account and returns basic user information.
+					Creates a new user account and returns user profile information.
 					"""//
 	)
 	@PermitAll
 	@PostMapping("/register")
-	ResponseEntity<UserDto> registerUser(//
+	ResponseEntity<ProfileDto> registerUser(//
 			@Valid @RequestBody RegisterRequest request//
 	);
 

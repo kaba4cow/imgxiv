@@ -7,7 +7,7 @@ import com.kaba4cow.imgxiv.auth.dto.AuthDto;
 import com.kaba4cow.imgxiv.auth.dto.AuthRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
 import com.kaba4cow.imgxiv.auth.service.AuthService;
-import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
+import com.kaba4cow.imgxiv.domain.user.dto.ProfileDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +18,7 @@ public class AuthController implements AuthControllerApiDoc {
 	private final AuthService authService;
 
 	@Override
-	public ResponseEntity<UserDto> registerUser(RegisterRequest request) {
+	public ResponseEntity<ProfileDto> registerUser(RegisterRequest request) {
 		return ResponseEntity.ok(authService.register(request));
 	}
 

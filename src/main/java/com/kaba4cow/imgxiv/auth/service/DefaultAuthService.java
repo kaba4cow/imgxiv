@@ -9,8 +9,8 @@ import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.UserRole;
-import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
-import com.kaba4cow.imgxiv.domain.user.dto.UserMapper;
+import com.kaba4cow.imgxiv.domain.user.dto.ProfileDto;
+import com.kaba4cow.imgxiv.domain.user.dto.ProfileMapper;
 import com.kaba4cow.imgxiv.domain.user.service.UserValidationService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,10 +29,10 @@ public class DefaultAuthService implements AuthService {
 
 	private final UserValidationService userValidationService;
 
-	private final UserMapper userMapper;
+	private final ProfileMapper profileMapper;
 
 	@Override
-	public UserDto register(RegisterRequest request) {
+	public ProfileDto register(RegisterRequest request) {
 		userValidationService.ensureUsernameAvailable(request.getUsername());
 		userValidationService.ensureEmailAvailable(request.getEmail());
 		User user = new User();
@@ -42,7 +42,7 @@ public class DefaultAuthService implements AuthService {
 		user.setRole(UserRole.USER);
 		User saved = userRepository.save(user);
 		log.info("Registered new user: {}", saved);
-		return userMapper.mapToDto(saved);
+		return profileMapper.mapToDto(saved);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class DefaultAuthService implements AuthService {
 		User user = userRepository.findByUsernameOrEmailOrThrow(request.getUsernameOrEmail());
 		userValidationService.ensurePasswordsMatch(request.getPassword(), user.getCredentials().getPasswordHash());
 		String token = jwtService.generateToken(user);
-		return new AuthDto(token, userMapper.mapToDto(user));
+		return new AuthDto(token, profileMapper.mapToDto(user));
 	}
 
 }
