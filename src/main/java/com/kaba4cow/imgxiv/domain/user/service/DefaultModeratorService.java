@@ -29,7 +29,7 @@ public class DefaultModeratorService implements ModeratorService {
 	@Override
 	public List<UserDto> getModerators(PageableRequest request) {
 		PageRequest pageRequest = pageRequestExtractor.getPageRequest(request, "createdAt.timestamp");
-		return userRepository.findAll(pageRequest).stream()//
+		return userRepository.findAllByRole(UserRole.MODERATOR, pageRequest).stream()//
 				.map(userMapper::mapToDto)//
 				.toList();
 	}
