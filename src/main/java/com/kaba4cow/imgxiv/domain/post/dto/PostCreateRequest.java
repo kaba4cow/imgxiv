@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kaba4cow.imgxiv.common.validation.jakarta.ContentType;
-import com.kaba4cow.imgxiv.common.validation.jakarta.FileSize;
+import com.kaba4cow.imgxiv.common.validation.ContentType;
+import com.kaba4cow.imgxiv.common.validation.FileSize;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
