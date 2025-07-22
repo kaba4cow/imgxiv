@@ -3,21 +3,25 @@ package com.kaba4cow.imgxiv.domain.post.dto;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
+@Setter
 public class PostDto {
 
-	private final Long id;
+	private Long id;
 
-	private final Long authorId;
+	private Long authorId;
 
-	private final Set<Long> tagIds;
+	private Set<Long> tagIds;
 
-	private final LocalDateTime createdAt;
+	private LocalDateTime createdAt;
 
-	private final LocalDateTime updatedAt;
+	private LocalDateTime updatedAt;
 
 }

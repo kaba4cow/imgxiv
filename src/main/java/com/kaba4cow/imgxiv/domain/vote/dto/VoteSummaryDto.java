@@ -1,18 +1,22 @@
 package com.kaba4cow.imgxiv.domain.vote.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
+@Setter
 public class VoteSummaryDto {
 
-	private final Long postId;
+	private Long postId;
 
-	private final Long totalVoteCount;
+	private Long totalVoteCount;
 
-	private final Long upVoteCount;
+	private Long upVoteCount;
 
-	private final Long downVoteCount;
+	private Long downVoteCount;
 
 }

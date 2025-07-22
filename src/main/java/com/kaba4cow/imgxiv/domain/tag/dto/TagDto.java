@@ -1,18 +1,22 @@
 package com.kaba4cow.imgxiv.domain.tag.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
+@Setter
 public class TagDto {
 
-	private final Long id;
+	private Long id;
 
-	private final String name;
+	private String name;
 
-	private final String description;
+	private String description;
 
-	private final Long categoryId;
+	private Long categoryId;
 
 }

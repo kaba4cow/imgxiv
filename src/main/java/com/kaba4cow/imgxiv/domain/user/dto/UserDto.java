@@ -1,16 +1,20 @@
 package com.kaba4cow.imgxiv.domain.user.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
+@Setter
 public class UserDto {
 
-	private final Long id;
+	private Long id;
 
-	private final String username;
+	private String username;
 
-	private final String email;
+	private String email;
 
 }
