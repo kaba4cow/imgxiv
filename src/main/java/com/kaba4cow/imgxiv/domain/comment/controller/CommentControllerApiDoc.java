@@ -2,6 +2,7 @@ package com.kaba4cow.imgxiv.domain.comment.controller;
 
 import java.util.List;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,21 +10,20 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
+import com.kaba4cow.imgxiv.common.dto.parameter.CommentIdParams;
+import com.kaba4cow.imgxiv.common.dto.parameter.PostIdParams;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentEditRequest;
 import com.kaba4cow.imgxiv.domain.user.User;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 
 @Tag(//
 		name = "Comments", //
@@ -43,14 +43,8 @@ public interface CommentControllerApiDoc {
 	@IsAuthenticated
 	@PostMapping
 	public ResponseEntity<CommentDto> createComment(//
-
-			@Valid //
-			@RequestBody //
-			CommentCreateRequest request, //
-
-			@CurrentUser //
-			User user//
-
+			@Valid @RequestBody CommentCreateRequest request, //
+			@CurrentUser User user//
 	);
 
 	@Operation(//
@@ -62,11 +56,7 @@ public interface CommentControllerApiDoc {
 	@IsAuthenticated
 	@PatchMapping
 	public ResponseEntity<CommentDto> editComment(//
-
-			@Valid //
-			@RequestBody //
-			CommentEditRequest request//
-
+			@Valid @RequestBody CommentEditRequest request//
 	);
 
 	@Operation(//
@@ -78,15 +68,7 @@ public interface CommentControllerApiDoc {
 	@IsAuthenticated
 	@DeleteMapping
 	public ResponseEntity<Void> deleteComment(//
-
-			@NotNull(message = "Comment ID is required") //
-			@Schema(//
-					description = "ID of the comment", //
-					example = "1"//
-			) //
-			@RequestParam("id") //
-			Long id//
-
+			@Valid @ParameterObject CommentIdParams params//
 	);
 
 	@Operation(//
@@ -98,15 +80,7 @@ public interface CommentControllerApiDoc {
 	@PermitAll
 	@GetMapping
 	public ResponseEntity<List<CommentDto>> getCommentsByPost(//
-
-			@NotNull(message = "Post ID is required") //
-			@Schema(//
-					description = "ID of the post", //
-					example = "1"//
-			) //
-			@RequestParam("postId") //
-			Long postId//
-
+			@Valid @ParameterObject PostIdParams params//
 	);
 
 }
