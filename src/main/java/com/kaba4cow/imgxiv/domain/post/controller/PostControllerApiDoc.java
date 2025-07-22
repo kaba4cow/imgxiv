@@ -2,6 +2,7 @@ package com.kaba4cow.imgxiv.domain.post.controller;
 
 import java.util.List;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +13,11 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
+import com.kaba4cow.imgxiv.common.dto.parameter.PostIdParams;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostEditRequest;
@@ -24,10 +25,8 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.user.User;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 
 @Tag(//
 		name = "Posts", //
@@ -47,14 +46,8 @@ public interface PostControllerApiDoc {
 	@IsAuthenticated
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	ResponseEntity<PostDto> createPost(//
-
-			@Valid //
-			@ModelAttribute //
-			PostCreateRequest request, //
-
-			@CurrentUser //
-			User user//
-
+			@Valid @ModelAttribute PostCreateRequest request, //
+			@CurrentUser User user//
 	);
 
 	@Operation(//
@@ -65,15 +58,7 @@ public interface PostControllerApiDoc {
 	)
 	@GetMapping("/image")
 	ResponseEntity<Resource> getPostImage(//
-
-			@NotNull(message = "Post ID is required") //
-			@Schema(//
-					description = "ID of the post", //
-					example = "1"//
-			) //
-			@RequestParam("id") //
-			Long id//
-
+			@Valid @ParameterObject PostIdParams params//
 	);
 
 	@Operation(//
@@ -85,11 +70,7 @@ public interface PostControllerApiDoc {
 	@IsAuthenticated
 	@PatchMapping
 	ResponseEntity<PostDto> editPost(//
-
-			@Valid //
-			@RequestBody //
-			PostEditRequest request//
-
+			@Valid @RequestBody PostEditRequest request//
 	);
 
 	@Operation(//
@@ -101,15 +82,7 @@ public interface PostControllerApiDoc {
 	@IsAuthenticated
 	@DeleteMapping
 	ResponseEntity<Void> deletePost(//
-
-			@NotNull(message = "Post ID is required") //
-			@Schema(//
-					description = "ID of the post", //
-					example = "1"//
-			) //
-			@RequestParam("id") //
-			Long id//
-
+			@Valid @ParameterObject PostIdParams params//
 	);
 
 	@Operation(//
@@ -121,11 +94,7 @@ public interface PostControllerApiDoc {
 	@PermitAll
 	@PostMapping("/search")
 	ResponseEntity<List<PostDto>> searchPosts(//
-
-			@Valid //
-			@RequestBody //
-			PostQueryRequest request//
-
+			@Valid @RequestBody PostQueryRequest request//
 	);
 
 }

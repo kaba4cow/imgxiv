@@ -8,6 +8,7 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kaba4cow.imgxiv.common.dto.parameter.PostIdParams;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostEditRequest;
@@ -30,8 +31,8 @@ public class PostController implements PostControllerApiDoc {
 	}
 
 	@Override
-	public ResponseEntity<Resource> getPostImage(Long id) {
-		ImageResource image = postService.getPostImage(id);
+	public ResponseEntity<Resource> getPostImage(PostIdParams params) {
+		ImageResource image = postService.getPostImage(params.getId());
 		return ResponseEntity.ok()//
 				.cacheControl(CacheControl.maxAge(1L, TimeUnit.HOURS).cachePublic())//
 				.contentLength(image.contentLength())//
@@ -45,8 +46,8 @@ public class PostController implements PostControllerApiDoc {
 	}
 
 	@Override
-	public ResponseEntity<Void> deletePost(Long id) {
-		postService.deletePost(id);
+	public ResponseEntity<Void> deletePost(PostIdParams params) {
+		postService.deletePost(params.getId());
 		return ResponseEntity.noContent().build();
 	}
 
