@@ -3,7 +3,7 @@ package com.kaba4cow.imgxiv.auth.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kaba4cow.imgxiv.auth.dto.AuthResponse;
+import com.kaba4cow.imgxiv.auth.dto.AuthDto;
 import com.kaba4cow.imgxiv.auth.dto.LoginRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
 import com.kaba4cow.imgxiv.auth.service.UserAuthService;
@@ -23,7 +23,7 @@ public class AuthController implements AuthControllerApiDoc {
 	}
 
 	@Override
-	public ResponseEntity<AuthResponse> authenticateUser(LoginRequest request) {
+	public ResponseEntity<AuthDto> authenticateUser(LoginRequest request) {
 		return ResponseEntity.ok(userAuthService.login(request));
 	}
 
