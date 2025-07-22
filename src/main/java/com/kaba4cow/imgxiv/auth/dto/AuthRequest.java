@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Schema(description = "Request for authorizing an existing user")
-public class LoginRequest {
+public class AuthRequest {
 
 	@Schema(//
 			description = "Username or email", //

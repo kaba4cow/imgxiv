@@ -14,6 +14,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 		return findById(id).orElseThrow(() -> new NotFoundException(String.format("User not found: %s", id)));
 	}
 
+	default User findByUsernameOrEmailOrThrow(String usernameOrEmail) {
+		return findByUsernameOrEmail(usernameOrEmail)
+				.orElseThrow(() -> new NotFoundException(String.format("User not found: %s", usernameOrEmail)));
+	}
+
 	@Query("SELECT u FROM User u WHERE u.credentials.username = :username")
 	Optional<User> findByUsername(@Param("username") String username);
 
