@@ -1,13 +1,14 @@
 package com.kaba4cow.imgxiv.auth.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.auth.dto.AuthDto;
 import com.kaba4cow.imgxiv.auth.dto.AuthRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
-import com.kaba4cow.imgxiv.auth.registrar.UserRegistrar;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
+import com.kaba4cow.imgxiv.domain.user.UserRole;
 import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 import com.kaba4cow.imgxiv.domain.user.dto.UserMapper;
 import com.kaba4cow.imgxiv.domain.user.service.UserValidationService;
@@ -22,7 +23,7 @@ public class DefaultAuthService implements AuthService {
 
 	private final UserRepository userRepository;
 
-	private final UserRegistrar userRegistrar;
+	private final PasswordEncoder passwordEncoder;
 
 	private final JwtService jwtService;
 
@@ -34,8 +35,14 @@ public class DefaultAuthService implements AuthService {
 	public UserDto register(RegisterRequest request) {
 		userValidationService.ensureUsernameAvailable(request.getUsername());
 		userValidationService.ensureEmailAvailable(request.getEmail());
-		User user = userRegistrar.registerUser(request);
-		return userMapper.mapToDto(user);
+		User user = new User();
+		user.getCredentials().setUsername(request.getUsername());
+		user.getCredentials().setEmail(request.getEmail());
+		user.getCredentials().setPasswordHash(passwordEncoder.encode(request.getPassword()));
+		user.setRole(UserRole.USER);
+		User saved = userRepository.save(user);
+		log.info("Registered new user: {}", saved);
+		return userMapper.mapToDto(saved);
 	}
 
 	@Override
