@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.query.CompiledPostQuery;
@@ -151,6 +152,12 @@ public class DefaultPostSpecificationTest {
 	private Post createPost() {
 		Post post = new Post();
 		post.setAuthor(author);
+		post.setPostImage(PostImage.builder()//
+				.fileName("fileName")//
+				.fileSize(1L)//
+				.contentType("contentType")//
+				.storageKey("storageKey")//
+				.build());
 		return postRepository.saveAndFlush(post);
 	}
 

@@ -51,9 +51,20 @@ public interface PostControllerApiDoc {
 	);
 
 	@Operation(//
+			summary = "Get post by ID", //
+			description = """
+					Returns post by ID.
+					"""//
+	)
+	@GetMapping
+	ResponseEntity<PostDto> getPost(//
+			@Valid @ParameterObject PostIdRequest request//
+	);
+
+	@Operation(//
 			summary = "Load post image", //
 			description = """
-					Loads image of the specified post
+					Loads image of the specified post.
 					"""//
 	)
 	@GetMapping("/image")
