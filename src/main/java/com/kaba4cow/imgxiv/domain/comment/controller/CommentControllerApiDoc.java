@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
-import com.kaba4cow.imgxiv.common.dto.parameter.CommentIdParams;
+import com.kaba4cow.imgxiv.common.dto.parameter.CommentIdRequest;
 import com.kaba4cow.imgxiv.common.dto.parameter.PostIdParams;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
@@ -68,7 +68,7 @@ public interface CommentControllerApiDoc {
 	@IsAuthenticated
 	@DeleteMapping
 	public ResponseEntity<Void> deleteComment(//
-			@Valid @ParameterObject CommentIdParams request//
+			@Valid @ParameterObject CommentIdRequest request//
 	);
 
 	@Operation(//

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kaba4cow.imgxiv.common.dto.parameter.CommentIdParams;
+import com.kaba4cow.imgxiv.common.dto.parameter.CommentIdRequest;
 import com.kaba4cow.imgxiv.common.dto.parameter.PostIdParams;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
@@ -32,14 +32,14 @@ public class CommentController implements CommentControllerApiDoc {
 	}
 
 	@Override
-	public ResponseEntity<Void> deleteComment(CommentIdParams params) {
-		commentService.deleteComment(params.getId());
+	public ResponseEntity<Void> deleteComment(CommentIdRequest request) {
+		commentService.deleteComment(request.getCommentId());
 		return ResponseEntity.noContent().build();
 	}
 
 	@Override
-	public ResponseEntity<List<CommentDto>> getCommentsByPost(PostIdParams params) {
-		return ResponseEntity.ok(commentService.getCommentsByPost(params.getId()));
+	public ResponseEntity<List<CommentDto>> getCommentsByPost(PostIdParams request) {
+		return ResponseEntity.ok(commentService.getCommentsByPost(request.getId()));
 	}
 
 }

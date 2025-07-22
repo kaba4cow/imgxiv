@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class CommentIdParams {
+public class CommentIdRequest {
 
 	@NotNull(message = "Comment ID is required") //
 	@Schema(//
 			description = "ID of the comment", //
 			example = "1"//
 	) //
-	private Long id;
+	private Long commentId;
 
 }
