@@ -74,6 +74,20 @@ public class VoteControllerTest {
 	}
 
 	@SneakyThrows
+	private ResultActions performCreateVote(Long postId, VoteType type) {
+		return mockMvc.perform(post("/api/votes")//
+				.contentType(MediaType.APPLICATION_JSON)//
+				.content("""
+							{
+								"postId": %s,
+								"type": "%s"
+							}
+						""".formatted(//
+						postId, type//
+				)));
+	}
+
+	@SneakyThrows
 	@Test
 	public void deletesVoteWithAuthenticatedUser() {
 		User author = authenticateUser(saveTestUser());
@@ -94,6 +108,12 @@ public class VoteControllerTest {
 		performDeleteVote(post.getId())//
 				.andExpect(status().is4xxClientError())//
 				.andExpect(status().isForbidden());
+	}
+
+	@SneakyThrows
+	private ResultActions performDeleteVote(Long postId) {
+		return mockMvc.perform(delete("/api/votes")//
+				.param("postId", postId.toString()));
 	}
 
 	@SneakyThrows
@@ -120,43 +140,9 @@ public class VoteControllerTest {
 	}
 
 	@SneakyThrows
-	private ResultActions performCreateVote(Long postId, VoteType type) {
-		return mockMvc.perform(post("/api/votes")//
-				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"postId": %s,
-								"type": "%s"
-							}
-						""".formatted(//
-						postId, type//
-				)));
-	}
-
-	@SneakyThrows
-	private ResultActions performDeleteVote(Long postId) {
-		return mockMvc.perform(delete("/api/votes")//
-				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"postId": %s
-							}
-						""".formatted(//
-						postId//
-				)));
-	}
-
-	@SneakyThrows
 	private ResultActions performGetVoteSummary(Long postId) {
 		return mockMvc.perform(get("/api/votes")//
-				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"postId": %s
-							}
-						""".formatted(//
-						postId//
-				)));
+				.param("postId", postId.toString()));
 	}
 
 	private User authenticateUser(User user) {

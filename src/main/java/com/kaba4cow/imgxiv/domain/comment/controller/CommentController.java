@@ -3,92 +3,43 @@ package com.kaba4cow.imgxiv.domain.comment.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
-import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
-import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
+import com.kaba4cow.imgxiv.common.dto.CommentIdRequest;
+import com.kaba4cow.imgxiv.common.dto.PostIdRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentEditRequest;
 import com.kaba4cow.imgxiv.domain.comment.service.CommentService;
 import com.kaba4cow.imgxiv.domain.user.User;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Tag(//
-		name = "Comments", //
-		description = "Endpoints for commenting on posts"//
-)
-@RequestMapping("/api/comments")
 @RestController
-public class CommentController {
+public class CommentController implements CommentControllerApiDoc {
 
 	private final CommentService commentService;
 
-	@Operation(//
-			summary = "Create comment", //
-			description = "Creates a new comment"//
-	)
-	@IsAuthenticated
-	@PostMapping
-	public ResponseEntity<CommentDto> createComment(@Valid @RequestBody CommentCreateRequest request, @CurrentUser User user) {
+	@Override
+	public ResponseEntity<CommentDto> createComment(CommentCreateRequest request, User user) {
 		return ResponseEntity.ok(commentService.createComment(request, user));
 	}
 
-	@Operation(//
-			summary = "Edit comment", //
-			description = "Edits specified comment"//
-	)
-	@IsAuthenticated
-	@PatchMapping
-	public ResponseEntity<CommentDto> editComment(@Valid @RequestBody CommentEditRequest request) {
+	@Override
+	public ResponseEntity<CommentDto> editComment(CommentEditRequest request) {
 		return ResponseEntity.ok(commentService.editComment(request));
 	}
 
-	@Operation(//
-			summary = "Delete comment", //
-			description = "Deletes specified comment"//
-	)
-	@IsAuthenticated
-	@DeleteMapping
-	public ResponseEntity<Void> deleteComment(//
-			@NotNull(message = "Comment ID is required") //
-			@Schema(//
-					description = "ID of the comment", //
-					example = "1"//
-			) //
-			@RequestParam("id") Long id) {
-		commentService.deleteComment(id);
+	@Override
+	public ResponseEntity<Void> deleteComment(CommentIdRequest request) {
+		commentService.deleteComment(request.getCommentId());
 		return ResponseEntity.noContent().build();
 	}
 
-	@Operation(//
-			summary = "Get comments of specified post", //
-			description = "Retrieves comments of specified post"//
-	)
-	@PermitAll
-	@GetMapping
-	public ResponseEntity<List<CommentDto>> getCommentsByPost(//
-			@Schema(//
-					description = "ID of the post", //
-					example = "1"//
-			) //
-			@RequestParam("postId") @NotNull Long postId) {
-		return ResponseEntity.ok(commentService.getCommentsByPost(postId));
+	@Override
+	public ResponseEntity<List<CommentDto>> getCommentsByPost(PostIdRequest request) {
+		return ResponseEntity.ok(commentService.getCommentsByPost(request.getPostId()));
 	}
 
 }

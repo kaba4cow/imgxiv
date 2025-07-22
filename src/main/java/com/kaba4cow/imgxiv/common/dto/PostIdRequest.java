@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.vote.dto;
+package com.kaba4cow.imgxiv.common.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -9,13 +9,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class VoteRequest {
+public class PostIdRequest {
 
-	@NotNull(message = "Post ID is required")
+	@NotNull(message = "Post ID is required") //
 	@Schema(//
-			description = "Post ID", //
+			description = "ID of the post", //
 			example = "1"//
-	)
+	) //
 	private Long postId;
 
 }

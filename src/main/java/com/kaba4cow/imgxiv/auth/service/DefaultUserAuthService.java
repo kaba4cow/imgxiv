@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.kaba4cow.imgxiv.auth.dto.AuthResponse;
+import com.kaba4cow.imgxiv.auth.dto.AuthDto;
 import com.kaba4cow.imgxiv.auth.dto.LoginRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
 import com.kaba4cow.imgxiv.auth.registrar.UserRegistrar;
@@ -42,12 +42,12 @@ public class DefaultUserAuthService implements UserAuthService {
 	}
 
 	@Override
-	public AuthResponse login(LoginRequest request) {
+	public AuthDto login(LoginRequest request) {
 		User user = findByUsernameOrEmail(request.getUsernameOrEmail())//
 				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 		userValidationService.ensurePasswordsMatch(request.getPassword(), user.getCredentials().getPasswordHash());
 		String token = jwtService.generateToken(user);
-		return new AuthResponse(token, userMapper.mapToDto(user));
+		return new AuthDto(token, userMapper.mapToDto(user));
 	}
 
 	@Override

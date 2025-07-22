@@ -12,3 +12,8 @@ spring:
         console:
             enabled: true
             path: /h2-console
+
+setup:
+    image-storage:
+        clean-up:
+            enable: true

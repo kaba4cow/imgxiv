@@ -253,7 +253,7 @@ public class PostControllerTest {
 	@SneakyThrows
 	private ResultActions performDeletePost(Long id) {
 		return mockMvc.perform(delete("/api/posts")//
-				.param("id", id.toString()));
+				.param("postId", id.toString()));
 	}
 
 	@Test
