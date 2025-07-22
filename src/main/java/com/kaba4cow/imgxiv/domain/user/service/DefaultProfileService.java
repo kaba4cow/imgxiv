@@ -11,8 +11,8 @@ import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeEmailRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangePasswordRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeUsernameRequest;
-import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
-import com.kaba4cow.imgxiv.domain.user.dto.UserMapper;
+import com.kaba4cow.imgxiv.domain.user.dto.ProfileDto;
+import com.kaba4cow.imgxiv.domain.user.dto.ProfileMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,32 +28,37 @@ public class DefaultProfileService implements ProfileService {
 
 	private final PasswordEncoder passwordEncoder;
 
-	private final UserMapper userMapper;
+	private final ProfileMapper profileMapper;
 
 	@Override
-	public UserDto changeUsername(ChangeUsernameRequest request, User user) {
+	public ProfileDto getProfile(User user) {
+		return profileMapper.mapToDto(user);
+	}
+
+	@Override
+	public ProfileDto changeUsername(ChangeUsernameRequest request, User user) {
 		String originalUsername = user.getCredentials().getUsername();
 		String newUsername = request.getUsername();
 		if (!Objects.equals(newUsername, originalUsername)) {
 			userValidationService.ensureUsernameAvailable(newUsername);
 			user.getCredentials().setUsername(newUsername);
 			log.info("User {} changed username: {} -> {}", user.getId(), originalUsername, newUsername);
-			return userMapper.mapToDto(userRepository.save(user));
+			return profileMapper.mapToDto(userRepository.save(user));
 		} else
-			return userMapper.mapToDto(user);
+			return profileMapper.mapToDto(user);
 	}
 
 	@Override
-	public UserDto changeEmail(ChangeEmailRequest request, User user) {
+	public ProfileDto changeEmail(ChangeEmailRequest request, User user) {
 		String originalEmail = user.getCredentials().getEmail();
 		String newEmail = request.getEmail();
 		if (!Objects.equals(newEmail, originalEmail)) {
 			userValidationService.ensureEmailAvailable(newEmail);
 			user.getCredentials().setEmail(newEmail);
 			log.info("User {} changed email: {} -> {}", user.getId(), originalEmail, newEmail);
-			return userMapper.mapToDto(userRepository.save(user));
+			return profileMapper.mapToDto(userRepository.save(user));
 		} else
-			return userMapper.mapToDto(user);
+			return profileMapper.mapToDto(user);
 	}
 
 	@Override
