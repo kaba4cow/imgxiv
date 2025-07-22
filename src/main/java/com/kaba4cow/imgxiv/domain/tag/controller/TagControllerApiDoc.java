@@ -2,23 +2,22 @@ package com.kaba4cow.imgxiv.domain.tag.controller;
 
 import java.util.List;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
 import com.kaba4cow.imgxiv.auth.annotation.authority.CanCreateTag;
+import com.kaba4cow.imgxiv.common.dto.parameter.CategoryIdParams;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagCreateRequest;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 
 @Tag(//
 		name = "Tags", //
@@ -38,11 +37,7 @@ public interface TagControllerApiDoc {
 	@CanCreateTag
 	@PostMapping
 	ResponseEntity<TagDto> createTag(//
-
-			@Valid //
-			@RequestBody //
-			TagCreateRequest request//
-
+			@Valid @RequestBody TagCreateRequest request//
 	);
 
 	@Operation(//
@@ -64,15 +59,7 @@ public interface TagControllerApiDoc {
 	@PermitAll
 	@GetMapping
 	ResponseEntity<List<TagDto>> getTagsByCategory(//
-
-			@NotNull(message = "Category ID is required") //
-			@Schema(//
-					description = "ID of the category to filter tags by", //
-					example = "1"//
-			) //
-			@RequestParam("categoryId") //
-			Long categoryId//
-
+			@Valid @ParameterObject CategoryIdParams request//
 	);
 
 }
