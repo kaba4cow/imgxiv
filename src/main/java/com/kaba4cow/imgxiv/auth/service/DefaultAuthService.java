@@ -3,7 +3,7 @@ package com.kaba4cow.imgxiv.auth.service;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.auth.dto.AuthDto;
-import com.kaba4cow.imgxiv.auth.dto.LoginRequest;
+import com.kaba4cow.imgxiv.auth.dto.AuthRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
 import com.kaba4cow.imgxiv.auth.registrar.UserRegistrar;
 import com.kaba4cow.imgxiv.domain.user.User;
@@ -39,7 +39,7 @@ public class DefaultAuthService implements AuthService {
 	}
 
 	@Override
-	public AuthDto login(LoginRequest request) {
+	public AuthDto login(AuthRequest request) {
 		User user = userRepository.findByUsernameOrEmailOrThrow(request.getUsernameOrEmail());
 		userValidationService.ensurePasswordsMatch(request.getPassword(), user.getCredentials().getPasswordHash());
 		String token = jwtService.generateToken(user);
