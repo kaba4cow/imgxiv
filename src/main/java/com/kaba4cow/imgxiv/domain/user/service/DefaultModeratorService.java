@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class DefaultAdminService implements AdminService {
+public class DefaultModeratorService implements ModeratorService {
 
 	private final UserRepository userRepository;
 
