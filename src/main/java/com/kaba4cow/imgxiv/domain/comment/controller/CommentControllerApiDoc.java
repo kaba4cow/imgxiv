@@ -68,7 +68,7 @@ public interface CommentControllerApiDoc {
 	@IsAuthenticated
 	@DeleteMapping
 	public ResponseEntity<Void> deleteComment(//
-			@Valid @ParameterObject CommentIdParams params//
+			@Valid @ParameterObject CommentIdParams request//
 	);
 
 	@Operation(//
@@ -80,7 +80,7 @@ public interface CommentControllerApiDoc {
 	@PermitAll
 	@GetMapping
 	public ResponseEntity<List<CommentDto>> getCommentsByPost(//
-			@Valid @ParameterObject PostIdParams params//
+			@Valid @ParameterObject PostIdParams request//
 	);
 
 }

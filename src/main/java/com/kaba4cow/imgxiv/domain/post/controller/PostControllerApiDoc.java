@@ -58,7 +58,7 @@ public interface PostControllerApiDoc {
 	)
 	@GetMapping("/image")
 	ResponseEntity<Resource> getPostImage(//
-			@Valid @ParameterObject PostIdParams params//
+			@Valid @ParameterObject PostIdParams request//
 	);
 
 	@Operation(//
@@ -82,7 +82,7 @@ public interface PostControllerApiDoc {
 	@IsAuthenticated
 	@DeleteMapping
 	ResponseEntity<Void> deletePost(//
-			@Valid @ParameterObject PostIdParams params//
+			@Valid @ParameterObject PostIdParams request//
 	);
 
 	@Operation(//

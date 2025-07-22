@@ -31,8 +31,8 @@ public class PostController implements PostControllerApiDoc {
 	}
 
 	@Override
-	public ResponseEntity<Resource> getPostImage(PostIdParams params) {
-		ImageResource image = postService.getPostImage(params.getId());
+	public ResponseEntity<Resource> getPostImage(PostIdParams request) {
+		ImageResource image = postService.getPostImage(request.getId());
 		return ResponseEntity.ok()//
 				.cacheControl(CacheControl.maxAge(1L, TimeUnit.HOURS).cachePublic())//
 				.contentLength(image.contentLength())//
@@ -46,8 +46,8 @@ public class PostController implements PostControllerApiDoc {
 	}
 
 	@Override
-	public ResponseEntity<Void> deletePost(PostIdParams params) {
-		postService.deletePost(params.getId());
+	public ResponseEntity<Void> deletePost(PostIdParams request) {
+		postService.deletePost(request.getId());
 		return ResponseEntity.noContent().build();
 	}
 
