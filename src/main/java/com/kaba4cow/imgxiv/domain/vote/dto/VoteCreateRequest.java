@@ -1,5 +1,6 @@
 package com.kaba4cow.imgxiv.domain.vote.dto;
 
+import com.kaba4cow.imgxiv.common.dto.parameter.PostIdParams;
 import com.kaba4cow.imgxiv.domain.vote.VoteType;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Schema(description = "Request for creating a vote")
-public class VoteCreateRequest extends VoteRequest {
+public class VoteCreateRequest extends PostIdParams {
 
 	@NotNull(message = "Vote type is required")
 	@Schema(//

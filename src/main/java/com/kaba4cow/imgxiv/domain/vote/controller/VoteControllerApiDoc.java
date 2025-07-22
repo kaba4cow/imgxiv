@@ -1,5 +1,6 @@
 package com.kaba4cow.imgxiv.domain.vote.controller;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
+import com.kaba4cow.imgxiv.common.dto.parameter.PostIdParams;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteCreateRequest;
-import com.kaba4cow.imgxiv.domain.vote.dto.VoteDeleteRequest;
-import com.kaba4cow.imgxiv.domain.vote.dto.VoteRequest;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryDto;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,13 +38,8 @@ public interface VoteControllerApiDoc {
 	@IsAuthenticated
 	@PostMapping
 	ResponseEntity<Void> createVote(//
-
-			@Valid //
-			@RequestBody //
-			VoteCreateRequest request, //
-
+			@Valid @RequestBody VoteCreateRequest request, //
 			@CurrentUser User user//
-
 	);
 
 	@Operation(//
@@ -56,13 +51,8 @@ public interface VoteControllerApiDoc {
 	@IsAuthenticated
 	@DeleteMapping
 	ResponseEntity<Void> deleteVote(//
-
-			@Valid //
-			@RequestBody //
-			VoteDeleteRequest request, //
-
+			@Valid @ParameterObject PostIdParams request, //
 			@CurrentUser User user//
-
 	);
 
 	@Operation(//
@@ -74,11 +64,7 @@ public interface VoteControllerApiDoc {
 	@PermitAll
 	@GetMapping
 	ResponseEntity<VoteSummaryDto> getVoteSummary(//
-
-			@Valid //
-			@RequestBody //
-			VoteRequest request//
-
+			@Valid @ParameterObject PostIdParams request//
 	);
 
 }

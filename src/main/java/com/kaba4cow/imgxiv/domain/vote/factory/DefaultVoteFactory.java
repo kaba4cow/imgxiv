@@ -23,7 +23,7 @@ public class DefaultVoteFactory implements VoteFactory {
 
 	@Override
 	public Vote createVote(VoteCreateRequest request, User user) {
-		Post post = postRepository.findByIdOrThrow(request.getPostId());
+		Post post = postRepository.findByIdOrThrow(request.getId());
 		Vote vote = new Vote();
 		vote.setId(VoteId.of(post, user));
 		vote.setPost(post);
