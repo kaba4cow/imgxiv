@@ -226,7 +226,7 @@ public class CommentControllerTest {
 	@SneakyThrows
 	private ResultActions performDeleteComment(Long id) {
 		return mockMvc.perform(delete("/api/comments")//
-				.param("id", id.toString()));
+				.param("commentId", id.toString()));
 	}
 
 	@SneakyThrows

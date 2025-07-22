@@ -8,8 +8,6 @@ import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.vote.VoteId;
 import com.kaba4cow.imgxiv.domain.vote.VoteRepository;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteCreateRequest;
-import com.kaba4cow.imgxiv.domain.vote.dto.VoteDeleteRequest;
-import com.kaba4cow.imgxiv.domain.vote.dto.VoteRequest;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryDto;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryMapper;
 import com.kaba4cow.imgxiv.domain.vote.factory.VoteFactory;
@@ -34,14 +32,14 @@ public class DefaultVoteService implements VoteService {
 	}
 
 	@Override
-	public void deleteVote(VoteDeleteRequest request, User user) {
-		VoteId id = VoteId.of(request.getPostId(), user.getId());
+	public void deleteVote(Long postId, User user) {
+		VoteId id = VoteId.of(postId, user.getId());
 		voteRepository.deleteById(id);
 	}
 
 	@Override
-	public VoteSummaryDto getVoteSummary(VoteRequest request) {
-		Post post = postRepository.findByIdOrThrow(request.getPostId());
+	public VoteSummaryDto getVoteSummary(Long postId) {
+		Post post = postRepository.findByIdOrThrow(postId);
 		return voteSummaryMapper.mapToDto(voteRepository.getVoteSummary(post), post);
 	}
 
