@@ -24,7 +24,7 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 	List<Tag> findByCategory(Category category);
 
 	default Tag findByIdOrThrow(Long id) {
-		return findById(id).orElseThrow(() -> new NotFoundException(String.format("Tag not found: %s", id)));
+		return findById(id).orElseThrow(() -> new NotFoundException("Tag", id));
 	}
 
 	default Set<Tag> findByIdsOrThrow(Collection<? extends Long> ids) {

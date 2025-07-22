@@ -12,7 +12,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 	boolean existsByName(@Param("name") String name);
 
 	default Category findByIdOrThrow(Long id) {
-		return findById(id).orElseThrow(() -> new NotFoundException(String.format("Category not found: %s", id)));
+		return findById(id).orElseThrow(() -> new NotFoundException("Category", id));
 	}
 
 }

@@ -19,7 +19,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 	List<Comment> findByAuthor(@Param("author") User author);
 
 	default Comment findByIdOrThrow(Long id) {
-		return findById(id).orElseThrow(() -> new NotFoundException(String.format("Comment not found: %s", id)));
+		return findById(id).orElseThrow(() -> new NotFoundException("Comment", id));
 	}
 
 }

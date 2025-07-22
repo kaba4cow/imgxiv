@@ -15,12 +15,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	Page<User> findAllByRole(UserRole role, Pageable pageable);
 
 	default User findByIdOrThrow(Long id) {
-		return findById(id).orElseThrow(() -> new NotFoundException(String.format("User not found: %s", id)));
+		return findById(id).orElseThrow(() -> new NotFoundException("User", id));
 	}
 
 	default User findByUsernameOrEmailOrThrow(String usernameOrEmail) {
-		return findByUsernameOrEmail(usernameOrEmail)
-				.orElseThrow(() -> new NotFoundException(String.format("User not found: %s", usernameOrEmail)));
+		return findByUsernameOrEmail(usernameOrEmail).orElseThrow(() -> new NotFoundException("Comment", usernameOrEmail));
 	}
 
 	@Query("SELECT u FROM User u WHERE u.credentials.username = :username")

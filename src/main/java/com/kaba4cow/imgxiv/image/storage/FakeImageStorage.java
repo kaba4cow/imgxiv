@@ -33,7 +33,7 @@ public class FakeImageStorage implements ImageStorage {
 	@Override
 	public InputStream getImage(String storageKey) {
 		if (!storage.containsKey(storageKey))
-			throw new NotFoundException(String.format("Image not found: %s", storageKey));
+			throw new NotFoundException("Image", storageKey);
 		return new ByteArrayInputStream(storage.get(storageKey));
 	}
 

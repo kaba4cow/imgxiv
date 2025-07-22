@@ -70,7 +70,7 @@ public class AwsImageStorage implements ImageStorage {
 		try {
 			return s3Client.getObject(buildGetObjectRequest(storageKey));
 		} catch (Exception exception) {
-			throw new NotFoundException(String.format("Image not found: %s", storageKey));
+			throw new NotFoundException("Image", storageKey);
 		}
 	}
 
