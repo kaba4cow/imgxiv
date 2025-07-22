@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class CategoryIdParams {
+public class CategoryIdRequest {
 
 	@NotNull(message = "Category ID is required") //
 	@Schema(//
 			description = "ID of the category", //
 			example = "1"//
 	) //
-	private Long id;
+	private Long categoryId;
 
 }
