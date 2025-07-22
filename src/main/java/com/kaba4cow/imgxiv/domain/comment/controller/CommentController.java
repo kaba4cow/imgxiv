@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kaba4cow.imgxiv.common.dto.parameter.CommentIdRequest;
-import com.kaba4cow.imgxiv.common.dto.parameter.PostIdRequest;
+import com.kaba4cow.imgxiv.common.dto.CommentIdRequest;
+import com.kaba4cow.imgxiv.common.dto.PostIdRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentEditRequest;

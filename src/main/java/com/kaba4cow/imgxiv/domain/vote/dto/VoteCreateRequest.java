@@ -1,6 +1,6 @@
 package com.kaba4cow.imgxiv.domain.vote.dto;
 
-import com.kaba4cow.imgxiv.common.dto.parameter.PostIdRequest;
+import com.kaba4cow.imgxiv.common.dto.PostIdRequest;
 import com.kaba4cow.imgxiv.domain.vote.VoteType;
 
 import io.swagger.v3.oas.annotations.media.Schema;

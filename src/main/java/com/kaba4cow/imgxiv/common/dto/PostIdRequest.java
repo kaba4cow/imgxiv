@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.common.dto.parameter;
+package com.kaba4cow.imgxiv.common.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class CommentIdRequest {
+public class PostIdRequest {
 
-	@NotNull(message = "Comment ID is required") //
+	@NotNull(message = "Post ID is required") //
 	@Schema(//
-			description = "ID of the comment", //
+			description = "ID of the post", //
 			example = "1"//
 	) //
-	private Long commentId;
+	private Long postId;
 
 }
