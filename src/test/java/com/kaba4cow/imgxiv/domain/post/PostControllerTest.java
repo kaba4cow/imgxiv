@@ -3,33 +3,54 @@ package com.kaba4cow.imgxiv.domain.post;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.imageio.ImageIO;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.UserRole;
+import com.kaba4cow.imgxiv.image.storage.FakeImageStorage;
+import com.kaba4cow.imgxiv.image.storage.ImageStorage;
 
 import lombok.SneakyThrows;
 
@@ -53,13 +74,21 @@ public class PostControllerTest {
 	@Autowired
 	private PostRepository postRepository;
 
+	@Autowired
+	private ImageStorage imageStorage;
+
+	@BeforeEach
+	public void clearImageStorage() {
+		imageStorage.clearStorage();
+	}
+
 	@SneakyThrows
 	@Test
 	public void createsPostWithAuthenticatedUser() {
 		Tag tag = saveTestTag("tag", saveTestCategory());
 		User author = authenticateUser(saveTestUser());
 
-		performCreatePost(Set.of(tag))//
+		performCreatePost(Set.of(tag), generateTestImageBytes())//
 				.andExpect(status().isOk())//
 				.andExpect(jsonPath("$.id").isNumber())//
 				.andExpect(jsonPath("$.authorId").isNumber())//
@@ -73,7 +102,7 @@ public class PostControllerTest {
 	public void doesNotCreatePostWithoutAuthenticatedUser() {
 		Tag tag = saveTestTag("tag", saveTestCategory());
 
-		performCreatePost(Set.of(tag))//
+		performCreatePost(Set.of(tag), generateTestImageBytes())//
 				.andExpect(status().is4xxClientError())//
 				.andExpect(status().isForbidden());
 	}
@@ -84,22 +113,54 @@ public class PostControllerTest {
 	public void doesNotCreatePostOnTagNotFound() {
 		Tag tag = new Tag();
 		tag.setId(Long.MAX_VALUE);
-		performCreatePost(Set.of(tag))//
+		performCreatePost(Set.of(tag), generateTestImageBytes())//
 				.andExpect(status().is4xxClientError())//
 				.andExpect(status().isNotFound());
 	}
 
 	@SneakyThrows
-	private ResultActions performCreatePost(Set<Tag> tags) {
-		return mockMvc.perform(post("/api/posts")//
-				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"tagIds": %s
-							}
-						""".formatted(//
-						tags.stream().map(Tag::getId).toList()//
-				)));
+	private ResultActions performCreatePost(Set<Tag> tags, byte[] imageBytes) {
+		return mockMvc.perform(multipart("/api/posts")//
+				.file(new MockMultipartFile(//
+						"image", //
+						"filename", //
+						MediaType.IMAGE_PNG_VALUE, //
+						imageBytes //
+				))//
+				.contentType(MediaType.MULTIPART_FORM_DATA)//
+				.param("tagIds", tags.stream().map(Tag::getId).map(Object::toString).collect(Collectors.joining(",")))//
+				.accept(MediaType.ALL));
+	}
+
+	@SneakyThrows
+	@Test
+	public void retrievesPostImage() {
+		Tag tag = saveTestTag("tag", saveTestCategory());
+		authenticateUser(saveTestUser());
+
+		byte[] expectedImage = generateTestImageBytes();
+
+		Long postId = extractPostId(performCreatePost(Set.of(tag), expectedImage).andReturn());
+
+		performGetPostImage(postId)//
+				.andExpect(status().isOk())//
+				.andExpect(content().contentType(MediaType.IMAGE_PNG))//
+				.andExpect(content().bytes(expectedImage));
+	}
+
+	@SneakyThrows
+	private Long extractPostId(MvcResult result) {
+		String json = result.getResponse().getContentAsString();
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
+		PostDto postDto = objectMapper.readValue(json, PostDto.class);
+		return postDto.getId();
+	}
+
+	@SneakyThrows
+	private ResultActions performGetPostImage(Long postId) {
+		return mockMvc.perform(get("/api/posts/image")//
+				.param("postId", postId.toString()));
 	}
 
 	@SneakyThrows
@@ -364,6 +425,30 @@ public class PostControllerTest {
 		category.getNameAndDescription().setName("name");
 		category.getNameAndDescription().setDescription("description");
 		return categoryRepository.saveAndFlush(category);
+	}
+
+	@SneakyThrows
+	private byte[] generateTestImageBytes() {
+		int size = 64;
+		BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+		Graphics2D graphics = image.createGraphics();
+		graphics.setColor(Color.ORANGE);
+		graphics.fillRect(0, 0, size, size);
+		graphics.dispose();
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		ImageIO.write(image, "png", output);
+		return output.toByteArray();
+	}
+
+	@TestConfiguration
+	static class TestConfig {
+
+		@Primary
+		@Bean
+		public ImageStorage testImageStorage() {
+			return new FakeImageStorage();
+		}
+
 	}
 
 }
