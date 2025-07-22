@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kaba4cow.imgxiv.auth.dto.AuthDto;
 import com.kaba4cow.imgxiv.auth.dto.LoginRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
-import com.kaba4cow.imgxiv.auth.service.UserAuthService;
+import com.kaba4cow.imgxiv.auth.service.AuthService;
 import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 
 import lombok.RequiredArgsConstructor;
@@ -15,16 +15,16 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class AuthController implements AuthControllerApiDoc {
 
-	private final UserAuthService userAuthService;
+	private final AuthService authService;
 
 	@Override
 	public ResponseEntity<UserDto> registerUser(RegisterRequest request) {
-		return ResponseEntity.ok(userAuthService.register(request));
+		return ResponseEntity.ok(authService.register(request));
 	}
 
 	@Override
 	public ResponseEntity<AuthDto> authenticateUser(LoginRequest request) {
-		return ResponseEntity.ok(userAuthService.login(request));
+		return ResponseEntity.ok(authService.login(request));
 	}
 
 }

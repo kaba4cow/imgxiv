@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class DefaultUserAuthService implements UserAuthService {
+public class DefaultAuthService implements AuthService {
 
 	private final UserRepository userRepository;
 
