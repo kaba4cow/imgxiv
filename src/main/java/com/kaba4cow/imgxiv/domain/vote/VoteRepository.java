@@ -17,4 +17,13 @@ public interface VoteRepository extends JpaRepository<Vote, VoteId> {
 			""")
 	VoteSummary getVoteSummary(@Param("post") Post post);
 
+	@Query("""
+			SELECT SUM(CASE
+				WHEN v.type = 'UP' THEN 1
+				WHEN v.type = 'DOWN' THEN -1
+			ELSE 0 END)
+			FROM Vote v WHERE v.post = :post
+			""")
+	long countNetVotes(@Param("post") Post post);
+
 }
