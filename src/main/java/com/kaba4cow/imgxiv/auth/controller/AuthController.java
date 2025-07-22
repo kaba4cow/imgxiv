@@ -24,7 +24,7 @@ public class AuthController implements AuthControllerApiDoc {
 
 	@Override
 	public ResponseEntity<AuthDto> authenticateUser(AuthRequest request) {
-		return ResponseEntity.ok(authService.login(request));
+		return ResponseEntity.ok(authService.authenticate(request));
 	}
 
 }

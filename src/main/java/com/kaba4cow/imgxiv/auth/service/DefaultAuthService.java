@@ -39,7 +39,7 @@ public class DefaultAuthService implements AuthService {
 	}
 
 	@Override
-	public AuthDto login(AuthRequest request) {
+	public AuthDto authenticate(AuthRequest request) {
 		User user = userRepository.findByUsernameOrEmailOrThrow(request.getUsernameOrEmail());
 		userValidationService.ensurePasswordsMatch(request.getPassword(), user.getCredentials().getPasswordHash());
 		String token = jwtService.generateToken(user);

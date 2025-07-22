@@ -9,6 +9,6 @@ public interface AuthService {
 
 	UserDto register(RegisterRequest request);
 
-	AuthDto login(AuthRequest request);
+	AuthDto authenticate(AuthRequest request);
 
 }
