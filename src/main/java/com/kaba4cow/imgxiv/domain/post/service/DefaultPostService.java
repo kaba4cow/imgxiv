@@ -52,6 +52,11 @@ public class DefaultPostService implements PostService {
 	}
 
 	@Override
+	public PostDto getPost(Long id) {
+		return postMapper.mapToDto(postRepository.findByIdOrThrow(id));
+	}
+
+	@Override
 	public ImageResource getPostImage(Long id) {
 		return imageService.getImage(postRepository.findByIdOrThrow(id).getPostImage());
 	}
