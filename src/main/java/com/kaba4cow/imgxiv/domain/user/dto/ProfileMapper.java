@@ -11,7 +11,8 @@ public class ProfileMapper {
 		return new ProfileDto(//
 				user.getId(), //
 				user.getCredentials().getUsername(), //
-				user.getCredentials().getEmail()//
+				user.getCredentials().getEmail(), //
+				user.getCreatedAt().getTimestamp()//
 		);
 	}
 
