@@ -2,23 +2,27 @@ package com.kaba4cow.imgxiv.domain.comment.dto;
 
 import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
+@Setter
 public class CommentDto {
 
-	private final Long id;
+	private Long id;
 
-	private final Long postId;
+	private Long postId;
 
-	private final Long userId;
+	private Long userId;
 
-	private final String text;
+	private String text;
 
-	private final LocalDateTime createdAt;
+	private LocalDateTime createdAt;
 
-	private final LocalDateTime updatedAt;
+	private LocalDateTime updatedAt;
 
 }
