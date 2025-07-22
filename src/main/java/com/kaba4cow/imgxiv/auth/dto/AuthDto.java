@@ -2,17 +2,15 @@ package com.kaba4cow.imgxiv.auth.dto;
 
 import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
-@Setter
 public class AuthDto {
 
-	private String token;
+	private final String token;
 
-	private UserDto user;
+	private final UserDto user;
 
 }
