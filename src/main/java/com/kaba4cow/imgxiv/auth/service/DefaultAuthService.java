@@ -39,7 +39,7 @@ public class DefaultAuthService implements AuthService {
 		user.getCredentials().setUsername(request.getUsername());
 		user.getCredentials().setEmail(request.getEmail());
 		user.getCredentials().setPasswordHash(passwordEncoder.encode(request.getPassword()));
-		user.setRole(UserRole.USER);
+		user.setRole(UserRole.defaultRole());
 		User saved = userRepository.save(user);
 		log.info("Registered new user: {}", saved);
 		return profileMapper.mapToDto(saved);
