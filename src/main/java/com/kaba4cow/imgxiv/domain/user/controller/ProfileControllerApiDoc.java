@@ -34,9 +34,7 @@ public interface ProfileControllerApiDoc {
 	@IsAuthenticated
 	@GetMapping("/me")
 	ResponseEntity<UserDto> getUserInfo(//
-
 			@CurrentUser User user//
-
 	);
 
 	@Operation(//
@@ -47,12 +45,8 @@ public interface ProfileControllerApiDoc {
 	@IsAuthenticated
 	@PatchMapping("/username")
 	ResponseEntity<UserDto> changeUsername(//
-
-			@Valid //
-			@RequestBody ChangeUsernameRequest request, //
-
+			@Valid @RequestBody ChangeUsernameRequest request, //
 			@CurrentUser User user//
-
 	);
 
 	@Operation(//
@@ -63,12 +57,8 @@ public interface ProfileControllerApiDoc {
 	@IsAuthenticated
 	@PatchMapping("/email")
 	ResponseEntity<UserDto> changeEmail(//
-
-			@Valid //
-			@RequestBody ChangeEmailRequest request, //
-
+			@Valid @RequestBody ChangeEmailRequest request, //
 			@CurrentUser User user//
-
 	);
 
 	@Operation(//
@@ -79,10 +69,7 @@ public interface ProfileControllerApiDoc {
 	@IsAuthenticated
 	@PatchMapping("/password")
 	ResponseEntity<Void> changePassword(//
-
-			@Valid //
-			@RequestBody ChangePasswordRequest request, //
-
+			@Valid @RequestBody ChangePasswordRequest request, //
 			@CurrentUser User user//
 	);
 
