@@ -12,7 +12,7 @@ import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeEmailRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangePasswordRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeUsernameRequest;
-import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
+import com.kaba4cow.imgxiv.domain.user.dto.ProfileDto;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,7 +33,7 @@ public interface ProfileControllerApiDoc {
 					""")
 	@IsAuthenticated
 	@GetMapping("/me")
-	ResponseEntity<UserDto> getUserInfo(//
+	ResponseEntity<ProfileDto> getUserInfo(//
 			@CurrentUser User user//
 	);
 
@@ -44,7 +44,7 @@ public interface ProfileControllerApiDoc {
 					""")
 	@IsAuthenticated
 	@PatchMapping("/username")
-	ResponseEntity<UserDto> changeUsername(//
+	ResponseEntity<ProfileDto> changeUsername(//
 			@Valid @RequestBody ChangeUsernameRequest request, //
 			@CurrentUser User user//
 	);
@@ -56,7 +56,7 @@ public interface ProfileControllerApiDoc {
 					""")
 	@IsAuthenticated
 	@PatchMapping("/email")
-	ResponseEntity<UserDto> changeEmail(//
+	ResponseEntity<ProfileDto> changeEmail(//
 			@Valid @RequestBody ChangeEmailRequest request, //
 			@CurrentUser User user//
 	);

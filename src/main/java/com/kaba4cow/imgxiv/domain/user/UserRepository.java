@@ -10,6 +10,10 @@ import com.kaba4cow.imgxiv.common.exception.NotFoundException;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
+	default User findByIdOrThrow(Long id) {
+		return findById(id).orElseThrow(() -> new NotFoundException(String.format("User not found: %s", id)));
+	}
+
 	default User findByUsernameOrEmailOrThrow(String usernameOrEmail) {
 		return findByUsernameOrEmail(usernameOrEmail)
 				.orElseThrow(() -> new NotFoundException(String.format("User not found: %s", usernameOrEmail)));
