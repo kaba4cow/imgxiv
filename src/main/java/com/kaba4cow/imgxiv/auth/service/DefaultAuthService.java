@@ -1,8 +1,5 @@
 package com.kaba4cow.imgxiv.auth.service;
 
-import java.util.Optional;
-
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.auth.dto.AuthDto;
@@ -43,16 +40,10 @@ public class DefaultAuthService implements AuthService {
 
 	@Override
 	public AuthDto login(LoginRequest request) {
-		User user = findByUsernameOrEmail(request.getUsernameOrEmail())//
-				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+		User user = userRepository.findByUsernameOrEmailOrThrow(request.getUsernameOrEmail());
 		userValidationService.ensurePasswordsMatch(request.getPassword(), user.getCredentials().getPasswordHash());
 		String token = jwtService.generateToken(user);
 		return new AuthDto(token, userMapper.mapToDto(user));
-	}
-
-	@Override
-	public Optional<User> findByUsernameOrEmail(String usernameOrEmail) {
-		return userRepository.findByUsernameOrEmail(usernameOrEmail);
 	}
 
 }
