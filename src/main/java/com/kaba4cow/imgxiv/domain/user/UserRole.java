@@ -20,10 +20,14 @@ public enum UserRole {
 			"edit-post-na", //
 			"delete-post-na", //
 
-			"delete-comment-na" //
+			"delete-comment-na", //
+
+			"view-moderators"//
 	)), //
 	ADMIN("admin", Set.of(//
-			"assign-moderator"//
+			"assign-moderator", //
+
+			"view-moderators"//
 	));
 
 	private final Set<? extends GrantedAuthority> authorities;
