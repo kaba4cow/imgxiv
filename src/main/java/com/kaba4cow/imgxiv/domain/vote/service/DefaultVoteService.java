@@ -5,15 +5,17 @@ import org.springframework.stereotype.Service;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.vote.Vote;
 import com.kaba4cow.imgxiv.domain.vote.VoteId;
 import com.kaba4cow.imgxiv.domain.vote.VoteRepository;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteCreateRequest;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryDto;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryMapper;
-import com.kaba4cow.imgxiv.domain.vote.factory.VoteFactory;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class DefaultVoteService implements VoteService {
@@ -22,13 +24,18 @@ public class DefaultVoteService implements VoteService {
 
 	private final PostRepository postRepository;
 
-	private final VoteFactory voteFactory;
-
 	private final VoteSummaryMapper voteSummaryMapper;
 
 	@Override
 	public void createVote(VoteCreateRequest request, User user) {
-		voteFactory.createVote(request, user);
+		Post post = postRepository.findByIdOrThrow(request.getPostId());
+		Vote vote = new Vote();
+		vote.setId(VoteId.of(post, user));
+		vote.setPost(post);
+		vote.setUser(user);
+		vote.setType(request.getType());
+		Vote saved = voteRepository.save(vote);
+		log.info("Created new vote: {}", saved);
 	}
 
 	@Override
