@@ -32,12 +32,8 @@ public interface AuthControllerApiDoc {
 	)
 	@PermitAll
 	@PostMapping("/register")
-	public ResponseEntity<UserDto> registerUser(//
-
-			@Valid //
-			@RequestBody //
-			RegisterRequest request//
-
+	ResponseEntity<UserDto> registerUser(//
+			@Valid @RequestBody RegisterRequest request//
 	);
 
 	@Operation(//
@@ -48,12 +44,8 @@ public interface AuthControllerApiDoc {
 	)
 	@PermitAll
 	@PostMapping("/login")
-	public ResponseEntity<AuthResponse> authenticateUser(//
-
-			@Valid //
-			@RequestBody //
-			LoginRequest request//
-
+	ResponseEntity<AuthResponse> authenticateUser(//
+			@Valid @RequestBody LoginRequest request//
 	);
 
 }
