@@ -6,7 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.kaba4cow.imgxiv.common.exception.NotFoundException;
+
 public interface UserRepository extends JpaRepository<User, Long> {
+
+	default User findByIdOrThrow(Long id) {
+		return findById(id).orElseThrow(() -> new NotFoundException(String.format("User not found: %s", id)));
+	}
 
 	@Query("SELECT u FROM User u WHERE u.credentials.username = :username")
 	Optional<User> findByUsername(@Param("username") String username);
