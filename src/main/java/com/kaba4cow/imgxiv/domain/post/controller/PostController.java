@@ -31,6 +31,11 @@ public class PostController implements PostControllerApiDoc {
 	}
 
 	@Override
+	public ResponseEntity<PostDto> getPost(PostIdRequest request) {
+		return ResponseEntity.ok(postService.getPost(request.getPostId()));
+	}
+
+	@Override
 	public ResponseEntity<Resource> getPostImage(PostIdRequest request) {
 		ImageResource image = postService.getPostImage(request.getPostId());
 		return ResponseEntity.ok()//

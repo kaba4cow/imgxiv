@@ -43,6 +43,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
@@ -130,6 +131,29 @@ public class PostControllerTest {
 				.contentType(MediaType.MULTIPART_FORM_DATA)//
 				.param("tagIds", tags.stream().map(Tag::getId).map(Object::toString).collect(Collectors.joining(",")))//
 				.accept(MediaType.ALL));
+	}
+
+	@SneakyThrows
+	@Test
+	public void retrievesPost() {
+		Category category = saveTestCategory();
+		Tag tag = saveTestTag("tag", category);
+		User author = saveTestUser();
+		Post post = saveTestPost(author, Set.of(tag));
+
+		performGetPost(post.getId())//
+				.andExpect(status().isOk())//
+				.andExpect(jsonPath("$.id").isNumber())//
+				.andExpect(jsonPath("$.authorId").isNumber())//
+				.andExpect(jsonPath("$.authorId").value(author.getId()))//
+				.andExpect(jsonPath("$.tagIds").isArray())//
+				.andExpect(jsonPath("$.tagIds").value(contains(tag.getId().intValue())));;
+	}
+
+	@SneakyThrows
+	private ResultActions performGetPost(Long postId) {
+		return mockMvc.perform(get("/api/posts")//
+				.param("postId", postId.toString()));
 	}
 
 	@SneakyThrows
@@ -408,6 +432,12 @@ public class PostControllerTest {
 	private Post saveTestPost(User author, Set<Tag> tags) {
 		Post post = new Post();
 		post.setAuthor(author);
+		post.setPostImage(PostImage.builder()//
+				.fileName("fileName")//
+				.fileSize(1L)//
+				.contentType("contentType")//
+				.storageKey("storageKey")//
+				.build());
 		tags.forEach(post::addTag);
 		return postRepository.saveAndFlush(post);
 	}

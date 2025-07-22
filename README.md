@@ -12,6 +12,7 @@
 - JWT-based authentication
 - Tag-based post querying
 - Commenting and voting on posts
+- Image upload
 - In-memory caching
 - Swagger UI for testing the API
 - Role-based access control
@@ -59,6 +60,10 @@ This project includes an automatically generated Swagger UI for testing the API.
 - [Hibernate ORM](https://github.com/hibernate/hibernate-orm)
 - [PostgreSQL](https://github.com/postgres/postgres)
 - [H2 Database](https://github.com/h2database/h2database) for development and testing
+
+### Storage
+
+- [AWS S3](https://aws.amazon.com/s3/) for storing uploaded images
 
 ### Web
 

@@ -13,6 +13,8 @@ public interface PostService {
 
 	PostDto createPost(PostCreateRequest request, User author);
 
+	PostDto getPost(Long id);
+
 	ImageResource getPostImage(Long id);
 
 	PostDto editPost(PostEditRequest request);

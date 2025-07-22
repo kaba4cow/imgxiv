@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
@@ -301,6 +302,12 @@ public class CommentControllerTest {
 	private Post saveTestPost(User author) {
 		Post post = new Post();
 		post.setAuthor(author);
+		post.setPostImage(PostImage.builder()//
+				.fileName("fileName")//
+				.fileSize(1L)//
+				.contentType("contentType")//
+				.storageKey("storageKey")//
+				.build());
 		post.addTag(saveTestTag());
 		return postRepository.saveAndFlush(post);
 	}
