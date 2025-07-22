@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class PostIdParams {
+public class PostIdRequest {
 
 	@NotNull(message = "Post ID is required") //
 	@Schema(//
 			description = "ID of the post", //
 			example = "1"//
 	) //
-	private Long id;
+	private Long postId;
 
 }

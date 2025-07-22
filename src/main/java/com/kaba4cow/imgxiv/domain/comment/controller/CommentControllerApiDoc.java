@@ -15,7 +15,7 @@ import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
 import com.kaba4cow.imgxiv.common.dto.parameter.CommentIdRequest;
-import com.kaba4cow.imgxiv.common.dto.parameter.PostIdParams;
+import com.kaba4cow.imgxiv.common.dto.parameter.PostIdRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentEditRequest;
@@ -80,7 +80,7 @@ public interface CommentControllerApiDoc {
 	@PermitAll
 	@GetMapping
 	public ResponseEntity<List<CommentDto>> getCommentsByPost(//
-			@Valid @ParameterObject PostIdParams request//
+			@Valid @ParameterObject PostIdRequest request//
 	);
 
 }

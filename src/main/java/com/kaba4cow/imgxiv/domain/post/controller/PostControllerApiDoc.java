@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
-import com.kaba4cow.imgxiv.common.dto.parameter.PostIdParams;
+import com.kaba4cow.imgxiv.common.dto.parameter.PostIdRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostEditRequest;
@@ -58,7 +58,7 @@ public interface PostControllerApiDoc {
 	)
 	@GetMapping("/image")
 	ResponseEntity<Resource> getPostImage(//
-			@Valid @ParameterObject PostIdParams request//
+			@Valid @ParameterObject PostIdRequest request//
 	);
 
 	@Operation(//
@@ -82,7 +82,7 @@ public interface PostControllerApiDoc {
 	@IsAuthenticated
 	@DeleteMapping
 	ResponseEntity<Void> deletePost(//
-			@Valid @ParameterObject PostIdParams request//
+			@Valid @ParameterObject PostIdRequest request//
 	);
 
 	@Operation(//

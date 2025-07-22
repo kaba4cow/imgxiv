@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kaba4cow.imgxiv.common.dto.parameter.CommentIdRequest;
-import com.kaba4cow.imgxiv.common.dto.parameter.PostIdParams;
+import com.kaba4cow.imgxiv.common.dto.parameter.PostIdRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentEditRequest;
@@ -38,8 +38,8 @@ public class CommentController implements CommentControllerApiDoc {
 	}
 
 	@Override
-	public ResponseEntity<List<CommentDto>> getCommentsByPost(PostIdParams request) {
-		return ResponseEntity.ok(commentService.getCommentsByPost(request.getId()));
+	public ResponseEntity<List<CommentDto>> getCommentsByPost(PostIdRequest request) {
+		return ResponseEntity.ok(commentService.getCommentsByPost(request.getPostId()));
 	}
 
 }
