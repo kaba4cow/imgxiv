@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.common.validation.jakarta;
+package com.kaba4cow.imgxiv.common.validation;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.PARAMETER;
@@ -14,12 +14,12 @@ import jakarta.validation.Payload;
 @Documented
 @Retention(RUNTIME)
 @Target({ FIELD, PARAMETER })
-@Constraint(validatedBy = ContentTypeValidator.class)
-public @interface ContentType {
+@Constraint(validatedBy = FileSizeValidator.class)
+public @interface FileSize {
 
 	String message();
 
-	String[] allowed();
+	long max();
 
 	Class<?>[] groups() default {};
 

@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.common.validation;
+package com.kaba4cow.imgxiv.domain.user.service;
 
 import java.util.function.Function;
 

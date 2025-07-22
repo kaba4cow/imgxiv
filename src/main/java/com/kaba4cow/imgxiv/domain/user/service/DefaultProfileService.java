@@ -5,7 +5,6 @@ import java.util.Objects;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.kaba4cow.imgxiv.common.validation.UserValidationService;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeEmailRequest;

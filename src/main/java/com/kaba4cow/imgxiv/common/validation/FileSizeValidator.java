@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.common.validation.jakarta;
+package com.kaba4cow.imgxiv.common.validation;
 
 import java.util.Objects;
 

@@ -38,6 +38,10 @@ public enum UserRole {
 				.collect(Collectors.toUnmodifiableSet());
 	}
 
+	public static UserRole defaultRole() {
+		return USER;
+	}
+
 	private static Set<String> getAuthorities(String roleName, Set<String> permissions) {
 		Set<String> authorities = new HashSet<>();
 		authorities.add("ROLE_".concat(roleName));
