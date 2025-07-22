@@ -3,14 +3,12 @@ package com.kaba4cow.imgxiv.domain.category.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryCreateRequest;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryDto;
 import com.kaba4cow.imgxiv.domain.category.service.CategoryService;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -20,7 +18,7 @@ public class CategoryController implements CategoryControllerApiDoc {
 	private final CategoryService categoryService;
 
 	@Override
-	public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryCreateRequest request) {
+	public ResponseEntity<CategoryDto> createCategory(CategoryCreateRequest request) {
 		return ResponseEntity.ok(categoryService.create(request));
 	}
 

@@ -34,12 +34,8 @@ public interface CategoryControllerApiDoc {
 	)
 	@CanCreateCategory
 	@PostMapping
-	public ResponseEntity<CategoryDto> createCategory(//
-
-			@Valid //
-			@RequestBody //
-			CategoryCreateRequest request//
-
+	ResponseEntity<CategoryDto> createCategory(//
+			@Valid @RequestBody CategoryCreateRequest request//
 	);
 
 	@Operation(//
@@ -50,6 +46,6 @@ public interface CategoryControllerApiDoc {
 	)
 	@PermitAll
 	@GetMapping("/all")
-	public ResponseEntity<List<CategoryDto>> getAllCategories();
+	ResponseEntity<List<CategoryDto>> getAllCategories();
 
 }
