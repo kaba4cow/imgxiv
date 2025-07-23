@@ -24,9 +24,14 @@ public class InMemoryImageStorage implements ImageStorage {
 		try {
 			byte[] bytes = file.getBytes();
 			storage.put(storageKey, bytes);
-			log.debug("Save image: {}", storageKey);
+			log.info("Save image: {}", storageKey);
 		} catch (Exception exception) {
-			throw new ImageUploadException(String.format("Could not save image: %s", storageKey), exception);
+			log.info("Failed to save image: {}. Cause: {}", //
+					storageKey, //
+					exception.getMessage(), //
+					exception//
+			);
+			throw new ImageUploadException("Failed to save image", exception);
 		}
 	}
 
@@ -40,12 +45,13 @@ public class InMemoryImageStorage implements ImageStorage {
 	@Override
 	public void deleteImage(String storageKey) {
 		storage.remove(storageKey);
-		log.debug("Deleted image: {}", storageKey);
+		log.info("Deleted image: {}", storageKey);
 	}
 
 	@Override
 	public void clearStorage() {
 		storage.clear();
+		log.info("Cleared storage");
 	}
 
 }
