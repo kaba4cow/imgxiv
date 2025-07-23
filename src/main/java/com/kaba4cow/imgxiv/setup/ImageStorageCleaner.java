@@ -21,7 +21,7 @@ public class ImageStorageCleaner implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		try {
-			log.info("Cleaning image storage...");
+			log.info("Clearing image storage...");
 			imageStorage.clearStorage();
 			log.info("Image storage cleanup successful");
 		} catch (Exception exception) {
