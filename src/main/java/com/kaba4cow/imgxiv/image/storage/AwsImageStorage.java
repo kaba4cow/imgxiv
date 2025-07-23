@@ -3,8 +3,6 @@ package com.kaba4cow.imgxiv.image.storage;
 import java.io.InputStream;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
@@ -24,13 +22,11 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Object;
 
 @RequiredArgsConstructor
-@Component
 public class AwsImageStorage implements ImageStorage {
 
 	private final S3Client s3Client;
 
-	@Value("${aws.bucket-name}")
-	private String bucketName;
+	private final String bucketName;
 
 	@Override
 	@SneakyThrows
