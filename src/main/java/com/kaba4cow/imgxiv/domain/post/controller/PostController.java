@@ -37,7 +37,15 @@ public class PostController implements PostControllerApiDoc {
 
 	@Override
 	public ResponseEntity<Resource> getPostImage(PostIdRequest request) {
-		ImageResource image = postService.getPostImage(request.getPostId());
+		return createImageResponse(postService.getPostImage(request.getPostId()));
+	}
+
+	@Override
+	public ResponseEntity<Resource> getPostThumbnail(PostIdRequest request) {
+		return createImageResponse(postService.getPostThumbnail(request.getPostId()));
+	}
+
+	private ResponseEntity<Resource> createImageResponse(ImageResource image) {
 		return ResponseEntity.ok()//
 				.cacheControl(CacheControl.maxAge(1L, TimeUnit.HOURS).cachePublic())//
 				.contentLength(image.contentLength())//
