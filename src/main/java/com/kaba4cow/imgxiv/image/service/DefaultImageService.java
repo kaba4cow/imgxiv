@@ -6,7 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
 import com.kaba4cow.imgxiv.image.ImageResource;
 import com.kaba4cow.imgxiv.image.storage.ImageStorage;
-import com.kaba4cow.imgxiv.image.storage.StorageKeyGenerator;
 import com.kaba4cow.imgxiv.image.thumbnail.ThumbnailGenerator;
 
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,7 @@ public class DefaultImageService implements ImageService {
 	@Override
 	public PostImage createImages(MultipartFile file) {
 		String storageKey = storageKeyGenerator.generateKey(file.getOriginalFilename());
-		uploadImages(storageKey, file);
+		saveImages(storageKey, file);
 		return PostImage.builder()//
 				.fileName(file.getOriginalFilename())//
 				.fileSize(file.getSize())//
@@ -38,10 +37,10 @@ public class DefaultImageService implements ImageService {
 				.build();
 	}
 
-	private void uploadImages(String storageKey, MultipartFile file) {
+	private void saveImages(String storageKey, MultipartFile file) {
 		log.info("Uploading images: {}", storageKey);
-		imageStorage.uploadImage(getFullStorageKey(IMAGE_PATH, storageKey), file);
-		imageStorage.uploadImage(getFullStorageKey(THUMBNAIL_PATH, storageKey), thumbnailGenerator.generateThumbnail(file));
+		imageStorage.saveImage(getFullStorageKey(IMAGE_PATH, storageKey), file);
+		imageStorage.saveImage(getFullStorageKey(THUMBNAIL_PATH, storageKey), thumbnailGenerator.generateThumbnail(file));
 	}
 
 	@Override

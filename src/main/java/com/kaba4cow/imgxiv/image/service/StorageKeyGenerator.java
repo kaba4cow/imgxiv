@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.image.storage;
+package com.kaba4cow.imgxiv.image.service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

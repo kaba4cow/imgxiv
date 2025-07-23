@@ -7,27 +7,20 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kaba4cow.imgxiv.common.exception.ImageUploadException;
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.SneakyThrows;
 
-@Slf4j
 @RequiredArgsConstructor
-public class FakeImageStorage implements ImageStorage {
+public class InMemoryImageStorage implements ImageStorage {
 
 	private final Map<String, byte[]> storage = new ConcurrentHashMap<>();
 
 	@Override
-	public void uploadImage(String storageKey, MultipartFile file) {
-		try {
-			byte[] bytes = file.getBytes();
-			storage.put(storageKey, bytes);
-			log.debug("Uploaded image: {}", storageKey);
-		} catch (Exception exception) {
-			throw new ImageUploadException(String.format("Could not upload image: %s", storageKey), exception);
-		}
+	@SneakyThrows
+	public void saveImage(String storageKey, MultipartFile file) {
+		storage.put(storageKey, file.getBytes());
 	}
 
 	@Override
@@ -40,7 +33,6 @@ public class FakeImageStorage implements ImageStorage {
 	@Override
 	public void deleteImage(String storageKey) {
 		storage.remove(storageKey);
-		log.debug("Deleted image: {}", storageKey);
 	}
 
 	@Override
