@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.kaba4cow.imgxiv.common.exception.MailSendException;
+
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +34,7 @@ public class DefaultMailService implements MailService {
 			MimeMessage message = createMessage(request, body);
 			mailSender.send(message);
 		} catch (Exception exception) {
-			throw new RuntimeException("Could not send mail message", exception);
+			throw new MailSendException("Could not send mail message", exception);
 		}
 	}
 
