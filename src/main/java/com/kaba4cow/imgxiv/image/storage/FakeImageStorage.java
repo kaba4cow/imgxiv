@@ -44,6 +44,8 @@ public class FakeImageStorage implements ImageStorage {
 	}
 
 	@Override
-	public void clearStorage() {}
+	public void clearStorage() {
+		storage.clear();
+	}
 
 }
