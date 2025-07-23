@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @Builder
-public class MailMessageRequest {
+public class MailSendRequest {
 
 	private final String to;
 
