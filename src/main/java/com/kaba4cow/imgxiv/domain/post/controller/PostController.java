@@ -1,7 +1,6 @@
 package com.kaba4cow.imgxiv.domain.post.controller;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.CacheControl;
@@ -47,7 +46,7 @@ public class PostController implements PostControllerApiDoc {
 
 	private ResponseEntity<Resource> createImageResponse(ImageResource image) {
 		return ResponseEntity.ok()//
-				.cacheControl(CacheControl.maxAge(1L, TimeUnit.HOURS).cachePublic())//
+				.cacheControl(CacheControl.noStore())//
 				.contentLength(image.contentLength())//
 				.contentType(image.contentType())//
 				.body(image);
