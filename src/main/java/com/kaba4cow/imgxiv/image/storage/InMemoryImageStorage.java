@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public class FakeImageStorage implements ImageStorage {
+public class InMemoryImageStorage implements ImageStorage {
 
 	private final Map<String, byte[]> storage = new ConcurrentHashMap<>();
 

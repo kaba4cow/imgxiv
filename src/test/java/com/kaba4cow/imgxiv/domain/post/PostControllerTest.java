@@ -50,7 +50,7 @@ import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.UserRole;
-import com.kaba4cow.imgxiv.image.storage.FakeImageStorage;
+import com.kaba4cow.imgxiv.image.storage.InMemoryImageStorage;
 import com.kaba4cow.imgxiv.image.storage.ImageStorage;
 
 import lombok.SneakyThrows;
@@ -476,7 +476,7 @@ public class PostControllerTest {
 		@Primary
 		@Bean
 		public ImageStorage testImageStorage() {
-			return new FakeImageStorage();
+			return new InMemoryImageStorage();
 		}
 
 	}
