@@ -28,7 +28,7 @@ feature:
             enable: true
     images:
         thumbnail:
-            image-width: 480
-            image-height: 640
+            image-width: 200
+            image-height: 200
             image-format: JPG
             content-type: image/jpeg
