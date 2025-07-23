@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Profile("dev")
-@ConditionalOnProperty(prefix = "category-and-tag-initializer", name = "enable", havingValue = "true")
+@ConditionalOnProperty(prefix = "setup.category-and-tag-initializer", name = "enable", havingValue = "true")
 @Component
 public class CategoryAndTagInitializer implements ApplicationRunner {
 
