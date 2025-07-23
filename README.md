@@ -65,6 +65,11 @@ This project includes an automatically generated Swagger UI for testing the API.
 
 - [AWS S3](https://aws.amazon.com/s3/) for storing uploaded images
 
+### Mail
+
+- Spring Mail
+- [Thymeleaf](https://github.com/thymeleaf/thymeleaf) for mail templating
+
 ### Web
 
 - Spring Web for building REST controllers
