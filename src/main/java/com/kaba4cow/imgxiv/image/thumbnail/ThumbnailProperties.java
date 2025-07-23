@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-@ConfigurationProperties(prefix = "features.images.thumbnail")
+@ConfigurationProperties(prefix = "feature.images.thumbnail")
 public class ThumbnailProperties {
 
 	private final int imageWidth;

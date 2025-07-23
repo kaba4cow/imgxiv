@@ -31,4 +31,4 @@ feature:
             image-width: 480
             image-height: 640
             image-format: JPG
-            content-type: application/jpeg
+            content-type: image/jpeg
