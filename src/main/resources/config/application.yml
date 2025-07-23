@@ -26,3 +26,9 @@ feature:
             enable: true
         specification-caching:
             enable: true
+    images:
+        thumbnail:
+            image-width: 200
+            image-height: 200
+            image-format: JPG
+            content-type: image/jpeg

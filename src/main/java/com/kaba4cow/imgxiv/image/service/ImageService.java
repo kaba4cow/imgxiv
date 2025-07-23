@@ -11,6 +11,8 @@ public interface ImageService {
 
 	ImageResource getImage(PostImage postImage);
 
-	void deleteImage(PostImage postImage);
+	ImageResource getThumbnail(PostImage postImage);
+
+	void deleteImages(PostImage postImage);
 
 }

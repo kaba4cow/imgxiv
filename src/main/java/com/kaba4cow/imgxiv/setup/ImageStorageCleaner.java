@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@ConditionalOnProperty(prefix = "setup.image-storage.clean-up", name = "enable", havingValue = "true")
+@ConditionalOnProperty(prefix = "setup.image-storage-cleaner", name = "enable", havingValue = "true")
 @Component
 public class ImageStorageCleaner implements ApplicationRunner {
 

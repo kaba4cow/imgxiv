@@ -73,6 +73,17 @@ public interface PostControllerApiDoc {
 	);
 
 	@Operation(//
+			summary = "Load post thumbnail", //
+			description = """
+					Loads thumbnail of the specified post.
+					"""//
+	)
+	@GetMapping("/thumbnail")
+	ResponseEntity<Resource> getPostThumbnail(//
+			@Valid @ParameterObject PostIdRequest request//
+	);
+
+	@Operation(//
 			summary = "Edit post", //
 			description = """
 					Edits specified post.

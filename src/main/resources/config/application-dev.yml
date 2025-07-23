@@ -17,6 +17,7 @@ spring:
             path: /h2-console
 
 setup:
-    image-storage:
-        clean-up:
+    image-storage-cleaner:
             enable: true
+    category-and-tag-initializer:
+        enable: true

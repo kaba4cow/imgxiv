@@ -62,6 +62,11 @@ public class DefaultPostService implements PostService {
 	}
 
 	@Override
+	public ImageResource getPostThumbnail(Long id) {
+		return imageService.getThumbnail(postRepository.findByIdOrThrow(id).getPostImage());
+	}
+
+	@Override
 	public PostDto editPost(PostEditRequest request) {
 		Post post = postSecurity.getPostToEdit(request.getId());
 		post.getPostTags().clear();
@@ -74,6 +79,7 @@ public class DefaultPostService implements PostService {
 	@Override
 	public void deletePost(Long id) {
 		Post post = postSecurity.getPostToDelete(id);
+		imageService.deleteImages(post.getPostImage());
 		postRepository.delete(post);
 	}
 
