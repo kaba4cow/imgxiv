@@ -2,10 +2,10 @@ package com.kaba4cow.imgxiv.setup;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import com.kaba4cow.imgxiv.common.condition.ConditionalOnPropertyEnabled;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.embeddable.NameAndDescription;
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Profile("dev")
-@ConditionalOnProperty(prefix = "setup.category-and-tag-initializer", name = "enable", havingValue = "true")
+@ConditionalOnPropertyEnabled(prefix = "setup.category-and-tag-initializer")
 @Component
 public class CategoryAndTagInitializer implements ApplicationRunner {
 

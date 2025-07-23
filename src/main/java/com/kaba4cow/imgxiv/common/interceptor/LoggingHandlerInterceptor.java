@@ -3,9 +3,10 @@ package com.kaba4cow.imgxiv.common.interceptor;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+
+import com.kaba4cow.imgxiv.common.condition.ConditionalOnPropertyEnabled;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,9 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Getter
-@ConditionalOnProperty(prefix = "interceptors.logging", name = "enable", havingValue = "true")
+@ConditionalOnPropertyEnabled(prefix = LoggingHandlerInterceptor.PROPERTIES_PATH)
 @Component
 public class LoggingHandlerInterceptor implements ConfigurableHandlerInterceptor {
+
+	static final String PROPERTIES_PATH = "interceptors.logging";
 
 	private static final String START_TIME_ATTRIBUTE = "startTime";
 
