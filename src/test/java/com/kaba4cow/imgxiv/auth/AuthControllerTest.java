@@ -115,8 +115,8 @@ public class AuthControllerTest {
 		)//
 				.andExpect(status().isOk())//
 				.andExpect(jsonPath("$.token").isNotEmpty())//
-				.andExpect(jsonPath("$.user.username").value(USERNAME))//
-				.andExpect(jsonPath("$.user.email").value(EMAIL));
+				.andExpect(jsonPath("$.profile.username").value(USERNAME))//
+				.andExpect(jsonPath("$.profile.email").value(EMAIL));
 	}
 
 	@SneakyThrows
@@ -134,8 +134,8 @@ public class AuthControllerTest {
 		)//
 				.andExpect(status().isOk())//
 				.andExpect(jsonPath("$.token").isNotEmpty())//
-				.andExpect(jsonPath("$.user.username").value(USERNAME))//
-				.andExpect(jsonPath("$.user.email").value(EMAIL));
+				.andExpect(jsonPath("$.profile.username").value(USERNAME))//
+				.andExpect(jsonPath("$.profile.email").value(EMAIL));
 	}
 
 	@SneakyThrows
@@ -152,7 +152,7 @@ public class AuthControllerTest {
 				PASSWORD//
 		)//
 				.andExpect(status().is4xxClientError())//
-				.andExpect(status().isUnauthorized());
+				.andExpect(status().isNotFound());
 	}
 
 	@SneakyThrows

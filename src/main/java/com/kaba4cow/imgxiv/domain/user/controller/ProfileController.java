@@ -7,8 +7,7 @@ import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeEmailRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangePasswordRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeUsernameRequest;
-import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
-import com.kaba4cow.imgxiv.domain.user.dto.UserMapper;
+import com.kaba4cow.imgxiv.domain.user.dto.ProfileDto;
 import com.kaba4cow.imgxiv.domain.user.service.ProfileService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,22 +18,20 @@ public class ProfileController implements ProfileControllerApiDoc {
 
 	private final ProfileService profileService;
 
-	private final UserMapper userMapper;
-
 	@Override
-	public ResponseEntity<UserDto> getUserInfo(User user) {
-		return ResponseEntity.ok(userMapper.mapToDto(user));
+	public ResponseEntity<ProfileDto> getUserInfo(User user) {
+		return ResponseEntity.ok(profileService.getProfile(user));
 	}
 
 	@Override
-	public ResponseEntity<UserDto> changeUsername(ChangeUsernameRequest request, User user) {
-		UserDto result = profileService.changeUsername(request, user);
+	public ResponseEntity<ProfileDto> changeUsername(ChangeUsernameRequest request, User user) {
+		ProfileDto result = profileService.changeUsername(request, user);
 		return ResponseEntity.ok(result);
 	}
 
 	@Override
-	public ResponseEntity<UserDto> changeEmail(ChangeEmailRequest request, User user) {
-		UserDto result = profileService.changeEmail(request, user);
+	public ResponseEntity<ProfileDto> changeEmail(ChangeEmailRequest request, User user) {
+		ProfileDto result = profileService.changeEmail(request, user);
 		return ResponseEntity.ok(result);
 	}
 

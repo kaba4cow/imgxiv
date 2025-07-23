@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
+
 import lombok.SneakyThrows;
 
 @AutoConfigureMockMvc
@@ -30,7 +32,7 @@ public class CategoryControllerTest {
 	private CategoryRepository categoryRepository;
 
 	@SneakyThrows
-	@WithMockUser(authorities = "create-category")
+	@WithMockUser(authorities = UserAuthorities.CREATE_CATEGORY)
 	@Test
 	public void createsCategoryWithAuthority() {
 		String name = "name";
@@ -54,7 +56,7 @@ public class CategoryControllerTest {
 	}
 
 	@SneakyThrows
-	@WithMockUser(authorities = "create-category")
+	@WithMockUser(authorities = UserAuthorities.CREATE_CATEGORY)
 	@Test
 	public void doesNotCreateTagWithInvalidName() {
 		performCreateCategory("[category.]?", "")//
@@ -63,7 +65,7 @@ public class CategoryControllerTest {
 	}
 
 	@SneakyThrows
-	@WithMockUser(authorities = "create-category")
+	@WithMockUser(authorities = UserAuthorities.CREATE_CATEGORY)
 	@Test
 	public void doesNotCreateCategoryWithTakenName() {
 		String name = "name";

@@ -17,6 +17,8 @@ public interface PostService {
 
 	ImageResource getPostImage(Long id);
 
+	ImageResource getPostThumbnail(Long id);
+
 	PostDto editPost(PostEditRequest request);
 
 	void deletePost(Long id);

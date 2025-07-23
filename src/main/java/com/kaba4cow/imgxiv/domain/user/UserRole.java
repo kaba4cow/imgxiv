@@ -9,21 +9,24 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public enum UserRole {
 
-	USER("user", Set.of(//
-			"create-post"//
+	USER(UserRoles.USER, Set.of(//
+			UserAuthorities.CREATE_POST//
 	)), //
-	MODERATOR("moderator", Set.of(//
-			"create-category", //
+	MODERATOR(UserRoles.MODERATOR, Set.of(//
+			UserAuthorities.CREATE_CATEGORY, //
 
-			"create-tag", //
+			UserAuthorities.CREATE_TAG, //
 
-			"edit-post-na", //
-			"delete-post-na", //
+			UserAuthorities.EDIT_POST_NA, //
+			UserAuthorities.DELETE_POST_NA, //
 
-			"delete-comment-na" //
+			UserAuthorities.DELETE_COMMENT_NA, //
+
+			UserAuthorities.VIEW_MODERATORS//
 	)), //
-	ADMIN("admin", Set.of(//
-			"assign-moderator"//
+	ADMIN(UserRoles.ADMIN, Set.of(//
+			UserAuthorities.MANAGE_MODERATORS, //
+			UserAuthorities.VIEW_MODERATORS//
 	));
 
 	private final Set<? extends GrantedAuthority> authorities;
@@ -32,6 +35,10 @@ public enum UserRole {
 		this.authorities = getAuthorities(roleName, permissions).stream()//
 				.map(SimpleGrantedAuthority::new)//
 				.collect(Collectors.toUnmodifiableSet());
+	}
+
+	public static UserRole defaultRole() {
+		return USER;
 	}
 
 	private static Set<String> getAuthorities(String roleName, Set<String> permissions) {

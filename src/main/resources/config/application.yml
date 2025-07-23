@@ -20,9 +20,24 @@ springdoc:
         display-operation-id: true
     use-method-annotations: true
 
+interceptors:
+    logging:
+        enabled: true
+        path-patterns:
+            - /api/**
+        excluded-path-patterns:
+            - /docs/**
+            - /api/docs/**
+
 feature:
     posts:
         query-caching:
-            enable: true
+            enabled: true
         specification-caching:
-            enable: true
+            enabled: true
+    images:
+        thumbnail:
+            image-width: 200
+            image-height: 200
+            image-format: JPG
+            content-type: image/jpeg

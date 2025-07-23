@@ -6,12 +6,18 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.kaba4cow.imgxiv.common.advice.handler.ExceptionHandlerResponseEntity;
+import com.kaba4cow.imgxiv.common.exception.RoleAssignException;
 
 @ControllerAdvice
 public class ForbiddenHandler extends AbstractExceptionHandler {
 
 	@ExceptionHandler(AccessDeniedException.class)
 	public ExceptionHandlerResponseEntity handleAccessDenied(AccessDeniedException exception) {
+		return defaultResponse(HttpStatus.FORBIDDEN, exception);
+	}
+
+	@ExceptionHandler(RoleAssignException.class)
+	public ExceptionHandlerResponseEntity handleRoleAssign(RoleAssignException exception) {
 		return defaultResponse(HttpStatus.FORBIDDEN, exception);
 	}
 

@@ -35,21 +35,17 @@ public class AdminUserInitializer implements ApplicationRunner {
 	public void run(ApplicationArguments args) {
 		if (alreadyExists())
 			return;
-		User saved = userRepository.save(createAdmin());
-		log.info("Registered admin {}", saved);
-	}
-
-	private boolean alreadyExists() {
-		return userRepository.existsByUsername(username) || userRepository.existsByEmail(email);
-	}
-
-	private User createAdmin() {
 		User admin = new User();
 		admin.getCredentials().setUsername(username);
 		admin.getCredentials().setEmail(email);
 		admin.getCredentials().setPasswordHash(passwordEncoder.encode(password));
 		admin.setRole(UserRole.ADMIN);
-		return admin;
+		User saved = userRepository.save(admin);
+		log.info("Registered admin {}", saved);
+	}
+
+	private boolean alreadyExists() {
+		return userRepository.existsByUsername(username) || userRepository.existsByEmail(email);
 	}
 
 }

@@ -13,7 +13,7 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
 	List<Post> findByAuthor(User author);
 
 	default Post findByIdOrThrow(Long id) {
-		return findById(id).orElseThrow(() -> new NotFoundException(String.format("Post not found: %s", id)));
+		return findById(id).orElseThrow(() -> new NotFoundException("Post", id));
 	}
 
 }

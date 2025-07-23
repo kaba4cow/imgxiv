@@ -1,6 +1,7 @@
 package com.kaba4cow.imgxiv.domain.post.service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostEditRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostMapper;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.security.PostSecurity;
+import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.image.ImageResource;
@@ -40,12 +42,11 @@ public class DefaultPostService implements PostService {
 
 	@Override
 	public PostDto createPost(PostCreateRequest request, User author) {
-		Post post = Post.builder()//
-				.author(author)//
-				.postImage(imageService.createImage(request.getImage()))//
-				.build();
-		tagRepository.findByIdsOrThrow(request.getTagIds())//
-				.forEach(post::addTag);
+		Set<Tag> tags = tagRepository.findByIdsOrThrow(request.getTagIds());
+		Post post = new Post();
+		tags.forEach(post::addTag);
+		post.setAuthor(author);
+		post.setPostImage(imageService.createImages(request.getImage()));
 		Post saved = postRepository.save(post);
 		log.info("Created new post: {}", saved);
 		return postMapper.mapToDto(saved);
@@ -62,6 +63,11 @@ public class DefaultPostService implements PostService {
 	}
 
 	@Override
+	public ImageResource getPostThumbnail(Long id) {
+		return imageService.getThumbnail(postRepository.findByIdOrThrow(id).getPostImage());
+	}
+
+	@Override
 	public PostDto editPost(PostEditRequest request) {
 		Post post = postSecurity.getPostToEdit(request.getId());
 		post.getPostTags().clear();
@@ -74,6 +80,7 @@ public class DefaultPostService implements PostService {
 	@Override
 	public void deletePost(Long id) {
 		Post post = postSecurity.getPostToDelete(id);
+		imageService.deleteImages(post.getPostImage());
 		postRepository.delete(post);
 	}
 

@@ -3,15 +3,12 @@ package com.kaba4cow.imgxiv.image.storage;
 import java.io.InputStream;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kaba4cow.imgxiv.common.exception.ImageUploadException;
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.SneakyThrows;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.Delete;
@@ -24,31 +21,21 @@ import software.amazon.awssdk.services.s3.model.ObjectIdentifier;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Object;
 
-@Slf4j
 @RequiredArgsConstructor
-@Component
 public class AwsImageStorage implements ImageStorage {
 
 	private final S3Client s3Client;
 
-	@Value("${aws.bucket-name}")
-	private String bucketName;
+	private final String bucketName;
 
 	@Override
-	public void uploadImage(String storageKey, MultipartFile file) {
-		String contentType = file.getContentType();
-		long contentLength = file.getSize();
+	@SneakyThrows
+	public void saveImage(String storageKey, MultipartFile file) {
 		try (InputStream input = file.getInputStream()) {
 			s3Client.putObject(//
-					buildPutRequest(storageKey, contentLength, contentType), //
-					buildPutRequestBody(input, contentLength)//
+					buildPutRequest(storageKey, file.getSize(), file.getContentType()), //
+					buildPutRequestBody(input, file.getSize())//
 			);
-			log.info("Image upload successful: storageKey={}, contentType={}, contentLength={}", storageKey, contentType,
-					contentLength);
-		} catch (Exception exception) {
-			log.info("Image upload failed: storageKey={}, contentType={}, contentLength={}. Cause: {}", storageKey, contentType,
-					contentLength, exception.getMessage(), exception);
-			throw new ImageUploadException("Failed to upload image to S3", exception);
 		}
 	}
 
@@ -70,7 +57,7 @@ public class AwsImageStorage implements ImageStorage {
 		try {
 			return s3Client.getObject(buildGetObjectRequest(storageKey));
 		} catch (Exception exception) {
-			throw new NotFoundException(String.format("Image not found: %s", storageKey));
+			throw new NotFoundException("Image", storageKey);
 		}
 	}
 

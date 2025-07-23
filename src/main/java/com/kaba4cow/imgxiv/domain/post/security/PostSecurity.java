@@ -2,8 +2,8 @@ package com.kaba4cow.imgxiv.domain.post.security;
 
 import org.springframework.stereotype.Component;
 
-import com.kaba4cow.imgxiv.auth.annotation.security.IsPostDeletable;
-import com.kaba4cow.imgxiv.auth.annotation.security.IsPostEditable;
+import com.kaba4cow.imgxiv.auth.annotation.policy.IsPostDeletable;
+import com.kaba4cow.imgxiv.auth.annotation.policy.IsPostEditable;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 

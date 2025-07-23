@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
-import com.kaba4cow.imgxiv.auth.annotation.authority.CanCreateCategory;
+import com.kaba4cow.imgxiv.auth.annotation.policy.CanCreateCategory;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryCreateRequest;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryDto;
 

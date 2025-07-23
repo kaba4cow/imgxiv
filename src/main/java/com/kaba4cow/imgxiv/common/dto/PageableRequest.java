@@ -5,14 +5,16 @@ import org.springframework.data.domain.Sort;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public abstract class PageableRequest {
+public class PageableRequest {
 
 	@Min(value = 0, message = "Page must be 0 or greater")
 	@Schema(//

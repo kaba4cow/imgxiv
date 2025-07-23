@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
-import com.kaba4cow.imgxiv.image.storage.StorageKeyGenerator;
+import com.kaba4cow.imgxiv.image.service.StorageKeyGenerator;
 
 import jakarta.persistence.Column;
 import lombok.SneakyThrows;
@@ -39,7 +39,6 @@ public class StorageKeyGeneratorTest {
 				.distinct()//
 				.toList();
 		assertEquals(stringCount, uniques.size());
-		uniques.forEach(System.out::println);
 	}
 
 	private static List<String> generateStrings(int stringCount) {

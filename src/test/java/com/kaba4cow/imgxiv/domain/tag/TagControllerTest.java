@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
 
 import lombok.SneakyThrows;
 
@@ -38,7 +39,7 @@ public class TagControllerTest {
 	private TagRepository tagRepository;
 
 	@SneakyThrows
-	@WithMockUser(authorities = "create-tag")
+	@WithMockUser(authorities = UserAuthorities.CREATE_TAG)
 	@Test
 	public void createsTagWithAuthority() {
 		String name = "name";
@@ -65,7 +66,7 @@ public class TagControllerTest {
 	}
 
 	@SneakyThrows
-	@WithMockUser(authorities = "create-tag")
+	@WithMockUser(authorities = UserAuthorities.CREATE_TAG)
 	@Test
 	public void doesNotCreateTagWithInvalidName() {
 		performCreateTag("[tag.]?", "", saveTestCategory("category").getId())//
@@ -74,7 +75,7 @@ public class TagControllerTest {
 	}
 
 	@SneakyThrows
-	@WithMockUser(authorities = "create-tag")
+	@WithMockUser(authorities = UserAuthorities.CREATE_TAG)
 	@Test
 	public void doesNotCreateTagWithTakenName() {
 		Category category = saveTestCategory("category");
@@ -86,7 +87,7 @@ public class TagControllerTest {
 	}
 
 	@SneakyThrows
-	@WithMockUser(authorities = "create-tag")
+	@WithMockUser(authorities = UserAuthorities.CREATE_TAG)
 	@Test
 	public void doesNotCreateTagWithCategoryNotFound() {
 		performCreateTag("name", "", 0l)//

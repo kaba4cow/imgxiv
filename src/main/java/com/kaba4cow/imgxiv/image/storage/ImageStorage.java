@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ImageStorage {
 
-	void uploadImage(String storageKey, MultipartFile file);
+	void saveImage(String storageKey, MultipartFile file);
 
 	InputStream getImage(String storageKey);
 
