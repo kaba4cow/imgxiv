@@ -58,7 +58,12 @@ public class DefaultPostService implements PostService {
 
 	@Override
 	public ImageResource getPostImage(Long id) {
-		return imageService.getImage(postRepository.findByIdOrThrow(id).getPostImage());
+		return imageService.getFullImage(postRepository.findByIdOrThrow(id).getPostImage());
+	}
+
+	@Override
+	public ImageResource getPostThumbnail(Long id) {
+		return imageService.getThumbnailImage(postRepository.findByIdOrThrow(id).getPostImage());
 	}
 
 	@Override
