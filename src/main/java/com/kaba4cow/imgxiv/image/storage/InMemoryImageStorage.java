@@ -24,9 +24,9 @@ public class InMemoryImageStorage implements ImageStorage {
 		try {
 			byte[] bytes = file.getBytes();
 			storage.put(storageKey, bytes);
-			log.debug("Uploaded image: {}", storageKey);
+			log.debug("Save image: {}", storageKey);
 		} catch (Exception exception) {
-			throw new ImageUploadException(String.format("Could not upload image: %s", storageKey), exception);
+			throw new ImageUploadException(String.format("Could not save image: %s", storageKey), exception);
 		}
 	}
 
