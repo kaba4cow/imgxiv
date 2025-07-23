@@ -1,4 +1,7 @@
 spring:
+    config:
+        import:
+            - secret-dev.yml
     datasource:
         url: jdbc:h2:mem:devdb
         driver-class-name: org.h2.Driver

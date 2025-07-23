@@ -1,4 +1,7 @@
 spring:
+    config:
+        import:
+            - secret-prod.yml
     datasource:
         url: jdbc:postgresql://localhost:5432/imgxiv
         driver-class-name: org.postgresql.Driver
