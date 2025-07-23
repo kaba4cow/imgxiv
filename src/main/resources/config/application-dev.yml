@@ -19,5 +19,3 @@ spring:
 setup:
     image-storage-cleaner:
             enable: true
-    category-and-tag-initializer:
-        enable: true
