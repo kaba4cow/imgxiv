@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.auth.annotation.role;
+package com.kaba4cow.imgxiv.auth.annotation.policy;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
@@ -8,10 +8,10 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PostAuthorize;
 
 @Documented
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
-@PreAuthorize("hasRole('admin')")
-public @interface IsAdmin {}
+@PostAuthorize("returnObject.author.id == principal.id")
+public @interface IsCommentEditable {}

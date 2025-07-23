@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.kaba4cow.imgxiv.auth.annotation.authority.CanManageModerators;
-import com.kaba4cow.imgxiv.auth.annotation.authority.CanViewModerators;
+import com.kaba4cow.imgxiv.auth.annotation.policy.CanManageModerators;
+import com.kaba4cow.imgxiv.auth.annotation.policy.CanViewModerators;
 import com.kaba4cow.imgxiv.common.dto.PageableRequest;
 import com.kaba4cow.imgxiv.common.dto.UserIdRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.UserDto;

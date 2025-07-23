@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.auth.annotation.security;
+package com.kaba4cow.imgxiv.auth.annotation.policy;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
@@ -15,5 +15,5 @@ import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
 @Documented
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
-@PostAuthorize("returnObject.author.id == principal.id or hasAuthority('" + UserAuthorities.DELETE_COMMENT_NA + "')")
-public @interface IsCommentDeletable {}
+@PostAuthorize("hasAuthority('" + UserAuthorities.CREATE_CATEGORY + "')")
+public @interface CanCreateCategory {}

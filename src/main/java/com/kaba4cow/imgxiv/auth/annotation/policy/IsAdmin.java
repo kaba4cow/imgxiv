@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.auth.annotation.authority;
+package com.kaba4cow.imgxiv.auth.annotation.policy;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
@@ -8,12 +8,10 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.springframework.security.access.prepost.PostAuthorize;
-
-import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @Documented
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
-@PostAuthorize("hasAuthority('" + UserAuthorities.CREATE_TAG + "')")
-public @interface CanCreateTag {}
+@PreAuthorize("hasRole('admin')")
+public @interface IsAdmin {}
