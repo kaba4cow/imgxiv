@@ -1,7 +1,6 @@
 package com.kaba4cow.imgxiv.mail;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -26,29 +25,29 @@ public class DefaultMailService implements MailService {
 	private String from;
 
 	@Override
-	public void sendMessage(String to, String subject, String template, Map<String, Object> variables) {
+	public void sendMessage(MailMessageRequest request) {
 		try {
-			Context context = createContext(variables);
-			String body = templateEngine.process(template, context);
-			MimeMessage message = createMessage(to, subject, body);
+			Context context = createContext(request);
+			String body = templateEngine.process(request.getTemplate(), context);
+			MimeMessage message = createMessage(request, body);
 			mailSender.send(message);
 		} catch (Exception exception) {
 			throw new RuntimeException("Could not send mail message", exception);
 		}
 	}
 
-	private Context createContext(Map<String, Object> variables) {
+	private Context createContext(MailMessageRequest request) {
 		Context context = new Context();
-		context.setVariables(variables);
+		context.setVariables(request.getVariables());
 		return context;
 	}
 
-	private MimeMessage createMessage(String to, String subject, String body) throws MessagingException {
+	private MimeMessage createMessage(MailMessageRequest request, String body) throws MessagingException {
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
 		helper.setFrom(from);
-		helper.setTo(to);
-		helper.setSubject(subject);
+		helper.setTo(request.getTo());
+		helper.setSubject(request.getSubject());
 		helper.setText(body, true);
 		return message;
 	}
