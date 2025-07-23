@@ -30,7 +30,7 @@ public class ModeratorControllerTest {
 	private UserRepository userRepository;
 
 	@SneakyThrows
-	@WithMockUser(authorities = "view-moderators")
+	@WithMockUser(authorities = UserAuthorities.VIEW_MODERATORS)
 	@Test
 	public void retrievesModerators() {
 		int moderatorCount = 10;
@@ -45,7 +45,7 @@ public class ModeratorControllerTest {
 	}
 
 	@SneakyThrows
-	@WithMockUser(authorities = "view-moderators")
+	@WithMockUser(authorities = UserAuthorities.VIEW_MODERATORS)
 	@Test
 	public void retrievesModeratorsWithAuthority() {
 		performGetModerators()//
@@ -72,7 +72,7 @@ public class ModeratorControllerTest {
 	}
 
 	@SneakyThrows
-	@WithMockUser(authorities = "assign-moderator")
+	@WithMockUser(authorities = UserAuthorities.MANAGE_MODERATORS)
 	@Test
 	public void assignsModeratorWithAuthority() {
 		User user = saveTestUser("username", UserRole.USER);
@@ -108,7 +108,7 @@ public class ModeratorControllerTest {
 	}
 
 	@SneakyThrows
-	@WithMockUser(authorities = "assign-moderator")
+	@WithMockUser(authorities = UserAuthorities.MANAGE_MODERATORS)
 	@Test
 	public void removesModeratorWithAuthority() {
 		User user = saveTestUser("username", UserRole.MODERATOR);
