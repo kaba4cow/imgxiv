@@ -30,12 +30,7 @@ public class CategoryRepositoryTest {
 
 	@Test
 	public void existsByName_returnsFalse() {
-		String name = "name";
-		String otherName = "other_name";
-
-		saveTestCategory(name, "description");
-
-		assertFalse(categoryRepository.existsByName(otherName));
+		assertFalse(categoryRepository.existsByName("name"));
 	}
 
 	@Test
@@ -47,8 +42,6 @@ public class CategoryRepositoryTest {
 
 	@Test
 	public void findByIdOrThrow_throwsNotFound() {
-		saveTestCategory("name", "description");
-
 		assertThrows(NotFoundException.class, () -> categoryRepository.findByIdOrThrow(Long.MAX_VALUE));
 	}
 
