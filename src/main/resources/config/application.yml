@@ -22,7 +22,7 @@ springdoc:
 
 interceptors:
     logging:
-        enable: true
+        enabled: true
         path-patterns:
             - /api/**
         excluded-path-patterns:
@@ -32,9 +32,9 @@ interceptors:
 feature:
     posts:
         query-caching:
-            enable: true
+            enabled: true
         specification-caching:
-            enable: true
+            enabled: true
     images:
         thumbnail:
             image-width: 200

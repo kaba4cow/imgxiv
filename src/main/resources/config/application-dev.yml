@@ -18,4 +18,4 @@ spring:
 
 setup:
     image-storage-cleaner:
-            enable: true
+            enabled: true
