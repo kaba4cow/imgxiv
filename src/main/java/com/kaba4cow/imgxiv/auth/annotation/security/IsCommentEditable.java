@@ -13,5 +13,5 @@ import org.springframework.security.access.prepost.PostAuthorize;
 @Documented
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
-@PostAuthorize("returnObject.author.id == principal.id or hasAuthority('edit-comment-na')")
+@PostAuthorize("returnObject.author.id == principal.id")
 public @interface IsCommentEditable {}

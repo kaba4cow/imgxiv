@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.kaba4cow.imgxiv.auth.annotation.authority.CanAssignModerator;
+import com.kaba4cow.imgxiv.auth.annotation.authority.CanManageModerators;
 import com.kaba4cow.imgxiv.auth.annotation.authority.CanViewModerators;
 import com.kaba4cow.imgxiv.common.dto.PageableRequest;
 import com.kaba4cow.imgxiv.common.dto.UserIdRequest;
@@ -43,7 +43,7 @@ public interface ModeratorControllerApiDoc {
 			description = """
 					Assigns MODERATOR role to specific user.
 					""")
-	@CanAssignModerator
+	@CanManageModerators
 	@PostMapping("/assign")
 	ResponseEntity<Void> assignModerator(//
 			@Valid @ParameterObject UserIdRequest request//
@@ -54,7 +54,7 @@ public interface ModeratorControllerApiDoc {
 			description = """
 					Removes MODERATOR role from specific user.
 					""")
-	@CanAssignModerator
+	@CanManageModerators
 	@PostMapping("/remove")
 	ResponseEntity<Void> removeModerator(//
 			@Valid @ParameterObject UserIdRequest request//

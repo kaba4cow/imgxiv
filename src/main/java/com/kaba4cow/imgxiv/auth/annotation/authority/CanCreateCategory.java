@@ -8,10 +8,12 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PostAuthorize;
+
+import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
 
 @Documented
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
-@PreAuthorize("hasAuthority('create-category')")
+@PostAuthorize("hasAuthority('" + UserAuthorities.CREATE_CATEGORY + "')")
 public @interface CanCreateCategory {}
