@@ -9,7 +9,9 @@ public interface ImageService {
 
 	PostImage createImage(MultipartFile file);
 
-	ImageResource getImage(PostImage postImage);
+	ImageResource getFullImage(PostImage postImage);
+
+	ImageResource getThumbnailImage(PostImage postImage);
 
 	void deleteImage(PostImage postImage);
 
