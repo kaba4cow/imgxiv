@@ -20,6 +20,15 @@ springdoc:
         display-operation-id: true
     use-method-annotations: true
 
+interceptors:
+    logging:
+        enable: true
+        path-patterns:
+            - /api/**
+        excluded-path-patterns:
+            - /docs/**
+            - /api/docs/**
+
 feature:
     posts:
         query-caching:
