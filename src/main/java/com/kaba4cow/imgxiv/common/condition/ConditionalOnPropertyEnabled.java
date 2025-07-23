@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Conditional;
 @Documented
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
-@Conditional(OnPropertyEnableCondition.class)
-public @interface ConditionalOnPropertyEnable {
+@Conditional(OnPropertyEnabledCondition.class)
+public @interface ConditionalOnPropertyEnabled {
 
 	String prefix();
 
