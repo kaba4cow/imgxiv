@@ -7,7 +7,7 @@ import com.kaba4cow.imgxiv.image.ImageResource;
 
 public interface ImageService {
 
-	PostImage createImage(MultipartFile file);
+	PostImage createImages(MultipartFile file);
 
 	ImageResource getImage(PostImage postImage);
 

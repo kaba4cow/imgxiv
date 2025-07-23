@@ -25,7 +25,7 @@ public class DefaultImageService implements ImageService {
 	private final StorageKeyGenerator storageKeyGenerator;
 
 	@Override
-	public PostImage createImage(MultipartFile file) {
+	public PostImage createImages(MultipartFile file) {
 		String storageKey = storageKeyGenerator.generateKey(file.getOriginalFilename());
 		uploadImages(storageKey, file);
 		return PostImage.builder()//
