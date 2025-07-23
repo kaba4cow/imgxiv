@@ -35,7 +35,7 @@ public class AwsImageStorage implements ImageStorage {
 	private String bucketName;
 
 	@Override
-	public void uploadImage(String storageKey, MultipartFile file) {
+	public void saveImage(String storageKey, MultipartFile file) {
 		String contentType = file.getContentType();
 		long contentLength = file.getSize();
 		try (InputStream input = file.getInputStream()) {

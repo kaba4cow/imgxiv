@@ -20,7 +20,7 @@ public class InMemoryImageStorage implements ImageStorage {
 	private final Map<String, byte[]> storage = new ConcurrentHashMap<>();
 
 	@Override
-	public void uploadImage(String storageKey, MultipartFile file) {
+	public void saveImage(String storageKey, MultipartFile file) {
 		try {
 			byte[] bytes = file.getBytes();
 			storage.put(storageKey, bytes);
