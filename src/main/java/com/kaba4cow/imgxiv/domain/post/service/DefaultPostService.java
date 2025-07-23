@@ -79,6 +79,7 @@ public class DefaultPostService implements PostService {
 	@Override
 	public void deletePost(Long id) {
 		Post post = postSecurity.getPostToDelete(id);
+		imageService.deleteImages(post.getPostImage());
 		postRepository.delete(post);
 	}
 
