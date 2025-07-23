@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kaba4cow.imgxiv.common.exception.ImageUploadException;
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -36,27 +35,14 @@ public class AwsImageStorage implements ImageStorage {
 
 	@Override
 	public void saveImage(String storageKey, MultipartFile file) {
-		String contentType = file.getContentType();
-		long contentLength = file.getSize();
 		try (InputStream input = file.getInputStream()) {
 			s3Client.putObject(//
-					buildPutRequest(storageKey, contentLength, contentType), //
-					buildPutRequestBody(input, contentLength)//
+					buildPutRequest(storageKey, file.getSize(), file.getContentType()), //
+					buildPutRequestBody(input, file.getSize())//
 			);
-			log.info("Uploaded image: storageKey={}, contentType={}, contentLength={}", //
-					storageKey, //
-					contentType, //
-					contentLength//
-			);
+			logSaved(log, storageKey);
 		} catch (Exception exception) {
-			log.info("Failed to upload image: storageKey={}, contentType={}, contentLength={}. Cause: {}", //
-					storageKey, //
-					contentType, //
-					contentLength, //
-					exception.getMessage(), //
-					exception//
-			);
-			throw new ImageUploadException("Failed to upload image to S3", exception);
+			rethrowFailedToSave(log, storageKey, file, exception);
 		}
 	}
 
@@ -92,7 +78,7 @@ public class AwsImageStorage implements ImageStorage {
 	@Override
 	public void deleteImage(String storageKey) {
 		s3Client.deleteObject(buildDeleteObjectRequest(storageKey));
-		log.info("Deleted image {}", storageKey);
+		logDeleted(log, storageKey);
 	}
 
 	private DeleteObjectRequest buildDeleteObjectRequest(String storageKey) {
@@ -104,7 +90,6 @@ public class AwsImageStorage implements ImageStorage {
 
 	@Override
 	public void clearStorage() {
-		log.info("Clearing storage...");
 		ListObjectsV2Request listRequest = buildListObjectsRequest();
 		ListObjectsV2Response listResponse;
 		do {
@@ -116,7 +101,7 @@ public class AwsImageStorage implements ImageStorage {
 					.continuationToken(listResponse.nextContinuationToken())//
 					.build();
 		} while (listResponse.isTruncated());
-		log.info("Storage cleared");
+		logCleared(log);
 	}
 
 	private ListObjectsV2Request buildListObjectsRequest() {

@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kaba4cow.imgxiv.common.exception.ImageUploadException;
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -22,16 +21,10 @@ public class InMemoryImageStorage implements ImageStorage {
 	@Override
 	public void saveImage(String storageKey, MultipartFile file) {
 		try {
-			byte[] bytes = file.getBytes();
-			storage.put(storageKey, bytes);
-			log.info("Save image: {}", storageKey);
+			storage.put(storageKey, file.getBytes());
+			logSaved(log, storageKey);
 		} catch (Exception exception) {
-			log.info("Failed to save image: {}. Cause: {}", //
-					storageKey, //
-					exception.getMessage(), //
-					exception//
-			);
-			throw new ImageUploadException("Failed to save image", exception);
+			rethrowFailedToSave(log, storageKey, file, exception);
 		}
 	}
 
@@ -45,13 +38,13 @@ public class InMemoryImageStorage implements ImageStorage {
 	@Override
 	public void deleteImage(String storageKey) {
 		storage.remove(storageKey);
-		log.info("Deleted image: {}", storageKey);
+		logDeleted(log, storageKey);
 	}
 
 	@Override
 	public void clearStorage() {
 		storage.clear();
-		log.info("Cleared storage");
+		logCleared(log);
 	}
 
 }
