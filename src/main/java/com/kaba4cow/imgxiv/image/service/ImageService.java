@@ -13,6 +13,6 @@ public interface ImageService {
 
 	ImageResource getThumbnailImage(PostImage postImage);
 
-	void deleteImage(PostImage postImage);
+	void deleteImages(PostImage postImage);
 
 }
