@@ -20,3 +20,5 @@ setup:
     image-storage:
         clean-up:
             enable: true
+    category-and-tag-initializer:
+        enable: true

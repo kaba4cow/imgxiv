@@ -2,6 +2,7 @@ package com.kaba4cow.imgxiv.setup;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Profile("dev")
+@ConditionalOnProperty(prefix = "category-and-tag-initializer", name = "enable", havingValue = "true")
 @Component
 public class CategoryAndTagInitializer implements ApplicationRunner {
 
@@ -26,9 +28,11 @@ public class CategoryAndTagInitializer implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) {
-		Category category = categoryRepository.save(createCategory("cat"));
-		for (int i = 1; i <= 10; i++)
-			tagRepository.save(createTag("tag_" + i, category));
+		for (int i = 1; i <= 10; i++) {
+			Category category = categoryRepository.save(createCategory("c%s".formatted(i)));
+			for (int j = 1; j <= 10; j++)
+				tagRepository.save(createTag("c%st%s".formatted(i, j), category));
+		}
 	}
 
 	private Category createCategory(String name) {
