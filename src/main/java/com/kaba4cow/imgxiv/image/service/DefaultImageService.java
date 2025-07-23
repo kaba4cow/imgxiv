@@ -6,7 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
 import com.kaba4cow.imgxiv.image.ImageResource;
 import com.kaba4cow.imgxiv.image.storage.ImageStorage;
-import com.kaba4cow.imgxiv.image.storage.StorageKeyGenerator;
 import com.kaba4cow.imgxiv.image.thumbnail.ThumbnailGenerator;
 
 import lombok.RequiredArgsConstructor;
