@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class StorageKeyGenerator {
 
 	public String generateKey(String filename) {
-		return String.format("images/%s/%s/%s", //
+		return String.format("%s/%s/%s", //
 				getDateString(), //
 				getHashString(filename), //
 				getUUIDString()//
