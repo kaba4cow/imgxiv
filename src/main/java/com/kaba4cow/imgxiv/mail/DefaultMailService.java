@@ -14,7 +14,9 @@ import com.kaba4cow.imgxiv.common.exception.MailSendException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class DefaultMailService implements MailService {
@@ -33,6 +35,7 @@ public class DefaultMailService implements MailService {
 			String body = templateEngine.process(request.getTemplate(), context);
 			MimeMessage message = createMessage(request, body);
 			mailSender.send(message);
+			log.info("Sent mail message to {}, subject: {}", request.getTo(), request.getSubject());
 		} catch (Exception exception) {
 			throw new MailSendException("Could not send mail message", exception);
 		}

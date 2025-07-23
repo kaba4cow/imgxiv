@@ -42,7 +42,7 @@ public class DefaultPostService implements PostService {
 	public PostDto createPost(PostCreateRequest request, User author) {
 		Post post = Post.builder()//
 				.author(author)//
-				.postImage(imageService.createImage(request.getImage()))//
+				.postImage(imageService.createImages(request.getImage()))//
 				.build();
 		tagRepository.findByIdsOrThrow(request.getTagIds())//
 				.forEach(post::addTag);

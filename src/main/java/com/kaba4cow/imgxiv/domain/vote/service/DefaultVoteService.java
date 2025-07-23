@@ -42,6 +42,7 @@ public class DefaultVoteService implements VoteService {
 	public void deleteVote(Long postId, User user) {
 		VoteId id = VoteId.of(postId, user.getId());
 		voteRepository.deleteById(id);
+		log.info("Deleted vote: {}", id);
 	}
 
 	@Override

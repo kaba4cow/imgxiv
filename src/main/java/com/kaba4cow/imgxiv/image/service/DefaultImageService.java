@@ -10,7 +10,9 @@ import com.kaba4cow.imgxiv.image.storage.StorageKeyGenerator;
 import com.kaba4cow.imgxiv.image.thumbnail.ThumbnailGenerator;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class DefaultImageService implements ImageService {
@@ -37,6 +39,7 @@ public class DefaultImageService implements ImageService {
 	}
 
 	private void uploadImages(String storageKey, MultipartFile file) {
+		log.info("Uploading images: {}", storageKey);
 		imageStorage.uploadImage(getFullStorageKey(IMAGE_PATH, storageKey), file);
 		imageStorage.uploadImage(getFullStorageKey(THUMBNAIL_PATH, storageKey), thumbnailGenerator.generateThumbnail(file));
 	}
@@ -61,6 +64,7 @@ public class DefaultImageService implements ImageService {
 
 	@Override
 	public void deleteImages(PostImage postImage) {
+		log.info("Deleting images: {}", postImage.getStorageKey());
 		imageStorage.deleteImage(getFullStorageKey(IMAGE_PATH, postImage));
 		imageStorage.deleteImage(getFullStorageKey(THUMBNAIL_PATH, postImage));
 	}

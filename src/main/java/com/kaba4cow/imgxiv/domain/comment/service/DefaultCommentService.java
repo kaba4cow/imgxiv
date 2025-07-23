@@ -45,13 +45,16 @@ public class DefaultCommentService implements CommentService {
 	public CommentDto editComment(CommentEditRequest request) {
 		Comment comment = commentSecurity.getCommentToEdit(request.getId());
 		comment.setText(request.getText());
-		return commentMapper.mapToDto(commentRepository.save(comment));
+		Comment saved = commentRepository.save(comment);
+		log.info("Edited comment: {}", saved);
+		return commentMapper.mapToDto(saved);
 	}
 
 	@Override
 	public void deleteComment(Long id) {
 		Comment comment = commentSecurity.getCommentToDelete(id);
 		commentRepository.delete(comment);
+		log.info("Deleted comment: {}", comment);
 	}
 
 	@Override

@@ -43,11 +43,10 @@ public class AwsImageStorage implements ImageStorage {
 					buildPutRequest(storageKey, contentLength, contentType), //
 					buildPutRequestBody(input, contentLength)//
 			);
-			log.info("Image upload successful: storageKey={}, contentType={}, contentLength={}", storageKey, contentType,
-					contentLength);
+			log.info("Uploaded image: storageKey={}, contentType={}, contentLength={}", storageKey, contentType, contentLength);
 		} catch (Exception exception) {
-			log.info("Image upload failed: storageKey={}, contentType={}, contentLength={}. Cause: {}", storageKey, contentType,
-					contentLength, exception.getMessage(), exception);
+			log.info("Failed to upload image: storageKey={}, contentType={}, contentLength={}. Cause: {}", storageKey,
+					contentType, contentLength, exception.getMessage(), exception);
 			throw new ImageUploadException("Failed to upload image to S3", exception);
 		}
 	}
@@ -84,6 +83,7 @@ public class AwsImageStorage implements ImageStorage {
 	@Override
 	public void deleteImage(String storageKey) {
 		s3Client.deleteObject(buildDeleteObjectRequest(storageKey));
+		log.info("Deleted image {}", storageKey);
 	}
 
 	private DeleteObjectRequest buildDeleteObjectRequest(String storageKey) {
@@ -95,6 +95,7 @@ public class AwsImageStorage implements ImageStorage {
 
 	@Override
 	public void clearStorage() {
+		log.info("Clearing storage...");
 		ListObjectsV2Request listRequest = buildListObjectsRequest();
 		ListObjectsV2Response listResponse;
 		do {
@@ -106,6 +107,7 @@ public class AwsImageStorage implements ImageStorage {
 					.continuationToken(listResponse.nextContinuationToken())//
 					.build();
 		} while (listResponse.isTruncated());
+		log.info("Storage cleared");
 	}
 
 	private ListObjectsV2Request buildListObjectsRequest() {

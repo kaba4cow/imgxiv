@@ -15,7 +15,9 @@ import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 import com.kaba4cow.imgxiv.domain.user.dto.UserMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class DefaultModeratorService implements ModeratorService {
@@ -60,7 +62,8 @@ public class DefaultModeratorService implements ModeratorService {
 
 	private void saveUserRole(User user, UserRole role) {
 		user.setRole(role);
-		userRepository.save(user);
+		User saved = userRepository.save(user);
+		log.info("Assigned {} role to {}", role, saved);
 	}
 
 }
