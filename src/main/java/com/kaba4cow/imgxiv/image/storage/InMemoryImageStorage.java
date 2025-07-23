@@ -10,22 +10,17 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.SneakyThrows;
 
-@Slf4j
 @RequiredArgsConstructor
 public class InMemoryImageStorage implements ImageStorage {
 
 	private final Map<String, byte[]> storage = new ConcurrentHashMap<>();
 
 	@Override
+	@SneakyThrows
 	public void saveImage(String storageKey, MultipartFile file) {
-		try {
-			storage.put(storageKey, file.getBytes());
-			logSaved(log, storageKey);
-		} catch (Exception exception) {
-			rethrowFailedToSave(log, storageKey, file, exception);
-		}
+		storage.put(storageKey, file.getBytes());
 	}
 
 	@Override
@@ -38,13 +33,11 @@ public class InMemoryImageStorage implements ImageStorage {
 	@Override
 	public void deleteImage(String storageKey) {
 		storage.remove(storageKey);
-		logDeleted(log, storageKey);
 	}
 
 	@Override
 	public void clearStorage() {
 		storage.clear();
-		logCleared(log);
 	}
 
 }

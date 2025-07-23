@@ -9,26 +9,21 @@ import com.kaba4cow.imgxiv.image.storage.stored.StoredImage;
 import com.kaba4cow.imgxiv.image.storage.stored.StoredImageRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.SneakyThrows;
 
-@Slf4j
 @RequiredArgsConstructor
 public class DatabaseImageStorage implements ImageStorage {
 
 	private final StoredImageRepository storedImageRepository;
 
 	@Override
+	@SneakyThrows
 	public void saveImage(String storageKey, MultipartFile file) {
-		try {
-			StoredImage image = StoredImage.builder()//
-					.storageKey(storageKey)//
-					.data(file.getBytes())//
-					.build();
-			storedImageRepository.save(image);
-			logSaved(log, storageKey);
-		} catch (Exception exception) {
-			rethrowFailedToSave(log, storageKey, file, exception);
-		}
+		StoredImage image = StoredImage.builder()//
+				.storageKey(storageKey)//
+				.data(file.getBytes())//
+				.build();
+		storedImageRepository.save(image);
 	}
 
 	@Override
@@ -40,13 +35,11 @@ public class DatabaseImageStorage implements ImageStorage {
 	@Override
 	public void deleteImage(String storageKey) {
 		storedImageRepository.deleteById(storageKey);
-		logDeleted(log, storageKey);
 	}
 
 	@Override
 	public void clearStorage() {
 		storedImageRepository.deleteAll();
-		logCleared(log);
 	}
 
 }

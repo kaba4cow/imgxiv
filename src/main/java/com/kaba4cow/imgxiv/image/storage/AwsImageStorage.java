@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.SneakyThrows;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.Delete;
@@ -23,7 +23,6 @@ import software.amazon.awssdk.services.s3.model.ObjectIdentifier;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Object;
 
-@Slf4j
 @RequiredArgsConstructor
 @Component
 public class AwsImageStorage implements ImageStorage {
@@ -34,15 +33,13 @@ public class AwsImageStorage implements ImageStorage {
 	private String bucketName;
 
 	@Override
+	@SneakyThrows
 	public void saveImage(String storageKey, MultipartFile file) {
 		try (InputStream input = file.getInputStream()) {
 			s3Client.putObject(//
 					buildPutRequest(storageKey, file.getSize(), file.getContentType()), //
 					buildPutRequestBody(input, file.getSize())//
 			);
-			logSaved(log, storageKey);
-		} catch (Exception exception) {
-			rethrowFailedToSave(log, storageKey, file, exception);
 		}
 	}
 
@@ -78,7 +75,6 @@ public class AwsImageStorage implements ImageStorage {
 	@Override
 	public void deleteImage(String storageKey) {
 		s3Client.deleteObject(buildDeleteObjectRequest(storageKey));
-		logDeleted(log, storageKey);
 	}
 
 	private DeleteObjectRequest buildDeleteObjectRequest(String storageKey) {
@@ -101,7 +97,6 @@ public class AwsImageStorage implements ImageStorage {
 					.continuationToken(listResponse.nextContinuationToken())//
 					.build();
 		} while (listResponse.isTruncated());
-		logCleared(log);
 	}
 
 	private ListObjectsV2Request buildListObjectsRequest() {
