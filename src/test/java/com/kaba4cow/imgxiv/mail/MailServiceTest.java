@@ -16,7 +16,7 @@ public class MailServiceTest {
 
 	@Test
 	public void sendMessage_doesNotThrow() {
-		assertDoesNotThrow(() -> mailService.sendMessage(MailMessageRequest.builder()//
+		assertDoesNotThrow(() -> mailService.sendMessage(MailSendRequest.builder()//
 				.to("test@example.com")//
 				.subject("Test")//
 				.template("mail/test.html")//

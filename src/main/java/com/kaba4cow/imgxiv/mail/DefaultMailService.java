@@ -27,7 +27,7 @@ public class DefaultMailService implements MailService {
 	private String from;
 
 	@Override
-	public void sendMessage(MailMessageRequest request) {
+	public void sendMessage(MailSendRequest request) {
 		try {
 			Context context = createContext(request);
 			String body = templateEngine.process(request.getTemplate(), context);
@@ -38,13 +38,13 @@ public class DefaultMailService implements MailService {
 		}
 	}
 
-	private Context createContext(MailMessageRequest request) {
+	private Context createContext(MailSendRequest request) {
 		Context context = new Context();
 		context.setVariables(request.getVariables());
 		return context;
 	}
 
-	private MimeMessage createMessage(MailMessageRequest request, String body) throws MessagingException {
+	private MimeMessage createMessage(MailSendRequest request, String body) throws MessagingException {
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
 		helper.setFrom(from);
