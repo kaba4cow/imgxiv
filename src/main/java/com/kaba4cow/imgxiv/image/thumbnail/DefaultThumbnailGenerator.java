@@ -19,10 +19,10 @@ public class DefaultThumbnailGenerator implements ThumbnailGenerator {
 
 	@Override
 	public MultipartFile generateThumbnail(MultipartFile file) {
-		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-			createThumbnail(file.getInputStream(), outputStream);
+		try (InputStream input = file.getInputStream(); ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+			createThumbnail(input, output);
 			return ThumbnailMultipartFile.builder()//
-					.bytes(outputStream.toByteArray())//
+					.bytes(output.toByteArray())//
 					.name(file.getName())//
 					.originalFilename(file.getOriginalFilename())//
 					.contentType(thumbnailProperties.getContentType())//
