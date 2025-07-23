@@ -42,12 +42,12 @@ public class DefaultImageService implements ImageService {
 	}
 
 	@Override
-	public ImageResource getFullImage(PostImage postImage) {
+	public ImageResource getImage(PostImage postImage) {
 		return getImage(IMAGE_PATH, postImage);
 	}
 
 	@Override
-	public ImageResource getThumbnailImage(PostImage postImage) {
+	public ImageResource getThumbnail(PostImage postImage) {
 		return getImage(THUMBNAIL_PATH, postImage);
 	}
 
