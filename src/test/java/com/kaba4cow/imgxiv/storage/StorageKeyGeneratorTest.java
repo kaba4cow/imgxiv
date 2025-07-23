@@ -39,7 +39,6 @@ public class StorageKeyGeneratorTest {
 				.distinct()//
 				.toList();
 		assertEquals(stringCount, uniques.size());
-		uniques.forEach(System.out::println);
 	}
 
 	private static List<String> generateStrings(int stringCount) {
