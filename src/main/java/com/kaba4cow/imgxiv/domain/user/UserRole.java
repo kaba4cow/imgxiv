@@ -15,8 +15,6 @@ public enum UserRole {
 	MODERATOR(UserRoles.MODERATOR, Set.of(//
 			UserAuthorities.CREATE_CATEGORY, //
 
-			UserAuthorities.CREATE_TAG, //
-
 			UserAuthorities.EDIT_POST_NA, //
 			UserAuthorities.DELETE_POST_NA, //
 
