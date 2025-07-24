@@ -7,10 +7,8 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kaba4cow.imgxiv.common.dto.PostIdRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
-import com.kaba4cow.imgxiv.domain.post.dto.PostEditRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.service.PostService;
 import com.kaba4cow.imgxiv.domain.user.User;
@@ -30,18 +28,18 @@ public class PostController implements PostControllerApiDoc {
 	}
 
 	@Override
-	public ResponseEntity<PostDto> getPost(PostIdRequest request) {
-		return ResponseEntity.ok(postService.getPost(request.getPostId()));
+	public ResponseEntity<PostDto> getPost(Long id) {
+		return ResponseEntity.ok(postService.getPost(id));
 	}
 
 	@Override
-	public ResponseEntity<Resource> getPostImage(PostIdRequest request) {
-		return createImageResponse(postService.getPostImage(request.getPostId()));
+	public ResponseEntity<Resource> getPostImage(Long id) {
+		return createImageResponse(postService.getPostImage(id));
 	}
 
 	@Override
-	public ResponseEntity<Resource> getPostThumbnail(PostIdRequest request) {
-		return createImageResponse(postService.getPostThumbnail(request.getPostId()));
+	public ResponseEntity<Resource> getPostThumbnail(Long id) {
+		return createImageResponse(postService.getPostThumbnail(id));
 	}
 
 	private ResponseEntity<Resource> createImageResponse(ImageResource image) {
@@ -53,13 +51,13 @@ public class PostController implements PostControllerApiDoc {
 	}
 
 	@Override
-	public ResponseEntity<PostDto> editPost(PostEditRequest request) {
-		return ResponseEntity.ok(postService.editPost(request));
+	public ResponseEntity<PostDto> editPost(Long id, List<String> tags) {
+		return ResponseEntity.ok(postService.editPost(id, tags));
 	}
 
 	@Override
-	public ResponseEntity<Void> deletePost(PostIdRequest request) {
-		postService.deletePost(request.getPostId());
+	public ResponseEntity<Void> deletePost(Long id) {
+		postService.deletePost(id);
 		return ResponseEntity.noContent().build();
 	}
 

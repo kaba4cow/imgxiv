@@ -10,7 +10,6 @@ import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
-import com.kaba4cow.imgxiv.domain.post.dto.PostEditRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostMapper;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.security.PostSecurity;
@@ -68,10 +67,10 @@ public class DefaultPostService implements PostService {
 	}
 
 	@Override
-	public PostDto editPost(PostEditRequest request) {
-		Post post = postSecurity.getPostToEdit(request.getId());
+	public PostDto editPost(Long id, List<String> tags) {
+		Post post = postSecurity.getPostToEdit(id);
 		post.clearTags();
-		tagService.getOrCreateTagsByNames(request.getTagNames())//
+		tagService.getOrCreateTagsByNames(tags)//
 				.forEach(post::addTag);
 		Post saved = postRepository.save(post);
 		log.info("Edited post: {}", saved);

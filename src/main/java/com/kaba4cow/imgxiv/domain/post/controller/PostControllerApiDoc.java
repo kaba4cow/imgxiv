@@ -2,7 +2,6 @@ package com.kaba4cow.imgxiv.domain.post.controller;
 
 import java.util.List;
 
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,23 +9,24 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
-import com.kaba4cow.imgxiv.common.dto.PostIdRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
-import com.kaba4cow.imgxiv.domain.post.dto.PostEditRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.user.User;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 
 @Tag(//
 		name = "Posts", //
@@ -56,9 +56,9 @@ public interface PostControllerApiDoc {
 					Returns post by ID.
 					"""//
 	)
-	@GetMapping
+	@GetMapping("/{id}")
 	ResponseEntity<PostDto> getPost(//
-			@Valid @ParameterObject PostIdRequest request//
+			@PathVariable Long id//
 	);
 
 	@Operation(//
@@ -67,9 +67,9 @@ public interface PostControllerApiDoc {
 					Loads image of the specified post.
 					"""//
 	)
-	@GetMapping("/image")
+	@GetMapping("/{id}/image")
 	ResponseEntity<Resource> getPostImage(//
-			@Valid @ParameterObject PostIdRequest request//
+			@PathVariable Long id//
 	);
 
 	@Operation(//
@@ -78,9 +78,9 @@ public interface PostControllerApiDoc {
 					Loads thumbnail of the specified post.
 					"""//
 	)
-	@GetMapping("/thumbnail")
+	@GetMapping("/{id}/thumbnail")
 	ResponseEntity<Resource> getPostThumbnail(//
-			@Valid @ParameterObject PostIdRequest request//
+			@PathVariable Long id//
 	);
 
 	@Operation(//
@@ -90,9 +90,11 @@ public interface PostControllerApiDoc {
 					"""//
 	)
 	@IsAuthenticated
-	@PatchMapping
+	@PatchMapping("/{id}")
 	ResponseEntity<PostDto> editPost(//
-			@Valid @RequestBody PostEditRequest request//
+			@PathVariable Long id, //
+			@NotEmpty(message = "At least one tag is required") //
+			@RequestParam List<String> tags//
 	);
 
 	@Operation(//
@@ -102,9 +104,9 @@ public interface PostControllerApiDoc {
 					"""//
 	)
 	@IsAuthenticated
-	@DeleteMapping
+	@DeleteMapping("/{id}")
 	ResponseEntity<Void> deletePost(//
-			@Valid @ParameterObject PostIdRequest request//
+			@PathVariable Long id//
 	);
 
 	@Operation(//

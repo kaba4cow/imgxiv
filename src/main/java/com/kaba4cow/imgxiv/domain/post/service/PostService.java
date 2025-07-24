@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
-import com.kaba4cow.imgxiv.domain.post.dto.PostEditRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.image.ImageResource;
@@ -19,7 +18,7 @@ public interface PostService {
 
 	ImageResource getPostThumbnail(Long id);
 
-	PostDto editPost(PostEditRequest request);
+	PostDto editPost(Long id, List<String> tags);
 
 	void deletePost(Long id);
 
