@@ -20,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class DefaultCategoryService implements CategoryService {
 
+	public static final String DEFAULT_CATEGORY_NAME = "Uncategorized";
+
 	private final CategoryRepository categoryRepository;
 
 	private final CategoryMapper categoryMapper;
@@ -41,6 +43,20 @@ public class DefaultCategoryService implements CategoryService {
 		return categoryRepository.findAll().stream()//
 				.map(categoryMapper::mapToDto)//
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public Category getDefaultCategory() {
+		return categoryRepository.findByName(DEFAULT_CATEGORY_NAME).orElseGet(this::createDefaultCategory);
+	}
+
+	private Category createDefaultCategory() {
+		Category category = new Category();
+		category.getNameAndDescription().setName(DEFAULT_CATEGORY_NAME);
+		category.getNameAndDescription().setDescription(DEFAULT_CATEGORY_NAME);
+		Category saved = categoryRepository.save(category);
+		log.info("Created default category: {}", saved);
+		return saved;
 	}
 
 }
