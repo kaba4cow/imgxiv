@@ -7,6 +7,7 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kaba4cow.imgxiv.common.dto.PaginationParams;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
@@ -62,8 +63,8 @@ public class PostController implements PostControllerApiDoc {
 	}
 
 	@Override
-	public ResponseEntity<List<PostDto>> searchPosts(PostQueryRequest request) {
-		return ResponseEntity.ok(postService.findPostsByQuery(request));
+	public ResponseEntity<List<PostDto>> searchPosts(PostQueryRequest request, PaginationParams pagination) {
+		return ResponseEntity.ok(postService.findPostsByQuery(request, pagination));
 	}
 
 }

@@ -2,6 +2,7 @@ package com.kaba4cow.imgxiv.domain.post.controller;
 
 import java.util.List;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
+import com.kaba4cow.imgxiv.common.dto.PaginationParams;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
@@ -118,7 +120,8 @@ public interface PostControllerApiDoc {
 	@PermitAll
 	@PostMapping("/search")
 	ResponseEntity<List<PostDto>> searchPosts(//
-			@Valid @RequestBody PostQueryRequest request//
+			@Valid @RequestBody PostQueryRequest request, //
+			@ParameterObject PaginationParams pagination//
 	);
 
 }
