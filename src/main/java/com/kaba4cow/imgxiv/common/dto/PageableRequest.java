@@ -21,7 +21,7 @@ public class PageableRequest {
 			description = "Page number, zero-based", //
 			example = "0" //
 	)
-	private int pageNumber = 0;
+	private int page = 0;
 
 	@Min(value = 1, message = "Page size must be at least 1")
 	@Max(value = 100, message = "Page size must not exceed 100")
@@ -29,12 +29,12 @@ public class PageableRequest {
 			description = "Number of posts per page", //
 			example = "20" //
 	)
-	private int pageSize = 20;
+	private int size = 20;
 
 	@Schema(//
 			description = "Sort direction", //
 			example = "DESC" //
 	)
-	private Sort.Direction sortDirection = Sort.Direction.DESC;
+	private Sort.Direction sort = Sort.Direction.DESC;
 
 }

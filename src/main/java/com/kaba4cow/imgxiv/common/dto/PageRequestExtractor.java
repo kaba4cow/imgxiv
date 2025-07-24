@@ -19,17 +19,17 @@ public class PageRequestExtractor {
 	}
 
 	private int getPageNumber(PageableRequest request) {
-		return request.getPageNumber();
+		return request.getPage();
 	}
 
 	private int getPageSize(PageableRequest request) {
-		return request.getPageSize();
+		return request.getSize();
 	}
 
 	private Sort getSort(PageableRequest request, String... properties) {
 		return properties.length == 0//
-				? Sort.by(request.getSortDirection())//
-				: Sort.by(request.getSortDirection(), properties);
+				? Sort.by(request.getSort())//
+				: Sort.by(request.getSort(), properties);
 	}
 
 }
