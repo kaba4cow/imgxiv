@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.kaba4cow.imgxiv.common.dto.PaginationParams;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
@@ -86,8 +86,8 @@ public class DefaultPostService implements PostService {
 	}
 
 	@Override
-	public List<PostDto> findPostsByQuery(PostQueryRequest request, PaginationParams pagination) {
-		return postQueryExecutorService.executeQuery(request, pagination)//
+	public List<PostDto> findPostsByQuery(PostQueryRequest request, Pageable pageable) {
+		return postQueryExecutorService.executeQuery(request, pageable)//
 				.map(postMapper::mapToDto)//
 				.collect(Collectors.toList());
 	}

@@ -2,7 +2,8 @@ package com.kaba4cow.imgxiv.domain.post.service;
 
 import java.util.List;
 
-import com.kaba4cow.imgxiv.common.dto.PaginationParams;
+import org.springframework.data.domain.Pageable;
+
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
@@ -23,6 +24,6 @@ public interface PostService {
 
 	void deletePost(Long id);
 
-	List<PostDto> findPostsByQuery(PostQueryRequest request, PaginationParams pagination);
+	List<PostDto> findPostsByQuery(PostQueryRequest request, Pageable pageable);
 
 }

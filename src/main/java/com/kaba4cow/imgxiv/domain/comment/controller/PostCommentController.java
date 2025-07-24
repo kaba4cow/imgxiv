@@ -2,10 +2,10 @@ package com.kaba4cow.imgxiv.domain.comment.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kaba4cow.imgxiv.common.dto.PaginationParams;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.comment.service.PostCommentService;
@@ -25,8 +25,8 @@ public class PostCommentController implements PostCommentControllerApiDoc {
 	}
 
 	@Override
-	public ResponseEntity<List<CommentDto>> getCommentsByPost(Long id, PaginationParams pagination) {
-		return ResponseEntity.ok(postCommentService.getCommentsByPost(id, pagination));
+	public ResponseEntity<List<CommentDto>> getCommentsByPost(Long id, Pageable pageable) {
+		return ResponseEntity.ok(postCommentService.getCommentsByPost(id, pageable));
 	}
 
 }

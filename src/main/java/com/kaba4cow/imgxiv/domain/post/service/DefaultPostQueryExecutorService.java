@@ -2,10 +2,9 @@ package com.kaba4cow.imgxiv.domain.post.service;
 
 import java.util.stream.Stream;
 
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.kaba4cow.imgxiv.common.dto.PaginationParams;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
@@ -31,14 +30,13 @@ public class DefaultPostQueryExecutorService implements PostQueryExecutorService
 	private final PostSpecificationService postSpecificationService;
 
 	@Override
-	public Stream<Post> executeQuery(PostQueryRequest request, PaginationParams pagination) {
+	public Stream<Post> executeQuery(PostQueryRequest request, Pageable pageable) {
 		NormalizedPostQuery normalizedQuery = postQueryNormalizer.normalizeQuery(request.getQuery());
 		CompiledPostQuery compiledQuery = postQueryService.getCompiledQuery(normalizedQuery);
 		PostSpecification postSpecification = postSpecificationService.getPostSpecification(compiledQuery);
-		PageRequest pageRequest = pagination.toPageRequest("createdAt.timestamp");
 		return postRepository.findAll(//
 				postSpecification, //
-				pageRequest//
+				pageable//
 		).stream();
 	}
 

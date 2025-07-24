@@ -2,9 +2,9 @@ package com.kaba4cow.imgxiv.domain.comment.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.kaba4cow.imgxiv.common.dto.PaginationParams;
 import com.kaba4cow.imgxiv.domain.comment.Comment;
 import com.kaba4cow.imgxiv.domain.comment.CommentRepository;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
@@ -39,11 +39,8 @@ public class DefaultPostCommentService implements PostCommentService {
 	}
 
 	@Override
-	public List<CommentDto> getCommentsByPost(Long id, PaginationParams pagination) {
-		return commentRepository.findByPost(//
-				postRepository.findByIdOrThrow(id), //
-				pagination.toPageRequest("createdAt.timestamp")//
-		).stream()//
+	public List<CommentDto> getCommentsByPost(Long id, Pageable pageable) {
+		return commentRepository.findByPost(postRepository.findByIdOrThrow(id), pageable).stream()//
 				.map(commentMapper::mapToDto)//
 				.toList();
 	}
