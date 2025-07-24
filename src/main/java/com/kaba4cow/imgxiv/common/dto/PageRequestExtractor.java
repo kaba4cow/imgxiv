@@ -10,26 +10,26 @@ import lombok.RequiredArgsConstructor;
 @Component
 public class PageRequestExtractor {
 
-	public PageRequest getPageRequest(PageableRequest request, String... properties) {
+	public PageRequest getPageRequest(PaginationParams pagination, String... properties) {
 		return PageRequest.of(//
-				getPageNumber(request), //
-				getPageSize(request), //
-				getSort(request, properties)//
+				getPageNumber(pagination), //
+				getPageSize(pagination), //
+				getSort(pagination, properties)//
 		);
 	}
 
-	private int getPageNumber(PageableRequest request) {
-		return request.getPage();
+	private int getPageNumber(PaginationParams pagination) {
+		return pagination.getPage();
 	}
 
-	private int getPageSize(PageableRequest request) {
-		return request.getSize();
+	private int getPageSize(PaginationParams pagination) {
+		return pagination.getSize();
 	}
 
-	private Sort getSort(PageableRequest request, String... properties) {
+	private Sort getSort(PaginationParams pagination, String... properties) {
 		return properties.length == 0//
-				? Sort.by(request.getSort())//
-				: Sort.by(request.getSort(), properties);
+				? Sort.by(pagination.getSort())//
+				: Sort.by(pagination.getSort(), properties);
 	}
 
 }
