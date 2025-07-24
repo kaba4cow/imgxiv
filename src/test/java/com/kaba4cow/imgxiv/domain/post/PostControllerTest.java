@@ -43,6 +43,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.embeddable.NameAndDescription;
 import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
@@ -50,8 +51,8 @@ import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.UserRole;
-import com.kaba4cow.imgxiv.image.storage.InMemoryImageStorage;
 import com.kaba4cow.imgxiv.image.storage.ImageStorage;
+import com.kaba4cow.imgxiv.image.storage.InMemoryImageStorage;
 
 import lombok.SneakyThrows;
 
@@ -94,8 +95,8 @@ public class PostControllerTest {
 				.andExpect(jsonPath("$.id").isNumber())//
 				.andExpect(jsonPath("$.authorId").isNumber())//
 				.andExpect(jsonPath("$.authorId").value(author.getId()))//
-				.andExpect(jsonPath("$.tagIds").isArray())//
-				.andExpect(jsonPath("$.tagIds").value(contains(tag.getId().intValue())));
+				.andExpect(jsonPath("$.tagNames").isArray())//
+				.andExpect(jsonPath("$.tagNames", contains(tag.getNameAndDescription().getName())));
 	}
 
 	@SneakyThrows
@@ -109,17 +110,6 @@ public class PostControllerTest {
 	}
 
 	@SneakyThrows
-	@WithMockUser
-	@Test
-	public void doesNotCreatePostOnTagNotFound() {
-		Tag tag = new Tag();
-		tag.setId(Long.MAX_VALUE);
-		performCreatePost(Set.of(tag), generateTestImageBytes())//
-				.andExpect(status().is4xxClientError())//
-				.andExpect(status().isNotFound());
-	}
-
-	@SneakyThrows
 	private ResultActions performCreatePost(Set<Tag> tags, byte[] imageBytes) {
 		return mockMvc.perform(multipart("/api/posts")//
 				.file(new MockMultipartFile(//
@@ -129,7 +119,9 @@ public class PostControllerTest {
 						imageBytes //
 				))//
 				.contentType(MediaType.MULTIPART_FORM_DATA)//
-				.param("tagIds", tags.stream().map(Tag::getId).map(Object::toString).collect(Collectors.joining(",")))//
+				.param("tagNames",
+						tags.stream().map(Tag::getNameAndDescription).map(NameAndDescription::getName)
+								.collect(Collectors.joining(",")))//
 				.accept(MediaType.ALL));
 	}
 
@@ -146,8 +138,8 @@ public class PostControllerTest {
 				.andExpect(jsonPath("$.id").isNumber())//
 				.andExpect(jsonPath("$.authorId").isNumber())//
 				.andExpect(jsonPath("$.authorId").value(author.getId()))//
-				.andExpect(jsonPath("$.tagIds").isArray())//
-				.andExpect(jsonPath("$.tagIds").value(contains(tag.getId().intValue())));;
+				.andExpect(jsonPath("$.tagNames").isArray())//
+				.andExpect(jsonPath("$.tagNames", contains(tag.getNameAndDescription().getName())));
 	}
 
 	@SneakyThrows
@@ -202,8 +194,8 @@ public class PostControllerTest {
 				.andExpect(jsonPath("$.id").isNumber())//
 				.andExpect(jsonPath("$.authorId").isNumber())//
 				.andExpect(jsonPath("$.authorId").value(author.getId()))//
-				.andExpect(jsonPath("$.tagIds").isArray())//
-				.andExpect(jsonPath("$.tagIds").value(contains(tag2.getId().intValue())));
+				.andExpect(jsonPath("$.tagNames").isArray())//
+				.andExpect(jsonPath("$.tagNames", contains(tag2.getNameAndDescription().getName())));
 	}
 
 	@SneakyThrows
@@ -221,8 +213,8 @@ public class PostControllerTest {
 				.andExpect(jsonPath("$.id").isNumber())//
 				.andExpect(jsonPath("$.authorId").isNumber())//
 				.andExpect(jsonPath("$.authorId").value(author.getId()))//
-				.andExpect(jsonPath("$.tagIds").isArray())//
-				.andExpect(jsonPath("$.tagIds").value(contains(tag2.getId().intValue())));
+				.andExpect(jsonPath("$.tagNames").isArray())//
+				.andExpect(jsonPath("$.tagNames", contains(tag2.getNameAndDescription().getName())));
 	}
 
 	@SneakyThrows
@@ -268,11 +260,15 @@ public class PostControllerTest {
 				.content("""
 							{
 								"id": %s,
-								"tagIds": %s
+								"tagNames": [%s]
 							}
 						""".formatted(//
 						id, //
-						tags.stream().map(Tag::getId).toList()//
+						tags.stream()//
+								.map(Tag::getNameAndDescription)//
+								.map(NameAndDescription::getName)//
+								.map(name -> String.format("\"%s\"", name))//
+								.collect(Collectors.joining(","))//
 				)));
 	}
 
