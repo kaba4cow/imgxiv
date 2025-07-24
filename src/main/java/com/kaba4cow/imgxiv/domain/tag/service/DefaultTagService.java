@@ -1,5 +1,6 @@
 package com.kaba4cow.imgxiv.domain.tag.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -51,7 +52,7 @@ public class DefaultTagService implements TagService {
 
 	@Override
 	@Transactional
-	public Set<Tag> getOrCreateTagsByNames(Set<String> names) {
+	public Set<Tag> getOrCreateTagsByNames(Collection<? extends String> names) {
 		return names.stream()//
 				.map(this::normalizeTagName)//
 				.map(this::getOrCreateTagByName)//
