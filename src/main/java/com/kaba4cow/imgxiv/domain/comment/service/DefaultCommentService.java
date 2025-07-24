@@ -31,9 +31,9 @@ public class DefaultCommentService implements CommentService {
 	private final CommentMapper commentMapper;
 
 	@Override
-	public CommentDto createComment(CommentCreateRequest request, User author) {
+	public CommentDto createComment(Long id, CommentCreateRequest request, User author) {
 		Comment comment = new Comment();
-		comment.setPost(postRepository.findByIdOrThrow(request.getPostId()));
+		comment.setPost(postRepository.findByIdOrThrow(id));
 		comment.setAuthor(author);
 		comment.setText(request.getText());
 		Comment saved = commentRepository.save(comment);
@@ -42,8 +42,8 @@ public class DefaultCommentService implements CommentService {
 	}
 
 	@Override
-	public CommentDto editComment(CommentEditRequest request) {
-		Comment comment = commentSecurity.getCommentToEdit(request.getId());
+	public CommentDto editComment(Long id, CommentEditRequest request) {
+		Comment comment = commentSecurity.getCommentToEdit(id);
 		comment.setText(request.getText());
 		Comment saved = commentRepository.save(comment);
 		log.info("Edited comment: {}", saved);

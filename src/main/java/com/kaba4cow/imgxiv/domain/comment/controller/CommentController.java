@@ -1,17 +1,11 @@
 package com.kaba4cow.imgxiv.domain.comment.controller;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kaba4cow.imgxiv.common.dto.CommentIdRequest;
-import com.kaba4cow.imgxiv.common.dto.PostIdRequest;
-import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentEditRequest;
 import com.kaba4cow.imgxiv.domain.comment.service.CommentService;
-import com.kaba4cow.imgxiv.domain.user.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,24 +16,14 @@ public class CommentController implements CommentControllerApiDoc {
 	private final CommentService commentService;
 
 	@Override
-	public ResponseEntity<CommentDto> createComment(CommentCreateRequest request, User user) {
-		return ResponseEntity.ok(commentService.createComment(request, user));
+	public ResponseEntity<CommentDto> editComment(Long id, CommentEditRequest request) {
+		return ResponseEntity.ok(commentService.editComment(id, request));
 	}
 
 	@Override
-	public ResponseEntity<CommentDto> editComment(CommentEditRequest request) {
-		return ResponseEntity.ok(commentService.editComment(request));
-	}
-
-	@Override
-	public ResponseEntity<Void> deleteComment(CommentIdRequest request) {
-		commentService.deleteComment(request.getCommentId());
+	public ResponseEntity<Void> deleteComment(Long id) {
+		commentService.deleteComment(id);
 		return ResponseEntity.noContent().build();
-	}
-
-	@Override
-	public ResponseEntity<List<CommentDto>> getCommentsByPost(PostIdRequest request) {
-		return ResponseEntity.ok(commentService.getCommentsByPost(request.getPostId()));
 	}
 
 }

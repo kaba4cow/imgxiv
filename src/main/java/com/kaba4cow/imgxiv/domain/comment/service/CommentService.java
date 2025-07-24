@@ -9,9 +9,9 @@ import com.kaba4cow.imgxiv.domain.user.User;
 
 public interface CommentService {
 
-	CommentDto createComment(CommentCreateRequest request, User author);
+	CommentDto createComment(Long postId, CommentCreateRequest request, User author);
 
-	CommentDto editComment(CommentEditRequest request);
+	CommentDto editComment(Long id, CommentEditRequest request);
 
 	void deleteComment(Long id);
 
