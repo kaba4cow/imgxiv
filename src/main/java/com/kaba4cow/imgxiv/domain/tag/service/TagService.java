@@ -1,5 +1,6 @@
 package com.kaba4cow.imgxiv.domain.tag.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -14,6 +15,6 @@ public interface TagService {
 
 	List<TagDto> getTagsByDefaultCategory();
 
-	Set<Tag> getOrCreateTagsByNames(Set<String> names);
+	Set<Tag> getOrCreateTagsByNames(Collection<? extends String> names);
 
 }
