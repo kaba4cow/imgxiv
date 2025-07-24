@@ -6,9 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,23 +99,6 @@ public class TagRepositoryTest {
 	@Test
 	public void findByIdOrThrow_throwsNotFound() {
 		assertThrows(NotFoundException.class, () -> tagRepository.findByIdOrThrow(Long.MAX_VALUE));
-	}
-
-	@Test
-	public void findByIdsOrThrow_returnsTags() {
-		Category category = saveTestCategory("name", "description");
-
-		Set<Long> ids = IntStream.range(0, 10)//
-				.mapToObj(i -> saveTestTag("name" + i, "description", category))//
-				.map(Tag::getId)//
-				.collect(Collectors.toSet());
-
-		assertNotNull(tagRepository.findByIdsOrThrow(ids));
-	}
-
-	@Test
-	public void findByIdsOrThrow_throwsNotFound() {
-		assertThrows(NotFoundException.class, () -> tagRepository.findByIdsOrThrow(Set.of(Long.MAX_VALUE)));
 	}
 
 	private Tag saveTestTag(String name, String description, Category category) {

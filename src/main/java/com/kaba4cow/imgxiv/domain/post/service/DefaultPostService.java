@@ -15,7 +15,7 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostMapper;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.security.PostSecurity;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
-import com.kaba4cow.imgxiv.domain.tag.TagRepository;
+import com.kaba4cow.imgxiv.domain.tag.service.TagService;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.image.ImageResource;
 import com.kaba4cow.imgxiv.image.service.ImageService;
@@ -32,7 +32,7 @@ public class DefaultPostService implements PostService {
 
 	private final PostRepository postRepository;
 
-	private final TagRepository tagRepository;
+	private final TagService tagService;
 
 	private final ImageService imageService;
 
@@ -42,7 +42,7 @@ public class DefaultPostService implements PostService {
 
 	@Override
 	public PostDto createPost(PostCreateRequest request, User author) {
-		Set<Tag> tags = tagRepository.findByIdsOrThrow(request.getTagIds());
+		Set<Tag> tags = tagService.getOrCreateTagsByNames(request.getTagNames());
 		Post post = new Post();
 		tags.forEach(post::addTag);
 		post.setAuthor(author);
@@ -70,10 +70,11 @@ public class DefaultPostService implements PostService {
 	@Override
 	public PostDto editPost(PostEditRequest request) {
 		Post post = postSecurity.getPostToEdit(request.getId());
-		post.getPostTags().clear();
-		tagRepository.findByIdsOrThrow(request.getTagIds())//
+		post.clearTags();
+		tagService.getOrCreateTagsByNames(request.getTagNames())//
 				.forEach(post::addTag);
 		Post saved = postRepository.save(post);
+		log.info("Edited post: {}", saved);
 		return postMapper.mapToDto(saved);
 	}
 

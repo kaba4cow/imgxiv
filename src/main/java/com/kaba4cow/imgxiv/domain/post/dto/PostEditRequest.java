@@ -26,9 +26,9 @@ public class PostEditRequest {
 
 	@NotEmpty(message = "At least one tag is required")
 	@Schema(//
-			description = "List of new tag IDs", //
-			example = "[1, 2, 3]" //
+			description = "List of tag names", //
+			example = "[\"cat\", \"kitten\", \"animal\", \"cute\"]" //
 	)
-	private List<@NotNull Long> tagIds;
+	private List<String> tagNames;
 
 }

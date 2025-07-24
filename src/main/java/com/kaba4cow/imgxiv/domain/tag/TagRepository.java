@@ -1,10 +1,7 @@
 package com.kaba4cow.imgxiv.domain.tag;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,13 +22,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
 	default Tag findByIdOrThrow(Long id) {
 		return findById(id).orElseThrow(() -> new NotFoundException("Tag", id));
-	}
-
-	default Set<Tag> findByIdsOrThrow(Collection<? extends Long> ids) {
-		return ids.stream()//
-				.distinct()//
-				.map(this::findByIdOrThrow)//
-				.collect(Collectors.toSet());
 	}
 
 }

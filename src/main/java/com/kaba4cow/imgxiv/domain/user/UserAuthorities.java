@@ -10,8 +10,6 @@ public class UserAuthorities {
 
 	public static final String CREATE_CATEGORY = "create-category";
 
-	public static final String CREATE_TAG = "create-tag";
-
 	public static final String EDIT_POST_NA = "edit-post-na";
 
 	public static final String DELETE_POST_NA = "delete-post-na";

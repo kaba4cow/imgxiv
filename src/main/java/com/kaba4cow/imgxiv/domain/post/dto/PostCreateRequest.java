@@ -9,7 +9,6 @@ import com.kaba4cow.imgxiv.common.validation.FileSize;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,9 +30,9 @@ public class PostCreateRequest {
 
 	@NotEmpty(message = "At least one tag is required")
 	@Schema(//
-			description = "List of tag IDs", //
-			example = "[1, 2, 3]" //
+			description = "List of tag names", //
+			example = "[\"cat\", \"kitten\", \"animal\", \"cute\"]" //
 	)
-	private List<@NotNull Long> tagIds;
+	private List<String> tagNames;
 
 }
