@@ -6,12 +6,11 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kaba4cow.imgxiv.auth.annotation.policy.CanManageModerators;
 import com.kaba4cow.imgxiv.auth.annotation.policy.CanViewModerators;
-import com.kaba4cow.imgxiv.common.dto.PageableRequest;
+import com.kaba4cow.imgxiv.common.dto.PaginationParams;
 import com.kaba4cow.imgxiv.common.dto.UserIdRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 
@@ -35,7 +34,7 @@ public interface ModeratorControllerApiDoc {
 	@CanViewModerators
 	@GetMapping
 	ResponseEntity<List<UserDto>> getModerators(//
-			@Valid @RequestBody PageableRequest request//
+			@ParameterObject PaginationParams pagination//
 	);
 
 	@Operation(//
