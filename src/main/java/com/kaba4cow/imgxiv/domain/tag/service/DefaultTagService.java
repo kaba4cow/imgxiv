@@ -33,12 +33,12 @@ public class DefaultTagService implements TagService {
 	private final TagMapper tagMapper;
 
 	@Override
-	public TagDto getTagById(Long tagId) {
+	public TagDto getTag(Long tagId) {
 		return tagMapper.mapToDto(tagRepository.findByIdOrThrow(tagId));
 	}
 
 	@Override
-	public List<TagDto> getTagsByCategoryId(Long categoryId) {
+	public List<TagDto> getTagsByCategory(Long categoryId) {
 		Category category = categoryRepository.findByIdOrThrow(categoryId);
 		return tagRepository.findByCategory(category).stream()//
 				.map(tagMapper::mapToDto)//
@@ -47,7 +47,7 @@ public class DefaultTagService implements TagService {
 
 	@Override
 	public List<TagDto> getTagsByDefaultCategory() {
-		return getTagsByCategoryId(categoryService.getDefaultCategory().getId());
+		return getTagsByCategory(categoryService.getDefaultCategory().getId());
 	}
 
 	@Override

@@ -20,12 +20,12 @@ public class TagController implements TagControllerApiDoc {
 
 	@Override
 	public ResponseEntity<TagDto> getTag(TagIdRequest request) {
-		return ResponseEntity.ok(tagService.getTagById(request.getTagId()));
+		return ResponseEntity.ok(tagService.getTag(request.getTagId()));
 	}
 
 	@Override
 	public ResponseEntity<List<TagDto>> getCategorizedTags(CategoryIdRequest request) {
-		return ResponseEntity.ok(tagService.getTagsByCategoryId(request.getCategoryId()));
+		return ResponseEntity.ok(tagService.getTagsByCategory(request.getCategoryId()));
 	}
 
 	@Override
