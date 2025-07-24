@@ -7,13 +7,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kaba4cow.imgxiv.common.exception.NameConflictException;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.category.service.CategoryService;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
-import com.kaba4cow.imgxiv.domain.tag.dto.TagCreateRequest;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagMapper;
 
@@ -34,31 +32,21 @@ public class DefaultTagService implements TagService {
 	private final TagMapper tagMapper;
 
 	@Override
-	public TagDto create(TagCreateRequest request) {
-		if (tagRepository.existsByName(request.getName()))
-			throw new NameConflictException("Tag with this name already exists");
-		Tag tag = new Tag();
-		tag.getNameAndDescription().setName(request.getName());
-		tag.getNameAndDescription().setDescription(request.getDescription());
-		tag.setCategory(categoryRepository.findByIdOrThrow(request.getCategoryId()));
-		Tag saved = tagRepository.save(tag);
-		log.info("Created new tag: {}", saved);
-		return tagMapper.mapToDto(saved);
+	public TagDto getTagById(Long tagId) {
+		return tagMapper.mapToDto(tagRepository.findByIdOrThrow(tagId));
 	}
 
 	@Override
-	public List<TagDto> findAll() {
-		return tagRepository.findAll().stream()//
-				.map(tagMapper::mapToDto)//
-				.collect(Collectors.toList());
-	}
-
-	@Override
-	public List<TagDto> findByCategoryId(Long categoryId) {
+	public List<TagDto> getTagsByCategoryId(Long categoryId) {
 		Category category = categoryRepository.findByIdOrThrow(categoryId);
 		return tagRepository.findByCategory(category).stream()//
 				.map(tagMapper::mapToDto)//
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<TagDto> getTagsByDefaultCategory() {
+		return getTagsByCategoryId(categoryService.getDefaultCategory().getId());
 	}
 
 	@Override
