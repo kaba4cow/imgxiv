@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.kaba4cow.imgxiv.common.dto.PageRequestExtractor;
+import com.kaba4cow.imgxiv.common.dto.PaginationParams;
 import com.kaba4cow.imgxiv.domain.comment.Comment;
 import com.kaba4cow.imgxiv.domain.comment.CommentRepository;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
@@ -26,6 +28,8 @@ public class DefaultPostCommentService implements PostCommentService {
 
 	private final CommentMapper commentMapper;
 
+	private final PageRequestExtractor pageRequestExtractor;
+
 	@Override
 	public CommentDto createComment(Long id, CommentCreateRequest request, User author) {
 		Comment comment = new Comment();
@@ -38,8 +42,11 @@ public class DefaultPostCommentService implements PostCommentService {
 	}
 
 	@Override
-	public List<CommentDto> getCommentsByPost(Long id) {
-		return commentRepository.findByPost(postRepository.findByIdOrThrow(id)).stream()//
+	public List<CommentDto> getCommentsByPost(Long id, PaginationParams pagination) {
+		return commentRepository.findByPost(//
+				postRepository.findByIdOrThrow(id), //
+				pageRequestExtractor.getPageRequest(pagination, "createdAt.timestamp")//
+		).stream()//
 				.map(commentMapper::mapToDto)//
 				.toList();
 	}

@@ -2,6 +2,7 @@ package com.kaba4cow.imgxiv.domain.comment.controller;
 
 import java.util.List;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
+import com.kaba4cow.imgxiv.common.dto.PaginationParams;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.user.User;
@@ -52,7 +54,8 @@ public interface PostCommentControllerApiDoc {
 	@PermitAll
 	@GetMapping
 	public ResponseEntity<List<CommentDto>> getCommentsByPost(//
-			@PathVariable Long id//
+			@PathVariable Long id, //
+			@ParameterObject PaginationParams pagination//
 	);
 
 }
