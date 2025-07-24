@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.common.dto.PageRequestExtractor;
+import com.kaba4cow.imgxiv.common.dto.PaginationParams;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
@@ -33,11 +34,11 @@ public class DefaultPostQueryExecutorService implements PostQueryExecutorService
 	private final PageRequestExtractor pageRequestExtractor;
 
 	@Override
-	public Stream<Post> executeQuery(PostQueryRequest request) {
+	public Stream<Post> executeQuery(PostQueryRequest request, PaginationParams pagination) {
 		NormalizedPostQuery normalizedQuery = postQueryNormalizer.normalizeQuery(request.getQuery());
 		CompiledPostQuery compiledQuery = postQueryService.getCompiledQuery(normalizedQuery);
 		PostSpecification postSpecification = postSpecificationService.getPostSpecification(compiledQuery);
-		PageRequest pageRequest = pageRequestExtractor.getPageRequest(request, "createdAt.timestamp");
+		PageRequest pageRequest = pageRequestExtractor.getPageRequest(pagination, "createdAt.timestamp");
 		return postRepository.findAll(//
 				postSpecification, //
 				pageRequest//
