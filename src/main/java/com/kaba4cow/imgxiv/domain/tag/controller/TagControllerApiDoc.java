@@ -5,14 +5,11 @@ import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
-import com.kaba4cow.imgxiv.auth.annotation.policy.CanCreateTag;
 import com.kaba4cow.imgxiv.common.dto.CategoryIdRequest;
-import com.kaba4cow.imgxiv.domain.tag.dto.TagCreateRequest;
+import com.kaba4cow.imgxiv.common.dto.TagIdRequest;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,33 +19,23 @@ import jakarta.validation.Valid;
 @Tag(//
 		name = "Tags", //
 		description = """
-				Endpoints for creating and retrieving tags.
+				Endpoints for retrieving tags.
 				"""//
 )
 @RequestMapping("/api/tags")
 public interface TagControllerApiDoc {
 
 	@Operation(//
-			summary = "Create a new tag", //
+			summary = "Get tags by ID", //
 			description = """
-					Creates a new tag with the given name and associated category, then returns its details.
-					"""//
-	)
-	@CanCreateTag
-	@PostMapping
-	ResponseEntity<TagDto> createTag(//
-			@Valid @RequestBody TagCreateRequest request//
-	);
-
-	@Operation(//
-			summary = "Get all tags", //
-			description = """
-					Returns a list of all existing tags.
+					Returns tag by its ID.
 					"""//
 	)
 	@PermitAll
-	@GetMapping("/all")
-	ResponseEntity<List<TagDto>> getAllTags();
+	@GetMapping
+	ResponseEntity<TagDto> getTag(//
+			@Valid @ParameterObject TagIdRequest request//
+	);
 
 	@Operation(//
 			summary = "Get tags by category", //
@@ -57,9 +44,19 @@ public interface TagControllerApiDoc {
 					"""//
 	)
 	@PermitAll
-	@GetMapping
-	ResponseEntity<List<TagDto>> getTagsByCategory(//
+	@GetMapping("/categorized")
+	ResponseEntity<List<TagDto>> getCategorizedTags(//
 			@Valid @ParameterObject CategoryIdRequest request//
 	);
+
+	@Operation(//
+			summary = "Get uncategorized tags", //
+			description = """
+					Returns all tags that don't belong to any category.
+					"""//
+	)
+	@PermitAll
+	@GetMapping("/uncategorized")
+	ResponseEntity<List<TagDto>> getUncategorizedTags();
 
 }
