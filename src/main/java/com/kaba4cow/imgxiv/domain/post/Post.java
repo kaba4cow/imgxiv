@@ -79,6 +79,10 @@ public class Post extends EntityWithId {
 		postTags.remove(postTagOf(tag));
 	}
 
+	public void clearTags() {
+		postTags.clear();
+	}
+
 	private PostTag postTagOf(Tag tag) {
 		return PostTag.of(this, tag);
 	}
