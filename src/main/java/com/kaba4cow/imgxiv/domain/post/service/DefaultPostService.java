@@ -42,7 +42,7 @@ public class DefaultPostService implements PostService {
 
 	@Override
 	public PostDto createPost(PostCreateRequest request, User author) {
-		Set<Tag> tags = tagService.getOrCreateTagsByNames(request.getTagNames());
+		Set<Tag> tags = tagService.getOrCreateTagsByNames(request.getTags());
 		Post post = new Post();
 		tags.forEach(post::addTag);
 		post.setAuthor(author);

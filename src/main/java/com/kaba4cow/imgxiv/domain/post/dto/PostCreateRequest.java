@@ -30,9 +30,8 @@ public class PostCreateRequest {
 
 	@NotEmpty(message = "At least one tag is required")
 	@Schema(//
-			description = "List of tag names", //
-			example = "[\"cat\", \"kitten\", \"animal\", \"cute\"]" //
+			description = "List of tag names"//
 	)
-	private List<String> tagNames;
+	private List<String> tags;
 
 }
