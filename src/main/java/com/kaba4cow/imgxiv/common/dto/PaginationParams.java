@@ -1,5 +1,6 @@
 package com.kaba4cow.imgxiv.common.dto;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,5 +37,9 @@ public final class PaginationParams {
 			example = "DESC" //
 	)
 	private Sort.Direction sort = Sort.Direction.DESC;
+
+	public PageRequest toPageRequest(String... properties) {
+		return PageRequest.of(page, size, Sort.by(properties));
+	}
 
 }
