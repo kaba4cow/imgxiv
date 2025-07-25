@@ -1,11 +1,8 @@
 package com.kaba4cow.imgxiv.domain.tag;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
-import com.kaba4cow.imgxiv.domain.category.service.CategoryService;
 
 import lombok.SneakyThrows;
 
@@ -31,9 +27,6 @@ public class TagControllerTest {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
-
-	@Autowired
-	private CategoryService categoryService;
 
 	@Autowired
 	private TagRepository tagRepository;
@@ -59,64 +52,7 @@ public class TagControllerTest {
 
 	@SneakyThrows
 	private ResultActions performGetTag(Long tagId) {
-		return mockMvc.perform(get("/api/tags")//
-				.param("tagId", tagId.toString()));
-	}
-
-	@SneakyThrows
-	@Test
-	public void retrievesCategorizedTags() {
-		Map<Category, Integer> categoriesWithNumbersOfTags = Map.of(//
-				saveTestCategory("category1"), 3, //
-				saveTestCategory("category2"), 5, //
-				saveTestCategory("category3"), 7, //
-				saveTestCategory("category4"), 11 //
-		);
-		generateTagsForCategories(categoriesWithNumbersOfTags);
-		for (Map.Entry<Category, Integer> entry : categoriesWithNumbersOfTags.entrySet()) {
-			Category category = entry.getKey();
-			int numberOfTags = entry.getValue();
-			performGetCategorizedTags(category.getId())//
-					.andExpect(status().isOk())//
-					.andExpect(jsonPath("$").isArray())//
-					.andExpect(jsonPath("$", hasSize(numberOfTags)));
-		}
-	}
-
-	private void generateTagsForCategories(Map<Category, Integer> categoriesWithNumbersOfTags) {
-		for (Map.Entry<Category, Integer> entry : categoriesWithNumbersOfTags.entrySet()) {
-			Category category = entry.getKey();
-			int numberOfTags = entry.getValue();
-			for (int i = 0; i < numberOfTags; i++)
-				saveTestTag(category.getNameAndDescription().getName() + "_tag" + i, "description", category);
-		}
-	}
-
-	@SneakyThrows
-	private ResultActions performGetCategorizedTags(Long categoryId) {
-		return mockMvc.perform(get("/api/tags/categorized")//
-				.param("categoryId", categoryId.toString()));
-	}
-
-	@SneakyThrows
-	@Test
-	public void retrievesUncategorizedTags() {
-		int numberOfTags = 10;
-		for (int i = 0; i < numberOfTags; i++)
-			saveTestTag("tag" + i, "description");
-		performGetUncategorizedTags()//
-				.andExpect(status().isOk())//
-				.andExpect(jsonPath("$").isArray())//
-				.andExpect(jsonPath("$", hasSize(numberOfTags)));
-	}
-
-	@SneakyThrows
-	private ResultActions performGetUncategorizedTags() {
-		return mockMvc.perform(get("/api/tags/uncategorized"));
-	}
-
-	private Tag saveTestTag(String name, String description) {
-		return saveTestTag(name, description, categoryService.getDefaultCategory());
+		return mockMvc.perform(get("/api/tags/{id}", tagId));
 	}
 
 	private Tag saveTestTag(String name, String description, Category category) {
