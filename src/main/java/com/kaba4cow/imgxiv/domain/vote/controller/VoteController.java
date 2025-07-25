@@ -18,7 +18,7 @@ public class VoteController implements VoteControllerApiDoc {
 
 	@Override
 	public ResponseEntity<Void> createVote(Long post, VoteTypeRequest request, User user) {
-		voteService.createVote(request, user);
+		voteService.createVote(post, request, user);
 		return ResponseEntity.noContent().build();
 	}
 

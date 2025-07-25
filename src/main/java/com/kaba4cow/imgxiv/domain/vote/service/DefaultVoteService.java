@@ -8,9 +8,9 @@ import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.vote.Vote;
 import com.kaba4cow.imgxiv.domain.vote.VoteId;
 import com.kaba4cow.imgxiv.domain.vote.VoteRepository;
-import com.kaba4cow.imgxiv.domain.vote.dto.VoteTypeRequest;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryDto;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryMapper;
+import com.kaba4cow.imgxiv.domain.vote.dto.VoteTypeRequest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +27,8 @@ public class DefaultVoteService implements VoteService {
 	private final VoteSummaryMapper voteSummaryMapper;
 
 	@Override
-	public void createVote(VoteTypeRequest request, User user) {
-		Post post = postRepository.findByIdOrThrow(request.getPostId());
+	public void createVote(Long postId, VoteTypeRequest request, User user) {
+		Post post = postRepository.findByIdOrThrow(postId);
 		Vote vote = new Vote();
 		vote.setId(VoteId.of(post, user));
 		vote.setPost(post);
