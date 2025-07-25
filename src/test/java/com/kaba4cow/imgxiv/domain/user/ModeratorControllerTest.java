@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -62,13 +61,7 @@ public class ModeratorControllerTest {
 
 	@SneakyThrows
 	private ResultActions performGetModerators() {
-		return mockMvc.perform(get("/api/moderators")//
-				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"pageSize": 100
-							}
-						"""));
+		return mockMvc.perform(get("/api/moderators"));
 	}
 
 	@SneakyThrows
@@ -103,8 +96,7 @@ public class ModeratorControllerTest {
 
 	@SneakyThrows
 	private ResultActions performAssignModerator(Long id) {
-		return mockMvc.perform(post("/api/moderators/assign")//
-				.param("userId", id.toString()));
+		return mockMvc.perform(post("/api/moderators/{id}/assign", id));
 	}
 
 	@SneakyThrows
@@ -139,8 +131,7 @@ public class ModeratorControllerTest {
 
 	@SneakyThrows
 	private ResultActions performRemoveModerator(Long id) {
-		return mockMvc.perform(post("/api/moderators/remove")//
-				.param("userId", id.toString()));
+		return mockMvc.perform(post("/api/moderators/{id}/remove", id));
 	}
 
 	private User saveTestUser(String username, UserRole role) {
