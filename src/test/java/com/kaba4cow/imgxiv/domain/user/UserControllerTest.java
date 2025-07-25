@@ -64,8 +64,7 @@ public class UserControllerTest {
 
 	@SneakyThrows
 	private ResultActions performGetUser(Long id) {
-		return mockMvc.perform(get("/api/users")//
-				.param("userId", id.toString()));
+		return mockMvc.perform(get("/api/users/{id}", id));
 	}
 
 	private User saveTestUser() {
