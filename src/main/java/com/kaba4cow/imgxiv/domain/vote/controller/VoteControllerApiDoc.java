@@ -1,9 +1,9 @@
 package com.kaba4cow.imgxiv.domain.vote.controller;
 
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
-import com.kaba4cow.imgxiv.common.dto.PostIdRequest;
 import com.kaba4cow.imgxiv.domain.user.User;
-import com.kaba4cow.imgxiv.domain.vote.dto.VoteTypeRequest;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryDto;
+import com.kaba4cow.imgxiv.domain.vote.dto.VoteTypeRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,7 +25,7 @@ import jakarta.validation.Valid;
 				Endpoints for voting on posts.
 				"""//
 )
-@RequestMapping("/api/votes")
+@RequestMapping("/api/posts/{post}/votes")
 public interface VoteControllerApiDoc {
 
 	@Operation(//
@@ -38,6 +37,7 @@ public interface VoteControllerApiDoc {
 	@IsAuthenticated
 	@PostMapping
 	ResponseEntity<Void> createVote(//
+			@PathVariable Long post, //
 			@Valid @RequestBody VoteTypeRequest request, //
 			@CurrentUser User user//
 	);
@@ -51,7 +51,7 @@ public interface VoteControllerApiDoc {
 	@IsAuthenticated
 	@DeleteMapping
 	ResponseEntity<Void> deleteVote(//
-			@Valid @ParameterObject PostIdRequest request, //
+			@PathVariable Long post, //
 			@CurrentUser User user//
 	);
 
@@ -64,7 +64,7 @@ public interface VoteControllerApiDoc {
 	@PermitAll
 	@GetMapping
 	ResponseEntity<VoteSummaryDto> getVoteSummary(//
-			@Valid @ParameterObject PostIdRequest request//
+			@PathVariable Long post//
 	);
 
 }
