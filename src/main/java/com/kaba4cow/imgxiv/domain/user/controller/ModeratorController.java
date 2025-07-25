@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kaba4cow.imgxiv.common.dto.UserIdRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 import com.kaba4cow.imgxiv.domain.user.service.ModeratorService;
 
@@ -24,14 +23,14 @@ public class ModeratorController implements ModeratorControllerApiDoc {
 	}
 
 	@Override
-	public ResponseEntity<Void> assignModerator(UserIdRequest pagination) {
-		moderatorService.assignModerator(pagination.getUserId());
+	public ResponseEntity<Void> assignModerator(Long id) {
+		moderatorService.assignModerator(id);
 		return ResponseEntity.noContent().build();
 	}
 
 	@Override
-	public ResponseEntity<Void> removeModerator(UserIdRequest pagination) {
-		moderatorService.removeModerator(pagination.getUserId());
+	public ResponseEntity<Void> removeModerator(Long id) {
+		moderatorService.removeModerator(id);
 		return ResponseEntity.noContent().build();
 	}
 

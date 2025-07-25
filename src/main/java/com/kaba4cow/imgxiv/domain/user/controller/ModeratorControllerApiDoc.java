@@ -2,23 +2,21 @@ package com.kaba4cow.imgxiv.domain.user.controller;
 
 import java.util.List;
 
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kaba4cow.imgxiv.auth.annotation.policy.CanManageModerators;
 import com.kaba4cow.imgxiv.auth.annotation.policy.CanViewModerators;
-import com.kaba4cow.imgxiv.common.dto.UserIdRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 
 @Tag(//
 		name = "Moderators", //
@@ -45,9 +43,9 @@ public interface ModeratorControllerApiDoc {
 					Assigns MODERATOR role to specific user.
 					""")
 	@CanManageModerators
-	@PostMapping("/assign")
+	@PostMapping("/{id}/assign")
 	ResponseEntity<Void> assignModerator(//
-			@Valid @ParameterObject UserIdRequest request//
+			@PathVariable Long id//
 	);
 
 	@Operation(//
@@ -56,9 +54,9 @@ public interface ModeratorControllerApiDoc {
 					Removes MODERATOR role from specific user.
 					""")
 	@CanManageModerators
-	@PostMapping("/remove")
+	@PostMapping("/{id}/remove")
 	ResponseEntity<Void> removeModerator(//
-			@Valid @ParameterObject UserIdRequest request//
+			@PathVariable Long id//
 	);
 
 }
