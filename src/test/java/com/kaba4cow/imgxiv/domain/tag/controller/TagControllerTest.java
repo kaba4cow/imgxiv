@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.tag;
+package com.kaba4cow.imgxiv.domain.tag.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.tag.Tag;
+import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 
 import lombok.SneakyThrows;
 

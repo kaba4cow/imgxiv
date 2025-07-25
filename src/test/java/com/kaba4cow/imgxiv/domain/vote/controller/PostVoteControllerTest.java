@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.vote;
+package com.kaba4cow.imgxiv.domain.vote.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -27,6 +27,10 @@ import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.UserRole;
+import com.kaba4cow.imgxiv.domain.vote.Vote;
+import com.kaba4cow.imgxiv.domain.vote.VoteId;
+import com.kaba4cow.imgxiv.domain.vote.VoteRepository;
+import com.kaba4cow.imgxiv.domain.vote.VoteType;
 
 import lombok.SneakyThrows;
 

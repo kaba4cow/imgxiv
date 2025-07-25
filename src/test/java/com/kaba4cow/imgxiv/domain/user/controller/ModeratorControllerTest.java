@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.user;
+package com.kaba4cow.imgxiv.domain.user.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -14,6 +14,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
+import com.kaba4cow.imgxiv.domain.user.UserRepository;
+import com.kaba4cow.imgxiv.domain.user.UserRole;
 
 import lombok.SneakyThrows;
 

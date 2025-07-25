@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.category;
+package com.kaba4cow.imgxiv.domain.category.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kaba4cow.imgxiv.domain.category.Category;
+import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
 
 import lombok.SneakyThrows;
