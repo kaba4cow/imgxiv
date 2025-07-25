@@ -28,9 +28,9 @@ public class DefaultPostCommentService implements PostCommentService {
 	private final CommentMapper commentMapper;
 
 	@Override
-	public CommentDto createComment(Long id, CommentCreateRequest request, User author) {
+	public CommentDto createComment(Long postId, CommentCreateRequest request, User author) {
 		Comment comment = new Comment();
-		comment.setPost(postRepository.findByIdOrThrow(id));
+		comment.setPost(postRepository.findByIdOrThrow(postId));
 		comment.setAuthor(author);
 		comment.setText(request.getText());
 		Comment saved = commentRepository.save(comment);
@@ -39,8 +39,8 @@ public class DefaultPostCommentService implements PostCommentService {
 	}
 
 	@Override
-	public List<CommentDto> getCommentsByPost(Long id, Pageable pageable) {
-		return commentRepository.findByPost(postRepository.findByIdOrThrow(id), pageable).stream()//
+	public List<CommentDto> getCommentsByPost(Long postId, Pageable pageable) {
+		return commentRepository.findByPost(postRepository.findByIdOrThrow(postId), pageable).stream()//
 				.map(commentMapper::mapToDto)//
 				.toList();
 	}

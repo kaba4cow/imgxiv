@@ -29,7 +29,7 @@ import jakarta.validation.Valid;
 				Endpoints for commenting on posts.
 				"""//
 )
-@RequestMapping("/api/posts/{id}/comments")
+@RequestMapping("/api/posts/{post}/comments")
 public interface PostCommentControllerApiDoc {
 
 	@Operation(//
@@ -41,7 +41,7 @@ public interface PostCommentControllerApiDoc {
 	@IsAuthenticated
 	@PostMapping
 	public ResponseEntity<CommentDto> createCommentOnPost(//
-			@PathVariable Long id, //
+			@PathVariable Long post, //
 			@Valid @RequestBody CommentCreateRequest request, //
 			@CurrentUser User user//
 	);
@@ -55,7 +55,7 @@ public interface PostCommentControllerApiDoc {
 	@PermitAll
 	@GetMapping
 	public ResponseEntity<List<CommentDto>> getCommentsByPost(//
-			@PathVariable Long id, //
+			@PathVariable Long post, //
 			@PageableDefault(size = 20, direction = Sort.Direction.DESC, sort = "createdAt.timestamp") Pageable pageable//
 	);
 

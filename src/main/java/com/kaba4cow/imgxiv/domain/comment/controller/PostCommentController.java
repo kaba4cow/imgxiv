@@ -20,13 +20,13 @@ public class PostCommentController implements PostCommentControllerApiDoc {
 	private final PostCommentService postCommentService;
 
 	@Override
-	public ResponseEntity<CommentDto> createCommentOnPost(Long id, CommentCreateRequest request, User user) {
-		return ResponseEntity.ok(postCommentService.createComment(id, request, user));
+	public ResponseEntity<CommentDto> createCommentOnPost(Long post, CommentCreateRequest request, User user) {
+		return ResponseEntity.ok(postCommentService.createComment(post, request, user));
 	}
 
 	@Override
-	public ResponseEntity<List<CommentDto>> getCommentsByPost(Long id, Pageable pageable) {
-		return ResponseEntity.ok(postCommentService.getCommentsByPost(id, pageable));
+	public ResponseEntity<List<CommentDto>> getCommentsByPost(Long post, Pageable pageable) {
+		return ResponseEntity.ok(postCommentService.getCommentsByPost(post, pageable));
 	}
 
 }

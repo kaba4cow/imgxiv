@@ -10,8 +10,8 @@ import com.kaba4cow.imgxiv.domain.user.User;
 
 public interface PostCommentService {
 
-	CommentDto createComment(Long id, CommentCreateRequest request, User author);
+	CommentDto createComment(Long postId, CommentCreateRequest request, User author);
 
-	List<CommentDto> getCommentsByPost(Long id, Pageable pageable);
+	List<CommentDto> getCommentsByPost(Long postId, Pageable pageable);
 
 }
