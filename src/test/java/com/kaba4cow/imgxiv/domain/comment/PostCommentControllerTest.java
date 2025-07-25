@@ -88,15 +88,14 @@ public class PostCommentControllerTest {
 
 	@SneakyThrows
 	private ResultActions performCreateComment(Long postId, String text) {
-		return mockMvc.perform(post("/api/comments")//
+		return mockMvc.perform(post("/api/posts/{post}/comments", postId)//
 				.contentType(MediaType.APPLICATION_JSON)//
 				.content("""
 							{
-								"postId": %s,
 								"text": "%s"
 							}
 						""".formatted(//
-						postId, text//
+						text//
 				)));
 	}
 
@@ -138,8 +137,7 @@ public class PostCommentControllerTest {
 
 	@SneakyThrows
 	private ResultActions performGetCommentsByPost(Long postId) {
-		return mockMvc.perform(get("/api/comments")//
-				.param("postId", postId.toString()));
+		return mockMvc.perform(get("/api/posts/{post}/comments", postId));
 	}
 
 	private User authenticateUser(User user) {

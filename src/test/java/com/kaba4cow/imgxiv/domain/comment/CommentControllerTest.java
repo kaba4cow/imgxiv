@@ -107,15 +107,14 @@ public class CommentControllerTest {
 
 	@SneakyThrows
 	private ResultActions performEditComment(Long id, String text) {
-		return mockMvc.perform(patch("/api/comments")//
+		return mockMvc.perform(patch("/api/comments/{id}", id)//
 				.contentType(MediaType.APPLICATION_JSON)//
 				.content("""
 							{
-								"id": %s,
 								"text": "%s"
 							}
 						""".formatted(//
-						id, text//
+						text//
 				)));
 	}
 
@@ -180,8 +179,7 @@ public class CommentControllerTest {
 
 	@SneakyThrows
 	private ResultActions performDeleteComment(Long id) {
-		return mockMvc.perform(delete("/api/comments")//
-				.param("commentId", id.toString()));
+		return mockMvc.perform(delete("/api/comments/{id}", id));
 	}
 
 	private User authenticateUser(User user) {
