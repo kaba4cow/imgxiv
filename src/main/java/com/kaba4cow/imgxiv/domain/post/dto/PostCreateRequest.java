@@ -1,14 +1,11 @@
 package com.kaba4cow.imgxiv.domain.post.dto;
 
-import java.util.List;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kaba4cow.imgxiv.common.validation.ContentType;
 import com.kaba4cow.imgxiv.common.validation.FileSize;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Schema(description = "Request for creating a new post")
-public class PostCreateRequest {
+public class PostCreateRequest extends PostTagsRequest {
 
 	@FileSize(max = 16L * 1024L * 1024L, message = "File size must not exceed 16MB")
 	@ContentType(allowed = { "image/jpeg", "image/png" }, message = "Unsupported content type")
@@ -27,11 +24,5 @@ public class PostCreateRequest {
 			description = "Image file" //
 	)
 	private MultipartFile image;
-
-	@NotEmpty(message = "At least one tag is required")
-	@Schema(//
-			description = "List of tag names"//
-	)
-	private List<String> tags;
 
 }
