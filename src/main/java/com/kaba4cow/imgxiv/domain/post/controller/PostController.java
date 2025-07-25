@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
+import com.kaba4cow.imgxiv.domain.post.dto.PostTagsRequest;
 import com.kaba4cow.imgxiv.domain.post.service.PostService;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.image.ImageResource;
@@ -52,8 +53,8 @@ public class PostController implements PostControllerApiDoc {
 	}
 
 	@Override
-	public ResponseEntity<PostDto> editPost(Long id, List<String> tags) {
-		return ResponseEntity.ok(postService.editPost(id, tags));
+	public ResponseEntity<PostDto> editPost(Long id, PostTagsRequest request) {
+		return ResponseEntity.ok(postService.editPost(id, request.getTags()));
 	}
 
 	@Override

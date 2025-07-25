@@ -2,6 +2,7 @@ package com.kaba4cow.imgxiv.domain.post.controller;
 
 import java.util.List;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
@@ -24,12 +24,12 @@ import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
+import com.kaba4cow.imgxiv.domain.post.dto.PostTagsRequest;
 import com.kaba4cow.imgxiv.domain.user.User;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 
 @Tag(//
 		name = "Posts", //
@@ -96,8 +96,7 @@ public interface PostControllerApiDoc {
 	@PatchMapping("/{id}")
 	ResponseEntity<PostDto> editPost(//
 			@PathVariable Long id, //
-			@NotEmpty(message = "At least one tag is required") //
-			@RequestParam List<String> tags//
+			@Valid @ParameterObject PostTagsRequest request//
 	);
 
 	@Operation(//
