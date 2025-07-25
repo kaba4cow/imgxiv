@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 				"""//
 )
 @RequestMapping("/api/posts/{post}/votes")
-public interface VoteControllerApiDoc {
+public interface PostVoteControllerApiDoc {
 
 	@Operation(//
 			summary = "Create or update vote", //

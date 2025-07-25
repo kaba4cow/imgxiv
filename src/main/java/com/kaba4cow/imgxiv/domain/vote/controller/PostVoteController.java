@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-public class VoteController implements VoteControllerApiDoc {
+public class PostVoteController implements PostVoteControllerApiDoc {
 
 	private final VoteService voteService;
 
