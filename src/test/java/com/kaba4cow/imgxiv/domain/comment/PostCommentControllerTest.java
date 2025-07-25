@@ -1,7 +1,8 @@
 package com.kaba4cow.imgxiv.domain.comment;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,10 +35,9 @@ import lombok.SneakyThrows;
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
-public class CommentControllerTest {
+public class PostCommentControllerTest {
 
-	private static final String OLD_COMMENT_TEXT = "Hello World";
-	private static final String NEW_COMMENT_TEXT = "Hello Sailor!";
+	private static final String COMMENT_TEXT = "Hello World";
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -59,39 +59,20 @@ public class CommentControllerTest {
 
 	@SneakyThrows
 	@Test
-	public void editsCommentWithAuthenticatedUserAsAuthor() {
-		User author = saveTestUser();
+	public void createsCommentWithAuthenticatedUser() {
+		User author = authenticateUser(saveTestUser());
 		Post post = saveTestPost(author);
-		Comment comment = saveTestComment(post, author, OLD_COMMENT_TEXT);
-		authenticateUser(author);
 
-		performEditComment(comment.getId(), NEW_COMMENT_TEXT)//
-				.andExpect(status().isOk())//
-				.andExpect(jsonPath("$.text").isString())//
-				.andExpect(jsonPath("$.text").value(NEW_COMMENT_TEXT));
+		performCreateComment(post.getId(), COMMENT_TEXT)//
+				.andExpect(status().isOk());
 	}
 
 	@SneakyThrows
 	@Test
-	public void doesNotEditCommentWithoutAuthenticatedUser() {
-		User author = saveTestUser();
-		Post post = saveTestPost(author);
-		Comment comment = saveTestComment(post, author, OLD_COMMENT_TEXT);
+	public void doesNotCreateCommentWithoutAuthenticatedUser() {
+		Post post = saveTestPost(saveTestUser());
 
-		performEditComment(comment.getId(), NEW_COMMENT_TEXT)//
-				.andExpect(status().is4xxClientError())//
-				.andExpect(status().isForbidden());
-	}
-
-	@SneakyThrows
-	@Test
-	public void doesNotEditCommentWithAuthenticatedUserAsNonAuthor() {
-		User author = saveTestUser();
-		Post post = saveTestPost(author);
-		Comment comment = saveTestComment(post, author, OLD_COMMENT_TEXT);
-		authenticateUser(saveTestUser("non-author", "na@example.com", UserRole.USER));
-
-		performEditComment(comment.getId(), NEW_COMMENT_TEXT)//
+		performCreateComment(post.getId(), COMMENT_TEXT)//
 				.andExpect(status().is4xxClientError())//
 				.andExpect(status().isForbidden());
 	}
@@ -99,89 +80,66 @@ public class CommentControllerTest {
 	@SneakyThrows
 	@WithMockUser
 	@Test
-	public void doesNotEditCommentOnCommentNotFound() {
-		performEditComment(Long.MAX_VALUE, NEW_COMMENT_TEXT)//
+	public void doesNotCreateCommentOnPostNotFound() {
+		performCreateComment(Long.MAX_VALUE, COMMENT_TEXT)//
 				.andExpect(status().is4xxClientError())//
 				.andExpect(status().isNotFound());
 	}
 
 	@SneakyThrows
-	private ResultActions performEditComment(Long id, String text) {
-		return mockMvc.perform(patch("/api/comments")//
+	private ResultActions performCreateComment(Long postId, String text) {
+		return mockMvc.perform(post("/api/comments")//
 				.contentType(MediaType.APPLICATION_JSON)//
 				.content("""
 							{
-								"id": %s,
+								"postId": %s,
 								"text": "%s"
 							}
 						""".formatted(//
-						id, text//
+						postId, text//
 				)));
 	}
 
 	@SneakyThrows
 	@Test
-	public void deletesCommentWithAuthenticatedUserAsAuthor() {
-		User author = authenticateUser(saveTestUser());
-		Post post = saveTestPost(author);
-		Comment comment = saveTestComment(post, author, OLD_COMMENT_TEXT);
-
-		performDeleteComment(comment.getId())//
-				.andExpect(status().isNoContent());
-	}
-
-	@SneakyThrows
-	@Test
-	public void deletesCommentWithAuthenticatedUserAsModerator() {
+	public void retrievesAllCommentsByPost() {
 		User author = saveTestUser();
 		Post post = saveTestPost(author);
-		Comment comment = saveTestComment(post, author, OLD_COMMENT_TEXT);
-		authenticateUser(saveTestUser("moderator", "mod@example.com", UserRole.MODERATOR));
 
-		performDeleteComment(comment.getId())//
-				.andExpect(status().isNoContent());
+		int commentCount = 8;
+		for (int i = 0; i < commentCount; i++)
+			saveTestComment(post, author, COMMENT_TEXT);
+
+		performGetCommentsByPost(post.getId())//
+				.andExpect(status().isOk())//
+				.andExpect(jsonPath("$").isArray())//
+				.andExpect(jsonPath("$", hasSize(commentCount)));
 	}
 
 	@SneakyThrows
 	@Test
-	public void doesNotDeleteCommentWithoutAuthenticatedUser() {
+	public void retrievesNoCommentsByPost() {
 		User author = saveTestUser();
 		Post post = saveTestPost(author);
-		Comment comment = saveTestComment(post, author, OLD_COMMENT_TEXT);
 
-		performDeleteComment(comment.getId())//
-				.andExpect(status().is4xxClientError())//
-				.andExpect(status().isForbidden());
+		performGetCommentsByPost(post.getId())//
+				.andExpect(status().isOk())//
+				.andExpect(jsonPath("$").isArray())//
+				.andExpect(jsonPath("$", hasSize(0)));
 	}
 
 	@SneakyThrows
 	@Test
-	public void doesNotDeleteCommentWithAuthenticatedUserAsNonAuthorNorModerator() {
-		User author = saveTestUser();
-		Post post = saveTestPost(author);
-		Comment comment = saveTestComment(post, author, OLD_COMMENT_TEXT);
-		authenticateUser(saveTestUser("non-author", "na@example.com", UserRole.USER));
-
-		performDeleteComment(comment.getId())//
-				.andExpect(status().is4xxClientError())//
-				.andExpect(status().isForbidden());
-	}
-
-	@SneakyThrows
-	@WithMockUser
-	@Test
-	public void doesNotDeleteCommentOnCommentNotFound() {
-		authenticateUser(saveTestUser());
-
-		performDeleteComment(Long.MAX_VALUE)//
+	public void doesNotRetrieveCommentsByPostOnPostNotFound() {
+		performGetCommentsByPost(1l)//
 				.andExpect(status().is4xxClientError())//
 				.andExpect(status().isNotFound());
 	}
 
 	@SneakyThrows
-	private ResultActions performDeleteComment(Long id) {
-		return mockMvc.perform(delete("/api/comments")//
-				.param("commentId", id.toString()));
+	private ResultActions performGetCommentsByPost(Long postId) {
+		return mockMvc.perform(get("/api/comments")//
+				.param("postId", postId.toString()));
 	}
 
 	private User authenticateUser(User user) {
