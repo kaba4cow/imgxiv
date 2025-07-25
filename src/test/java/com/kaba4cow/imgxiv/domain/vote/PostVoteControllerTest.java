@@ -34,7 +34,7 @@ import lombok.SneakyThrows;
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
-public class VoteControllerTest {
+public class PostVoteControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
