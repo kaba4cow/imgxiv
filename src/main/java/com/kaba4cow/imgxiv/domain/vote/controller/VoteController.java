@@ -4,8 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.vote.VoteType;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryDto;
-import com.kaba4cow.imgxiv.domain.vote.dto.VoteTypeRequest;
 import com.kaba4cow.imgxiv.domain.vote.service.VoteService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,8 +17,8 @@ public class VoteController implements VoteControllerApiDoc {
 	private final VoteService voteService;
 
 	@Override
-	public ResponseEntity<Void> createVote(Long post, VoteTypeRequest request, User user) {
-		voteService.createVote(post, request, user);
+	public ResponseEntity<Void> createVote(Long post, VoteType type, User user) {
+		voteService.createVote(post, type, user);
 		return ResponseEntity.noContent().build();
 	}
 
