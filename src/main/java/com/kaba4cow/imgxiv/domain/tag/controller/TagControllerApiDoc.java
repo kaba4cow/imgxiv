@@ -2,19 +2,16 @@ package com.kaba4cow.imgxiv.domain.tag.controller;
 
 import java.util.List;
 
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
-import com.kaba4cow.imgxiv.common.dto.CategoryIdRequest;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 
 @Tag(//
 		name = "Tags", //
@@ -44,9 +41,9 @@ public interface TagControllerApiDoc {
 					"""//
 	)
 	@PermitAll
-	@GetMapping("/categorized")
+	@GetMapping("/categorized/{category}")
 	ResponseEntity<List<TagDto>> getCategorizedTags(//
-			@Valid @ParameterObject CategoryIdRequest request//
+			@PathVariable Long category//
 	);
 
 	@Operation(//

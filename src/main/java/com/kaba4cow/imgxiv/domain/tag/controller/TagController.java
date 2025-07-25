@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kaba4cow.imgxiv.common.dto.CategoryIdRequest;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
 import com.kaba4cow.imgxiv.domain.tag.service.TagService;
 
@@ -23,8 +22,8 @@ public class TagController implements TagControllerApiDoc {
 	}
 
 	@Override
-	public ResponseEntity<List<TagDto>> getCategorizedTags(CategoryIdRequest request) {
-		return ResponseEntity.ok(tagService.getTagsByCategory(request.getCategoryId()));
+	public ResponseEntity<List<TagDto>> getCategorizedTags(Long category) {
+		return ResponseEntity.ok(tagService.getTagsByCategory(category));
 	}
 
 	@Override
