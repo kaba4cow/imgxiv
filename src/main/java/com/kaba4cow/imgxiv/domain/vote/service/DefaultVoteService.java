@@ -8,7 +8,7 @@ import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.vote.Vote;
 import com.kaba4cow.imgxiv.domain.vote.VoteId;
 import com.kaba4cow.imgxiv.domain.vote.VoteRepository;
-import com.kaba4cow.imgxiv.domain.vote.dto.VoteCreateRequest;
+import com.kaba4cow.imgxiv.domain.vote.VoteType;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryDto;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryMapper;
 
@@ -27,13 +27,13 @@ public class DefaultVoteService implements VoteService {
 	private final VoteSummaryMapper voteSummaryMapper;
 
 	@Override
-	public void createVote(VoteCreateRequest request, User user) {
-		Post post = postRepository.findByIdOrThrow(request.getPostId());
+	public void createVote(Long postId, VoteType type, User user) {
+		Post post = postRepository.findByIdOrThrow(postId);
 		Vote vote = new Vote();
 		vote.setId(VoteId.of(post, user));
 		vote.setPost(post);
 		vote.setUser(user);
-		vote.setType(request.getType());
+		vote.setType(type);
 		Vote saved = voteRepository.save(vote);
 		log.info("Created new vote: {}", saved);
 	}

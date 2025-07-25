@@ -2,7 +2,6 @@ package com.kaba4cow.imgxiv.domain.comment.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,13 +14,6 @@ import lombok.Setter;
 @Setter
 @Schema(description = "Request for creating a new comment")
 public class CommentCreateRequest {
-
-	@NotNull(message = "Post ID is required")
-	@Schema(//
-			description = "ID of the post", //
-			example = "1"//
-	)
-	private Long postId;
 
 	@NotBlank(message = "Comment text is required")
 	@Size(max = 1024, message = "Text is too long (max 1024 characters)")

@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.vote;
+package com.kaba4cow.imgxiv.domain.vote.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,13 +27,17 @@ import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.UserRole;
+import com.kaba4cow.imgxiv.domain.vote.Vote;
+import com.kaba4cow.imgxiv.domain.vote.VoteId;
+import com.kaba4cow.imgxiv.domain.vote.VoteRepository;
+import com.kaba4cow.imgxiv.domain.vote.VoteType;
 
 import lombok.SneakyThrows;
 
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
-public class VoteControllerTest {
+public class PostVoteControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -76,16 +79,8 @@ public class VoteControllerTest {
 
 	@SneakyThrows
 	private ResultActions performCreateVote(Long postId, VoteType type) {
-		return mockMvc.perform(post("/api/votes")//
-				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"postId": %s,
-								"type": "%s"
-							}
-						""".formatted(//
-						postId, type//
-				)));
+		return mockMvc.perform(post("/api/posts/{post}/votes", postId)//
+				.param("type", type.toString()));
 	}
 
 	@SneakyThrows
@@ -113,8 +108,7 @@ public class VoteControllerTest {
 
 	@SneakyThrows
 	private ResultActions performDeleteVote(Long postId) {
-		return mockMvc.perform(delete("/api/votes")//
-				.param("postId", postId.toString()));
+		return mockMvc.perform(delete("/api/posts/{post}/votes", postId));
 	}
 
 	@SneakyThrows
@@ -142,8 +136,7 @@ public class VoteControllerTest {
 
 	@SneakyThrows
 	private ResultActions performGetVoteSummary(Long postId) {
-		return mockMvc.perform(get("/api/votes")//
-				.param("postId", postId.toString()));
+		return mockMvc.perform(get("/api/posts/{post}/votes", postId));
 	}
 
 	private User authenticateUser(User user) {

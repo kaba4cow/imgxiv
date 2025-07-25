@@ -9,9 +9,9 @@ import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
 
 public interface TagService {
 
-	TagDto getTagById(Long tagId);
+	TagDto getTag(Long tagId);
 
-	List<TagDto> getTagsByCategoryId(Long categoryId);
+	List<TagDto> getTagsByCategory(Long categoryId);
 
 	List<TagDto> getTagsByDefaultCategory();
 

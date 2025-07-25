@@ -1,10 +1,7 @@
-package com.kaba4cow.imgxiv.domain.comment;
+package com.kaba4cow.imgxiv.domain.comment.controller;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.comment.Comment;
+import com.kaba4cow.imgxiv.domain.comment.CommentRepository;
 import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
@@ -59,49 +58,6 @@ public class CommentControllerTest {
 
 	@Autowired
 	private CommentRepository commentRepository;
-
-	@SneakyThrows
-	@Test
-	public void createsCommentWithAuthenticatedUser() {
-		User author = authenticateUser(saveTestUser());
-		Post post = saveTestPost(author);
-
-		performCreateComment(post.getId(), OLD_COMMENT_TEXT)//
-				.andExpect(status().isOk());
-	}
-
-	@SneakyThrows
-	@Test
-	public void doesNotCreateCommentWithoutAuthenticatedUser() {
-		Post post = saveTestPost(saveTestUser());
-
-		performCreateComment(post.getId(), OLD_COMMENT_TEXT)//
-				.andExpect(status().is4xxClientError())//
-				.andExpect(status().isForbidden());
-	}
-
-	@SneakyThrows
-	@WithMockUser
-	@Test
-	public void doesNotCreateCommentOnPostNotFound() {
-		performCreateComment(Long.MAX_VALUE, OLD_COMMENT_TEXT)//
-				.andExpect(status().is4xxClientError())//
-				.andExpect(status().isNotFound());
-	}
-
-	@SneakyThrows
-	private ResultActions performCreateComment(Long postId, String text) {
-		return mockMvc.perform(post("/api/comments")//
-				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"postId": %s,
-								"text": "%s"
-							}
-						""".formatted(//
-						postId, text//
-				)));
-	}
 
 	@SneakyThrows
 	@Test
@@ -153,15 +109,14 @@ public class CommentControllerTest {
 
 	@SneakyThrows
 	private ResultActions performEditComment(Long id, String text) {
-		return mockMvc.perform(patch("/api/comments")//
+		return mockMvc.perform(patch("/api/comments/{id}", id)//
 				.contentType(MediaType.APPLICATION_JSON)//
 				.content("""
 							{
-								"id": %s,
 								"text": "%s"
 							}
 						""".formatted(//
-						id, text//
+						text//
 				)));
 	}
 
@@ -226,50 +181,7 @@ public class CommentControllerTest {
 
 	@SneakyThrows
 	private ResultActions performDeleteComment(Long id) {
-		return mockMvc.perform(delete("/api/comments")//
-				.param("commentId", id.toString()));
-	}
-
-	@SneakyThrows
-	@Test
-	public void retrievesAllCommentsByPost() {
-		User author = saveTestUser();
-		Post post = saveTestPost(author);
-
-		int commentCount = 8;
-		for (int i = 0; i < commentCount; i++)
-			saveTestComment(post, author, OLD_COMMENT_TEXT);
-
-		performGetCommentsByPost(post.getId())//
-				.andExpect(status().isOk())//
-				.andExpect(jsonPath("$").isArray())//
-				.andExpect(jsonPath("$", hasSize(commentCount)));
-	}
-
-	@SneakyThrows
-	@Test
-	public void retrievesNoCommentsByPost() {
-		User author = saveTestUser();
-		Post post = saveTestPost(author);
-
-		performGetCommentsByPost(post.getId())//
-				.andExpect(status().isOk())//
-				.andExpect(jsonPath("$").isArray())//
-				.andExpect(jsonPath("$", hasSize(0)));
-	}
-
-	@SneakyThrows
-	@Test
-	public void doesNotRetrieveCommentsByPostOnPostNotFound() {
-		performGetCommentsByPost(1l)//
-				.andExpect(status().is4xxClientError())//
-				.andExpect(status().isNotFound());
-	}
-
-	@SneakyThrows
-	private ResultActions performGetCommentsByPost(Long postId) {
-		return mockMvc.perform(get("/api/comments")//
-				.param("postId", postId.toString()));
+		return mockMvc.perform(delete("/api/comments/{id}", id));
 	}
 
 	private User authenticateUser(User user) {

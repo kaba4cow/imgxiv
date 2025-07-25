@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.post;
+package com.kaba4cow.imgxiv.domain.post.controller;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
@@ -45,6 +45,8 @@ import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.embeddable.NameAndDescription;
 import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
+import com.kaba4cow.imgxiv.domain.post.Post;
+import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
@@ -119,7 +121,7 @@ public class PostControllerTest {
 						imageBytes //
 				))//
 				.contentType(MediaType.MULTIPART_FORM_DATA)//
-				.param("tagNames",
+				.param("tags",
 						tags.stream().map(Tag::getNameAndDescription).map(NameAndDescription::getName)
 								.collect(Collectors.joining(",")))//
 				.accept(MediaType.ALL));
@@ -143,9 +145,8 @@ public class PostControllerTest {
 	}
 
 	@SneakyThrows
-	private ResultActions performGetPost(Long postId) {
-		return mockMvc.perform(get("/api/posts")//
-				.param("postId", postId.toString()));
+	private ResultActions performGetPost(Long id) {
+		return mockMvc.perform(get("/api/posts/{id}", id));
 	}
 
 	@SneakyThrows
@@ -174,9 +175,8 @@ public class PostControllerTest {
 	}
 
 	@SneakyThrows
-	private ResultActions performGetPostImage(Long postId) {
-		return mockMvc.perform(get("/api/posts/image")//
-				.param("postId", postId.toString()));
+	private ResultActions performGetPostImage(Long id) {
+		return mockMvc.perform(get("/api/posts/{id}/image", id));
 	}
 
 	@SneakyThrows
@@ -255,21 +255,10 @@ public class PostControllerTest {
 
 	@SneakyThrows
 	private ResultActions performEditPost(Long id, Set<Tag> tags) {
-		return mockMvc.perform(patch("/api/posts")//
+		return mockMvc.perform(patch("/api/posts/{id}", id)//
 				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"id": %s,
-								"tagNames": [%s]
-							}
-						""".formatted(//
-						id, //
-						tags.stream()//
-								.map(Tag::getNameAndDescription)//
-								.map(NameAndDescription::getName)//
-								.map(name -> String.format("\"%s\"", name))//
-								.collect(Collectors.joining(","))//
-				)));
+				.param("tags", tags.stream().map(Tag::getNameAndDescription).map(NameAndDescription::getName)
+						.collect(Collectors.joining(","))));
 	}
 
 	@SneakyThrows
@@ -333,8 +322,7 @@ public class PostControllerTest {
 
 	@SneakyThrows
 	private ResultActions performDeletePost(Long id) {
-		return mockMvc.perform(delete("/api/posts")//
-				.param("postId", id.toString()));
+		return mockMvc.perform(delete("/api/posts/{id}", id));
 	}
 
 	@Test
@@ -398,8 +386,7 @@ public class PostControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)//
 				.content("""
 							{
-								"query": "%s",
-								"pageSize": 100
+								"query": "%s"
 							}
 						""".formatted(//
 						query//

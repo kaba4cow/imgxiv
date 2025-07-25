@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.user;
+package com.kaba4cow.imgxiv.domain.user.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -12,6 +12,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.user.UserRepository;
+import com.kaba4cow.imgxiv.domain.user.UserRole;
 
 import lombok.SneakyThrows;
 
@@ -64,8 +68,7 @@ public class UserControllerTest {
 
 	@SneakyThrows
 	private ResultActions performGetUser(Long id) {
-		return mockMvc.perform(get("/api/users")//
-				.param("userId", id.toString()));
+		return mockMvc.perform(get("/api/users/{id}", id));
 	}
 
 	private User saveTestUser() {

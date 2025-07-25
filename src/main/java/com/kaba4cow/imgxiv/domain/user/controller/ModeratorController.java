@@ -2,11 +2,10 @@ package com.kaba4cow.imgxiv.domain.user.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kaba4cow.imgxiv.common.dto.PageableRequest;
-import com.kaba4cow.imgxiv.common.dto.UserIdRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 import com.kaba4cow.imgxiv.domain.user.service.ModeratorService;
 
@@ -19,19 +18,19 @@ public class ModeratorController implements ModeratorControllerApiDoc {
 	private final ModeratorService moderatorService;
 
 	@Override
-	public ResponseEntity<List<UserDto>> getModerators(PageableRequest request) {
-		return ResponseEntity.ok(moderatorService.getModerators(request));
+	public ResponseEntity<List<UserDto>> getModerators(Pageable pageable) {
+		return ResponseEntity.ok(moderatorService.getModerators(pageable));
 	}
 
 	@Override
-	public ResponseEntity<Void> assignModerator(UserIdRequest request) {
-		moderatorService.assignModerator(request.getUserId());
+	public ResponseEntity<Void> assignModerator(Long id) {
+		moderatorService.assignModerator(id);
 		return ResponseEntity.noContent().build();
 	}
 
 	@Override
-	public ResponseEntity<Void> removeModerator(UserIdRequest request) {
-		moderatorService.removeModerator(request.getUserId());
+	public ResponseEntity<Void> removeModerator(Long id) {
+		moderatorService.removeModerator(id);
 		return ResponseEntity.noContent().build();
 	}
 

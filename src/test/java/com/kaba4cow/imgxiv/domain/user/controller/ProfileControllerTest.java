@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.user;
+package com.kaba4cow.imgxiv.domain.user.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -24,6 +24,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.domain.embeddable.Credentials;
+import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.user.UserRepository;
+import com.kaba4cow.imgxiv.domain.user.UserRole;
 
 import lombok.SneakyThrows;
 
