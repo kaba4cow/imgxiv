@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -76,16 +75,8 @@ public class PostVoteControllerTest {
 
 	@SneakyThrows
 	private ResultActions performCreateVote(Long postId, VoteType type) {
-		return mockMvc.perform(post("/api/votes")//
-				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"postId": %s,
-								"type": "%s"
-							}
-						""".formatted(//
-						postId, type//
-				)));
+		return mockMvc.perform(post("/api/posts/{post}/votes", postId)//
+				.param("type", type.toString()));
 	}
 
 	@SneakyThrows
@@ -113,8 +104,7 @@ public class PostVoteControllerTest {
 
 	@SneakyThrows
 	private ResultActions performDeleteVote(Long postId) {
-		return mockMvc.perform(delete("/api/votes")//
-				.param("postId", postId.toString()));
+		return mockMvc.perform(delete("/api/posts/{post}/votes", postId));
 	}
 
 	@SneakyThrows
@@ -142,8 +132,7 @@ public class PostVoteControllerTest {
 
 	@SneakyThrows
 	private ResultActions performGetVoteSummary(Long postId) {
-		return mockMvc.perform(get("/api/votes")//
-				.param("postId", postId.toString()));
+		return mockMvc.perform(get("/api/posts/{post}/votes", postId));
 	}
 
 	private User authenticateUser(User user) {
