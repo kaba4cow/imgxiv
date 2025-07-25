@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kaba4cow.imgxiv.common.dto.CategoryIdRequest;
-import com.kaba4cow.imgxiv.common.dto.TagIdRequest;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
 import com.kaba4cow.imgxiv.domain.tag.service.TagService;
 
@@ -19,8 +18,8 @@ public class TagController implements TagControllerApiDoc {
 	private final TagService tagService;
 
 	@Override
-	public ResponseEntity<TagDto> getTag(TagIdRequest request) {
-		return ResponseEntity.ok(tagService.getTag(request.getTagId()));
+	public ResponseEntity<TagDto> getTag(Long id) {
+		return ResponseEntity.ok(tagService.getTag(id));
 	}
 
 	@Override

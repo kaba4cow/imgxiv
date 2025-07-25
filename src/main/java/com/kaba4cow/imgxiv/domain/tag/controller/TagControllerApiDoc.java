@@ -5,11 +5,11 @@ import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
 import com.kaba4cow.imgxiv.common.dto.CategoryIdRequest;
-import com.kaba4cow.imgxiv.common.dto.TagIdRequest;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,9 +32,9 @@ public interface TagControllerApiDoc {
 					"""//
 	)
 	@PermitAll
-	@GetMapping
+	@GetMapping("/{id}")
 	ResponseEntity<TagDto> getTag(//
-			@Valid @ParameterObject TagIdRequest request//
+			@PathVariable Long id//
 	);
 
 	@Operation(//
