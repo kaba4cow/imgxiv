@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Schema(description = "Request for creating a vote")
-public class VoteCreateRequest extends PostIdRequest {
+public class VoteTypeRequest extends PostIdRequest {
 
 	@NotNull(message = "Vote type is required")
 	@Schema(//

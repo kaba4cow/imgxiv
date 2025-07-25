@@ -13,7 +13,7 @@ import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
 import com.kaba4cow.imgxiv.common.dto.PostIdRequest;
 import com.kaba4cow.imgxiv.domain.user.User;
-import com.kaba4cow.imgxiv.domain.vote.dto.VoteCreateRequest;
+import com.kaba4cow.imgxiv.domain.vote.dto.VoteTypeRequest;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryDto;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,7 +38,7 @@ public interface VoteControllerApiDoc {
 	@IsAuthenticated
 	@PostMapping
 	ResponseEntity<Void> createVote(//
-			@Valid @RequestBody VoteCreateRequest request, //
+			@Valid @RequestBody VoteTypeRequest request, //
 			@CurrentUser User user//
 	);
 
