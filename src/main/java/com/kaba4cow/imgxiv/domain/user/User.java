@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.kaba4cow.imgxiv.domain.base.EntityWithId;
 import com.kaba4cow.imgxiv.domain.embeddable.CreatedAt;
-import com.kaba4cow.imgxiv.domain.embeddable.Credentials;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
