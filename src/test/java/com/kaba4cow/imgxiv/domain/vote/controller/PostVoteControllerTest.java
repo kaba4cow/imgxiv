@@ -176,10 +176,12 @@ public class PostVoteControllerTest {
 		Post post = new Post();
 		post.setAuthor(author);
 		post.setPostImage(PostImage.builder()//
+				.storageKey("storageKey")//
 				.fileName("fileName")//
 				.fileSize(1L)//
 				.contentType("contentType")//
-				.storageKey("storageKey")//
+				.thumbnailFileSize(1L)//
+				.thumbnailContentType("contentType")//
 				.build());
 		post.addTag(saveTestTag());
 		return postRepository.saveAndFlush(post);

@@ -27,37 +27,36 @@ public class DefaultImageService implements ImageService {
 
 	@Override
 	public PostImage createImages(MultipartFile file) {
+		MultipartFile thumbnailFile = thumbnailGenerator.generateThumbnail(file);
 		String storageKey = storageKeyGenerator.generateKey(file.getOriginalFilename());
-		saveImages(storageKey, file);
-		return PostImage.builder()//
-				.fileName(file.getOriginalFilename())//
-				.fileSize(file.getSize())//
-				.storageKey(storageKey)//
-				.contentType(file.getContentType())//
-				.build();
-	}
-
-	private void saveImages(String storageKey, MultipartFile file) {
 		log.info("Uploading images: {}", storageKey);
 		imageStorage.saveImage(getFullStorageKey(IMAGE_PATH, storageKey), file);
-		imageStorage.saveImage(getFullStorageKey(THUMBNAIL_PATH, storageKey), thumbnailGenerator.generateThumbnail(file));
+		imageStorage.saveImage(getFullStorageKey(THUMBNAIL_PATH, storageKey), thumbnailFile);
+		return PostImage.builder()//
+				.storageKey(storageKey)//
+				.fileName(file.getOriginalFilename())//
+				.fileSize(file.getSize())//
+				.contentType(file.getContentType())//
+				.thumbnailFileSize(thumbnailFile.getSize())//
+				.thumbnailContentType(thumbnailFile.getContentType())//
+				.build();
 	}
 
 	@Override
 	public ImageResource getImage(PostImage postImage) {
-		return getImage(IMAGE_PATH, postImage);
+		return new ImageResource(//
+				imageStorage.getImage(getFullStorageKey(IMAGE_PATH, postImage)), //
+				postImage.getFileSize(), //
+				postImage.getContentType()//
+		);
 	}
 
 	@Override
 	public ImageResource getThumbnail(PostImage postImage) {
-		return getImage(THUMBNAIL_PATH, postImage);
-	}
-
-	private ImageResource getImage(String imagePath, PostImage postImage) {
 		return new ImageResource(//
-				imageStorage.getImage(getFullStorageKey(imagePath, postImage)), //
-				postImage.getFileSize(), //
-				postImage.getContentType()//
+				imageStorage.getImage(getFullStorageKey(THUMBNAIL_PATH, postImage)), //
+				postImage.getThumbnailFileSize(), //
+				postImage.getThumbnailContentType()//
 		);
 	}
 

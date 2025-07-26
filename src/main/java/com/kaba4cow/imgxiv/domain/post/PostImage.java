@@ -20,16 +20,22 @@ import lombok.ToString;
 @Embeddable
 public class PostImage {
 
+	@Column(name = "column_storage_key", nullable = false, length = 512)
+	private String storageKey;
+
 	@Column(name = "column_file_name", nullable = false, length = 256)
 	private String fileName;
 
 	@Column(name = "column_file_size", nullable = false)
 	private long fileSize;
 
-	@Column(name = "column_storage_key", nullable = false, length = 512)
-	private String storageKey;
-
 	@Column(name = "column_content_type", nullable = false, length = 64)
 	private String contentType;
+
+	@Column(name = "column_file_size_thumb", nullable = false)
+	private long thumbnailFileSize;
+
+	@Column(name = "column_content_type_thumb", nullable = false, length = 64)
+	private String thumbnailContentType;
 
 }

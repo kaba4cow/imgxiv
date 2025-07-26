@@ -37,7 +37,7 @@ feature:
             enabled: true
     images:
         thumbnail:
-            image-width: 200
-            image-height: 200
+            image-width: 256
+            image-height: 256
             image-format: JPG
             content-type: image/jpeg

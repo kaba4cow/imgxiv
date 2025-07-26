@@ -81,7 +81,7 @@ public interface PostControllerApiDoc {
 					Loads thumbnail of the specified post.
 					"""//
 	)
-	@GetMapping("/{id}/thumbnail")
+	@GetMapping("/{id}/thumb")
 	ResponseEntity<Resource> getPostThumbnail(//
 			@PathVariable Long id//
 	);
