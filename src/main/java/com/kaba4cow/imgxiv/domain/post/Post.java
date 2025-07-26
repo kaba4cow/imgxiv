@@ -9,7 +9,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.kaba4cow.imgxiv.domain.base.EntityWithId;
 import com.kaba4cow.imgxiv.domain.embeddable.CreatedAt;
-import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
 import com.kaba4cow.imgxiv.domain.embeddable.UpdatedAt;
 import com.kaba4cow.imgxiv.domain.link.posttag.PostTag;
 import com.kaba4cow.imgxiv.domain.tag.Tag;

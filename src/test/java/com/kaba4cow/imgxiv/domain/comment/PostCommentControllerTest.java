@@ -21,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
-import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
 import com.kaba4cow.imgxiv.domain.post.Post;
+import com.kaba4cow.imgxiv.domain.post.PostImage;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
