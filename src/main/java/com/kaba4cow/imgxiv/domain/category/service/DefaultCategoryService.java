@@ -31,8 +31,8 @@ public class DefaultCategoryService implements CategoryService {
 		if (categoryRepository.existsByName(request.getName()))
 			throw new NameConflictException("Category with this name already exists");
 		Category category = new Category();
-		category.getNameAndDescription().setName(request.getName());
-		category.getNameAndDescription().setDescription(request.getDescription());
+		category.setName(request.getName());
+		category.setDescription(request.getDescription());
 		Category saved = categoryRepository.save(category);
 		log.info("Created new category: {}", saved);
 		return categoryMapper.mapToDto(saved);
@@ -52,8 +52,8 @@ public class DefaultCategoryService implements CategoryService {
 
 	private Category createDefaultCategory() {
 		Category category = new Category();
-		category.getNameAndDescription().setName(DEFAULT_CATEGORY_NAME);
-		category.getNameAndDescription().setDescription(DEFAULT_CATEGORY_NAME);
+		category.setName(DEFAULT_CATEGORY_NAME);
+		category.setDescription(DEFAULT_CATEGORY_NAME);
 		Category saved = categoryRepository.save(category);
 		log.info("Created default category: {}", saved);
 		return saved;

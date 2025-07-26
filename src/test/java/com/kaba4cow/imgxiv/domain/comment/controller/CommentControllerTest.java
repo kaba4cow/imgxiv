@@ -226,16 +226,16 @@ public class CommentControllerTest {
 
 	private Tag saveTestTag() {
 		Tag tag = new Tag();
-		tag.getNameAndDescription().setName("name");
-		tag.getNameAndDescription().setDescription("description");
+		tag.setName("name");
+		tag.setDescription("description");
 		tag.setCategory(saveTestCategory());
 		return tagRepository.saveAndFlush(tag);
 	}
 
 	private Category saveTestCategory() {
 		Category category = new Category();
-		category.getNameAndDescription().setName("name");
-		category.getNameAndDescription().setDescription("description");
+		category.setName("name");
+		category.setDescription("description");
 		return categoryRepository.saveAndFlush(category);
 	}
 
