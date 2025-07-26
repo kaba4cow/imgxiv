@@ -28,19 +28,15 @@ public class DefaultImageService implements ImageService {
 	@Override
 	public PostImage createImages(MultipartFile file) {
 		String storageKey = storageKeyGenerator.generateKey(file.getOriginalFilename());
-		saveImages(storageKey, file);
+		log.info("Uploading images: {}", storageKey);
+		imageStorage.saveImage(getFullStorageKey(IMAGE_PATH, storageKey), file);
+		imageStorage.saveImage(getFullStorageKey(THUMBNAIL_PATH, storageKey), thumbnailGenerator.generateThumbnail(file));
 		return PostImage.builder()//
 				.fileName(file.getOriginalFilename())//
 				.fileSize(file.getSize())//
 				.storageKey(storageKey)//
 				.contentType(file.getContentType())//
 				.build();
-	}
-
-	private void saveImages(String storageKey, MultipartFile file) {
-		log.info("Uploading images: {}", storageKey);
-		imageStorage.saveImage(getFullStorageKey(IMAGE_PATH, storageKey), file);
-		imageStorage.saveImage(getFullStorageKey(THUMBNAIL_PATH, storageKey), thumbnailGenerator.generateThumbnail(file));
 	}
 
 	@Override
