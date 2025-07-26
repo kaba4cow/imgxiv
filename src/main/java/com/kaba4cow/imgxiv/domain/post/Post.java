@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.kaba4cow.imgxiv.domain.base.EntityWithId;
 import com.kaba4cow.imgxiv.domain.embeddable.CreatedAt;
 import com.kaba4cow.imgxiv.domain.embeddable.UpdatedAt;
 import com.kaba4cow.imgxiv.domain.link.posttag.PostTag;
@@ -15,8 +14,12 @@ import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.user.User;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -36,7 +39,12 @@ import lombok.ToString;
 @Builder
 @Entity
 @Table(name = "table_post")
-public class Post extends EntityWithId {
+public class Post {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "column_id")
+	private Long id;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "column_author_id")

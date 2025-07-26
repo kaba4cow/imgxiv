@@ -1,9 +1,10 @@
 package com.kaba4cow.imgxiv.domain.category;
 
-import com.kaba4cow.imgxiv.domain.base.EntityWithId;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,12 @@ import lombok.ToString;
 @Builder
 @Entity
 @Table(name = "table_category", uniqueConstraints = @UniqueConstraint(columnNames = "column_name"))
-public class Category extends EntityWithId {
+public class Category {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "column_id")
+	private Long id;
 
 	@Column(name = "column_name", nullable = false, length = 32)
 	private String name;
