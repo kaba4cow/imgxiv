@@ -47,8 +47,8 @@ public class CategoryRepositoryTest {
 
 	private Category saveTestCategory(String name, String description) {
 		Category category = new Category();
-		category.getNameAndDescription().setName(name);
-		category.getNameAndDescription().setDescription(description);
+		category.setName(name);
+		category.setDescription(description);
 		return categoryRepository.save(category);
 	}
 

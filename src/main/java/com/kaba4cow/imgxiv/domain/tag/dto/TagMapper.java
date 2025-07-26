@@ -10,8 +10,8 @@ public class TagMapper {
 	public TagDto mapToDto(Tag tag) {
 		return new TagDto(//
 				tag.getId(), //
-				tag.getNameAndDescription().getName(), //
-				tag.getNameAndDescription().getDescription(), //
+				tag.getName(), //
+				tag.getDescription(), //
 				tag.getCategory().getId()//
 		);
 	}

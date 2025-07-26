@@ -13,8 +13,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
-import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
 import com.kaba4cow.imgxiv.domain.post.Post;
+import com.kaba4cow.imgxiv.domain.post.PostImage;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.query.CompiledPostQuery;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
@@ -166,15 +166,15 @@ public class DefaultPostSpecificationTest {
 			return tagRepository.findByName(name).orElseThrow();
 		Tag tag = new Tag();
 		tag.setCategory(category);
-		tag.getNameAndDescription().setName(name);
-		tag.getNameAndDescription().setDescription("tag-description");
+		tag.setName(name);
+		tag.setDescription("tag-description");
 		return tagRepository.saveAndFlush(tag);
 	}
 
 	private Category createCategory() {
 		Category category = new Category();
-		category.getNameAndDescription().setName("category-name");
-		category.getNameAndDescription().setDescription("category-description");
+		category.setName("category-name");
+		category.setDescription("category-description");
 		return categoryRepository.saveAndFlush(category);
 	}
 

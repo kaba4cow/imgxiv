@@ -65,7 +65,7 @@ public class CategoryTagControllerTest {
 			Category category = entry.getKey();
 			int numberOfTags = entry.getValue();
 			for (int i = 0; i < numberOfTags; i++)
-				saveTestTag(category.getNameAndDescription().getName() + "_tag" + i, "description", category);
+				saveTestTag(category.getName() + "_tag" + i, "description", category);
 		}
 	}
 
@@ -98,15 +98,15 @@ public class CategoryTagControllerTest {
 	private Tag saveTestTag(String name, String description, Category category) {
 		Tag tag = new Tag();
 		tag.setCategory(category);
-		tag.getNameAndDescription().setName(name);
-		tag.getNameAndDescription().setDescription(description);
+		tag.setName(name);
+		tag.setDescription(description);
 		return tagRepository.saveAndFlush(tag);
 	}
 
 	private Category saveTestCategory(String name) {
 		Category category = new Category();
-		category.getNameAndDescription().setName(name);
-		category.getNameAndDescription().setDescription("description");
+		category.setName(name);
+		category.setDescription("description");
 		return categoryRepository.saveAndFlush(category);
 	}
 

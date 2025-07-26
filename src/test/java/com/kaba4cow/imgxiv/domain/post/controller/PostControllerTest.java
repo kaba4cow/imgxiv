@@ -43,9 +43,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
-import com.kaba4cow.imgxiv.domain.embeddable.NameAndDescription;
-import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
 import com.kaba4cow.imgxiv.domain.post.Post;
+import com.kaba4cow.imgxiv.domain.post.PostImage;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
@@ -98,7 +97,7 @@ public class PostControllerTest {
 				.andExpect(jsonPath("$.authorId").isNumber())//
 				.andExpect(jsonPath("$.authorId").value(author.getId()))//
 				.andExpect(jsonPath("$.tagNames").isArray())//
-				.andExpect(jsonPath("$.tagNames", contains(tag.getNameAndDescription().getName())));
+				.andExpect(jsonPath("$.tagNames", contains(tag.getName())));
 	}
 
 	@SneakyThrows
@@ -121,9 +120,7 @@ public class PostControllerTest {
 						imageBytes //
 				))//
 				.contentType(MediaType.MULTIPART_FORM_DATA)//
-				.param("tags",
-						tags.stream().map(Tag::getNameAndDescription).map(NameAndDescription::getName)
-								.collect(Collectors.joining(",")))//
+				.param("tags", tags.stream().map(Tag::getName).collect(Collectors.joining(",")))//
 				.accept(MediaType.ALL));
 	}
 
@@ -141,7 +138,7 @@ public class PostControllerTest {
 				.andExpect(jsonPath("$.authorId").isNumber())//
 				.andExpect(jsonPath("$.authorId").value(author.getId()))//
 				.andExpect(jsonPath("$.tagNames").isArray())//
-				.andExpect(jsonPath("$.tagNames", contains(tag.getNameAndDescription().getName())));
+				.andExpect(jsonPath("$.tagNames", contains(tag.getName())));
 	}
 
 	@SneakyThrows
@@ -195,7 +192,7 @@ public class PostControllerTest {
 				.andExpect(jsonPath("$.authorId").isNumber())//
 				.andExpect(jsonPath("$.authorId").value(author.getId()))//
 				.andExpect(jsonPath("$.tagNames").isArray())//
-				.andExpect(jsonPath("$.tagNames", contains(tag2.getNameAndDescription().getName())));
+				.andExpect(jsonPath("$.tagNames", contains(tag2.getName())));
 	}
 
 	@SneakyThrows
@@ -214,7 +211,7 @@ public class PostControllerTest {
 				.andExpect(jsonPath("$.authorId").isNumber())//
 				.andExpect(jsonPath("$.authorId").value(author.getId()))//
 				.andExpect(jsonPath("$.tagNames").isArray())//
-				.andExpect(jsonPath("$.tagNames", contains(tag2.getNameAndDescription().getName())));
+				.andExpect(jsonPath("$.tagNames", contains(tag2.getName())));
 	}
 
 	@SneakyThrows
@@ -257,8 +254,7 @@ public class PostControllerTest {
 	private ResultActions performEditPost(Long id, Set<Tag> tags) {
 		return mockMvc.perform(patch("/api/posts/{id}", id)//
 				.contentType(MediaType.APPLICATION_JSON)//
-				.param("tags", tags.stream().map(Tag::getNameAndDescription).map(NameAndDescription::getName)
-						.collect(Collectors.joining(","))));
+				.param("tags", tags.stream().map(Tag::getName).collect(Collectors.joining(","))));
 	}
 
 	@SneakyThrows
@@ -427,16 +423,16 @@ public class PostControllerTest {
 
 	private Tag saveTestTag(String name, Category category) {
 		Tag tag = new Tag();
-		tag.getNameAndDescription().setName(name);
-		tag.getNameAndDescription().setDescription("description");
+		tag.setName(name);
+		tag.setDescription("description");
 		tag.setCategory(category);
 		return tagRepository.saveAndFlush(tag);
 	}
 
 	private Category saveTestCategory() {
 		Category category = new Category();
-		category.getNameAndDescription().setName("name");
-		category.getNameAndDescription().setDescription("description");
+		category.setName("name");
+		category.setDescription("description");
 		return categoryRepository.saveAndFlush(category);
 	}
 

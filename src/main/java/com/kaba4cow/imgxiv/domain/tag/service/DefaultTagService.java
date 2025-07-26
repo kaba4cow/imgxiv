@@ -69,8 +69,8 @@ public class DefaultTagService implements TagService {
 
 	private Tag createNewTag(String name) {
 		Tag tag = new Tag();
-		tag.getNameAndDescription().setName(name);
-		tag.getNameAndDescription().setDescription("");
+		tag.setName(name);
+		tag.setDescription("");
 		tag.setCategory(categoryService.getDefaultCategory());
 		Tag saved = tagRepository.save(tag);
 		log.info("Created new tag: {}", saved);

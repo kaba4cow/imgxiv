@@ -5,7 +5,6 @@ import org.springframework.data.jpa.domain.Specification;
 import com.kaba4cow.imgxiv.domain.link.posttag.PostTag;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.query.CompiledPostQuery;
-import com.kaba4cow.imgxiv.domain.tag.Tag;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -47,10 +46,10 @@ public class PostSpecification implements Specification<Post> {
 	private Subquery<Long> toRequiredSubquery(String tag, Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 		Subquery<Long> subquery = query.subquery(Long.class);
 		Root<PostTag> postTag = subquery.from(PostTag.class);
-		return subquery.select(idOf(postTag.get("post")))//
+		return subquery.select(postIdOf(postTag))//
 				.where(//
-						cb.equal(nameOf(postTag.get("tag")), tag), //
-						cb.equal(idOf(postTag.get("post")), idOf(root))//
+						cb.equal(tagNameOf(postTag), tag), //
+						cb.equal(postIdOf(postTag), idOf(root))//
 				);
 	}
 
@@ -63,19 +62,23 @@ public class PostSpecification implements Specification<Post> {
 	private Subquery<Long> toExcludedSubquery(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 		Subquery<Long> subquery = query.subquery(Long.class);
 		Root<PostTag> postTag = subquery.from(PostTag.class);
-		return subquery.select(idOf(postTag.get("post")))//
+		return subquery.select(postIdOf(postTag))//
 				.where(//
-						cb.equal(idOf(postTag.get("post")), idOf(root)), //
-						nameOf(postTag.get("tag")).in(postQuery.getExcludedTags())//
+						cb.equal(postIdOf(postTag), idOf(root)), //
+						tagNameOf(postTag).in(postQuery.getExcludedTags())//
 				);
 	}
 
-	private Path<String> nameOf(Path<Tag> tag) {
-		return tag.get("nameAndDescription").get("name");
+	private Path<Long> postIdOf(Path<PostTag> postTag) {
+		return postTag.get("post").get("id");
 	}
 
-	private Path<Long> idOf(Path<?> entity) {
-		return entity.get("id");
+	private Path<String> tagNameOf(Path<PostTag> postTag) {
+		return postTag.get("tag").get("name");
+	}
+
+	private Path<Long> idOf(Path<?> path) {
+		return path.get("id");
 	}
 
 }

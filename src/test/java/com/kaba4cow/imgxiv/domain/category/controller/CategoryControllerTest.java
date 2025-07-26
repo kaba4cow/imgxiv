@@ -121,8 +121,8 @@ public class CategoryControllerTest {
 
 	private Category saveTestCategory(String name) {
 		Category category = new Category();
-		category.getNameAndDescription().setName(name);
-		category.getNameAndDescription().setDescription("description");
+		category.setName(name);
+		category.setDescription("description");
 		return categoryRepository.saveAndFlush(category);
 	}
 

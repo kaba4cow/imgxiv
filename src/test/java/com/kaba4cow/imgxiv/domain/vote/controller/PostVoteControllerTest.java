@@ -19,8 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
-import com.kaba4cow.imgxiv.domain.embeddable.PostImage;
 import com.kaba4cow.imgxiv.domain.post.Post;
+import com.kaba4cow.imgxiv.domain.post.PostImage;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
@@ -187,16 +187,16 @@ public class PostVoteControllerTest {
 
 	private Tag saveTestTag() {
 		Tag tag = new Tag();
-		tag.getNameAndDescription().setName("name");
-		tag.getNameAndDescription().setDescription("description");
+		tag.setName("name");
+		tag.setDescription("description");
 		tag.setCategory(saveTestCategory());
 		return tagRepository.saveAndFlush(tag);
 	}
 
 	private Category saveTestCategory() {
 		Category category = new Category();
-		category.getNameAndDescription().setName("name");
-		category.getNameAndDescription().setDescription("description");
+		category.setName("name");
+		category.setDescription("description");
 		return categoryRepository.saveAndFlush(category);
 	}
 

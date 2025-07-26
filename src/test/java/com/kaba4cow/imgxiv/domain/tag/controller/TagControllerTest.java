@@ -60,15 +60,15 @@ public class TagControllerTest {
 	private Tag saveTestTag(String name, String description, Category category) {
 		Tag tag = new Tag();
 		tag.setCategory(category);
-		tag.getNameAndDescription().setName(name);
-		tag.getNameAndDescription().setDescription(description);
+		tag.setName(name);
+		tag.setDescription(description);
 		return tagRepository.saveAndFlush(tag);
 	}
 
 	private Category saveTestCategory(String name) {
 		Category category = new Category();
-		category.getNameAndDescription().setName(name);
-		category.getNameAndDescription().setDescription("description");
+		category.setName(name);
+		category.setDescription("description");
 		return categoryRepository.saveAndFlush(category);
 	}
 
