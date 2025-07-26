@@ -22,6 +22,7 @@ public class Credentials {
 	@Column(name = "column_email", length = 64, nullable = false)
 	private String email;
 
+	@ToString.Exclude
 	@Column(name = "column_password_hash", nullable = false)
 	private String passwordHash;
 
