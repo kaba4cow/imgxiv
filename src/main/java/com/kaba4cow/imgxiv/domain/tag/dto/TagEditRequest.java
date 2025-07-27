@@ -34,6 +34,6 @@ public class TagEditRequest {
 			description = "New category ID", //
 			example = "1"//
 	)
-	private Long categoryId;
+	private Long category;
 
 }

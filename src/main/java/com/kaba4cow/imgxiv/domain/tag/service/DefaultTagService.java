@@ -42,7 +42,7 @@ public class DefaultTagService implements TagService {
 	@Override
 	public TagDto editTag(Long tagId, TagEditRequest request) {
 		Tag tag = tagRepository.findByIdOrThrow(tagId);
-		Optional.ofNullable(request.getCategoryId())//
+		Optional.ofNullable(request.getCategory())//
 				.map(categoryRepository::findByIdOrThrow)//
 				.ifPresent(tag::setCategory);
 		Optional.ofNullable(request.getName())//

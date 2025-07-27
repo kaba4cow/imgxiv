@@ -116,7 +116,7 @@ public class TagControllerTest {
 		performEditTag(tag.getId(), Map.of(//
 				"name", newName, //
 				"description", newDescription, //
-				"categoryId", newCategory.getId()//
+				"category", newCategory.getId()//
 		))//
 				.andExpect(status().isOk())//
 				.andExpect(jsonPath("$.id").value(tag.getId()))//
