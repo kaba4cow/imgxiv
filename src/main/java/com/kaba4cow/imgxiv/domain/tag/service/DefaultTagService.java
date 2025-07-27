@@ -2,6 +2,7 @@ package com.kaba4cow.imgxiv.domain.tag.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kaba4cow.imgxiv.common.exception.NameConflictException;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.category.service.CategoryService;
@@ -42,6 +44,8 @@ public class DefaultTagService implements TagService {
 	@Override
 	public TagDto editTag(Long tagId, TagEditRequest request) {
 		Tag tag = tagRepository.findByIdOrThrow(tagId);
+		if (!Objects.equals(tag.getName(), request.getName()) && tagRepository.existsByName(request.getName()))
+			throw new NameConflictException("Tag with this name already exists");
 		Optional.ofNullable(request.getCategory())//
 				.map(categoryRepository::findByIdOrThrow)//
 				.ifPresent(tag::setCategory);

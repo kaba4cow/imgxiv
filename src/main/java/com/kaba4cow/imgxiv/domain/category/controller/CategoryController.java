@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryCreateRequest;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryDto;
+import com.kaba4cow.imgxiv.domain.category.dto.CategoryEditRequest;
 import com.kaba4cow.imgxiv.domain.category.service.CategoryService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -19,7 +21,12 @@ public class CategoryController implements CategoryControllerApiDoc {
 
 	@Override
 	public ResponseEntity<CategoryDto> createCategory(CategoryCreateRequest request) {
-		return ResponseEntity.ok(categoryService.create(request));
+		return ResponseEntity.ok(categoryService.createCategory(request));
+	}
+
+	@Override
+	public ResponseEntity<CategoryDto> editCategory(Long id, @Valid CategoryEditRequest request) {
+		return ResponseEntity.ok(categoryService.editCategory(id, request));
 	}
 
 	@Override
