@@ -89,11 +89,11 @@ public class DefaultTagService implements TagService {
 	}
 
 	private Tag createNewTag(String name) {
-		Tag tag = new Tag();
-		tag.setName(name);
-		tag.setDescription("");
-		tag.setCategory(categoryService.getDefaultCategory());
-		Tag saved = tagRepository.save(tag);
+		Tag saved = tagRepository.save(Tag.builder()//
+				.name(name)//
+				.description("")//
+				.category(categoryService.getDefaultCategory())//
+				.build());
 		log.info("Created new tag: {}", saved);
 		return saved;
 	}
