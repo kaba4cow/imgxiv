@@ -29,12 +29,12 @@ public class DefaultVoteService implements VoteService {
 	@Override
 	public void createVote(Long postId, VoteType type, User user) {
 		Post post = postRepository.findByIdOrThrow(postId);
-		Vote vote = new Vote();
-		vote.setId(VoteId.of(post, user));
-		vote.setPost(post);
-		vote.setUser(user);
-		vote.setType(type);
-		Vote saved = voteRepository.save(vote);
+		Vote saved = voteRepository.save(Vote.builder()//
+				.id(VoteId.of(post, user))//
+				.post(post)//
+				.user(user)//
+				.type(type)//
+				.build());
 		log.info("Created new vote: {}", saved);
 	}
 
