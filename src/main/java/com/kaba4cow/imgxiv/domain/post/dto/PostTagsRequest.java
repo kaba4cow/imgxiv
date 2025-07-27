@@ -2,7 +2,7 @@ package com.kaba4cow.imgxiv.domain.post.dto;
 
 import java.util.List;
 
-import com.kaba4cow.imgxiv.common.validation.TagName;
+import com.kaba4cow.imgxiv.domain.tag.validation.TagName;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.common.validation;
+package com.kaba4cow.imgxiv.domain.tag.validation;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.PARAMETER;
