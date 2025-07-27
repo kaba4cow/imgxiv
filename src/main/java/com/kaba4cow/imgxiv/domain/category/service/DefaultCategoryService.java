@@ -10,6 +10,7 @@ import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryCreateRequest;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryDto;
+import com.kaba4cow.imgxiv.domain.category.dto.CategoryEditRequest;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,11 @@ public class DefaultCategoryService implements CategoryService {
 		Category saved = categoryRepository.save(category);
 		log.info("Created new category: {}", saved);
 		return categoryMapper.mapToDto(saved);
+	}
+
+	@Override
+	public CategoryDto editCategory(Long id, CategoryEditRequest request) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
