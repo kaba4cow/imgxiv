@@ -2,6 +2,7 @@ package com.kaba4cow.imgxiv.domain.tag.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,17 @@ public class DefaultTagService implements TagService {
 
 	@Override
 	public TagDto editTag(Long tagId, TagEditRequest request) {
-		throw new UnsupportedOperationException();
+		Tag tag = tagRepository.findByIdOrThrow(tagId);
+		Optional.ofNullable(request.getCategoryId())//
+				.map(categoryRepository::findByIdOrThrow)//
+				.ifPresent(tag::setCategory);
+		Optional.ofNullable(request.getName())//
+				.ifPresent(tag::setName);
+		Optional.ofNullable(request.getDescription())//
+				.ifPresent(tag::setDescription);
+		Tag saved = tagRepository.save(tag);
+		log.info("Updated tag: {}", saved);
+		return tagMapper.mapToDto(saved);
 	}
 
 	@Override
