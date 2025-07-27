@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
-import com.kaba4cow.imgxiv.domain.comment.dto.CommentTextRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
+import com.kaba4cow.imgxiv.domain.comment.dto.CommentTextRequest;
 import com.kaba4cow.imgxiv.domain.user.User;
 
 import io.swagger.v3.oas.annotations.Operation;
