@@ -1,11 +1,11 @@
 package com.kaba4cow.imgxiv.auth.dto;
 
 import com.kaba4cow.imgxiv.domain.user.validation.ValidEmail;
+import com.kaba4cow.imgxiv.domain.user.validation.ValidPassword;
 import com.kaba4cow.imgxiv.domain.user.validation.ValidUsername;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,8 +35,7 @@ public class RegisterRequest {
 	private String email;
 
 	@NotBlank(message = "Password is required")
-	@Size(min = 8, message = "Password is too short (min 8 characters)")
-	@Size(max = 64, message = "Password is too long (max 64 characters)")
+	@ValidPassword
 	@Schema(//
 			description = "Password", //
 			example = "password1234"//
