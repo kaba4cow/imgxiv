@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.auth.annotation.policy;
+package com.kaba4cow.imgxiv.domain.post.policy;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
