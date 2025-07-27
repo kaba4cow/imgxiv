@@ -2,6 +2,8 @@ package com.kaba4cow.imgxiv.domain.post.dto;
 
 import java.util.List;
 
+import com.kaba4cow.imgxiv.common.validation.TagName;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,6 @@ public class PostTagsRequest {
 	@Schema(//
 			description = "List of tag names"//
 	)
-	private List<String> tags;
+	private List<@TagName String> tags;
 
 }
