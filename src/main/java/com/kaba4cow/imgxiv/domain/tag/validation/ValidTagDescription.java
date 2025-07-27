@@ -17,7 +17,7 @@ import jakarta.validation.constraints.Size;
 @Retention(RUNTIME)
 @Target({ FIELD, PARAMETER, TYPE_USE })
 @Constraint(validatedBy = {})
-@Size(max = 1024, message = "Description is too long (max 1024 characters)")
+@Size(max = 1024, message = "Tag description is too long (max 1024 characters)")
 public @interface ValidTagDescription {
 
 	String message() default "Invalid tag description";
