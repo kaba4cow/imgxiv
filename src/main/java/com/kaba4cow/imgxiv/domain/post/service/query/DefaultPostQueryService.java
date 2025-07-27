@@ -15,7 +15,7 @@ public class DefaultPostQueryService implements PostQueryService {
 
 	@Override
 	public PostQuery getCompiledQuery(String query) {
-		return postQueryParser.parse(query);
+		return postQueryParser.parseQuery(query);
 	}
 
 }

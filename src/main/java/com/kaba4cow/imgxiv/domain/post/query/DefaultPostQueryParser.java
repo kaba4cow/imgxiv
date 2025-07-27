@@ -17,7 +17,7 @@ public class DefaultPostQueryParser implements PostQueryParser {
 	private final Pattern pattern = Pattern.compile("^!*[a-zA-Z0-9_]+$");
 
 	@Override
-	public PostQuery parse(String query) {
+	public PostQuery parseQuery(String query) {
 		QueryBuilder builder = new QueryBuilder();
 		List<String> tokens = splitQuery(query);
 		for (String token : tokens)
