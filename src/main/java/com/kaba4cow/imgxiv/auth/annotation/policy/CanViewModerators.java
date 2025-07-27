@@ -8,12 +8,12 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
 
 @Documented
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
-@PostAuthorize("hasAuthority('" + UserAuthorities.VIEW_MODERATORS + "')")
+@PreAuthorize("hasAuthority('" + UserAuthorities.VIEW_MODERATORS + "')")
 public @interface CanViewModerators {}
