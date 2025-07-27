@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.common.advice.handler;
+package com.kaba4cow.imgxiv.common.advice.response;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;

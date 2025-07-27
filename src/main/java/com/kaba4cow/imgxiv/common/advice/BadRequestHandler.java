@@ -6,8 +6,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.kaba4cow.imgxiv.common.advice.handler.ExceptionHandlerResponseBuilder;
-import com.kaba4cow.imgxiv.common.advice.handler.ExceptionHandlerResponseEntity;
+import com.kaba4cow.imgxiv.common.advice.response.ExceptionHandlerResponseBuilder;
+import com.kaba4cow.imgxiv.common.advice.response.ExceptionHandlerResponseEntity;
 
 @ControllerAdvice
 public class BadRequestHandler extends AbstractExceptionHandler {

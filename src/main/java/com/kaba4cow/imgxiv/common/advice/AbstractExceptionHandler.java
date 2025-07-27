@@ -4,8 +4,8 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatusCode;
 
-import com.kaba4cow.imgxiv.common.advice.handler.ExceptionHandlerResponseBuilder;
-import com.kaba4cow.imgxiv.common.advice.handler.ExceptionHandlerResponseEntity;
+import com.kaba4cow.imgxiv.common.advice.response.ExceptionHandlerResponseBuilder;
+import com.kaba4cow.imgxiv.common.advice.response.ExceptionHandlerResponseEntity;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public abstract class AbstractExceptionHandler {
