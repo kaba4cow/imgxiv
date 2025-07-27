@@ -1,7 +1,6 @@
 package com.kaba4cow.imgxiv.domain.post.service;
 
-import java.util.stream.Stream;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +25,10 @@ public class DefaultPostSearchService implements PostSearchService {
 	private final PostSpecificationService postSpecificationService;
 
 	@Override
-	public Stream<Post> searchPosts(PostQueryRequest request, Pageable pageable) {
+	public Page<Post> searchPosts(PostQueryRequest request, Pageable pageable) {
 		PostQuery postQuery = postQueryService.getCompiledQuery(request.getQuery());
 		PostSpecification postSpecification = postSpecificationService.getPostSpecification(postQuery);
-		return postRepository.findAll(postSpecification, pageable).stream();
+		return postRepository.findAll(postSpecification, pageable);
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.kaba4cow.imgxiv.domain.post.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -88,7 +87,7 @@ public class DefaultPostService implements PostService {
 	public List<PostDto> findPostsByQuery(PostQueryRequest request, Pageable pageable) {
 		return postSearchService.searchPosts(request, pageable)//
 				.map(postMapper::mapToDto)//
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 }
