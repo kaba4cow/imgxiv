@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.auth.annotation.policy;
+package com.kaba4cow.imgxiv.auth.annotation.authority;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
@@ -15,5 +15,5 @@ import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
 @Documented
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
-@PreAuthorize("hasAuthority('" + UserAuthorities.CREATE_CATEGORY + "')")
-public @interface CanCreateCategory {}
+@PreAuthorize("hasAuthority('" + UserAuthorities.MANAGE_MODERATORS + "')")
+public @interface CanManageModerators {}

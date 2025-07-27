@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.kaba4cow.imgxiv.auth.annotation.policy.CanManageModerators;
-import com.kaba4cow.imgxiv.auth.annotation.policy.CanViewModerators;
+import com.kaba4cow.imgxiv.auth.annotation.authority.CanManageModerators;
+import com.kaba4cow.imgxiv.auth.annotation.authority.CanViewModerators;
 import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 
 import io.swagger.v3.oas.annotations.Operation;
