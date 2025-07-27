@@ -74,7 +74,7 @@ public class DefaultPostService implements PostService {
 		tagService.getOrCreateTagsByNames(tags)//
 				.forEach(post::addTag);
 		Post saved = postRepository.save(post);
-		log.info("Edited post: {}", saved);
+		log.info("Updated post: {}", saved);
 		return postMapper.mapToDto(saved);
 	}
 
@@ -83,6 +83,7 @@ public class DefaultPostService implements PostService {
 		Post post = postSecurity.getPostToDelete(id);
 		imageService.deleteImages(post.getPostImage());
 		postRepository.delete(post);
+		log.info("Deleted post: {}", post);
 	}
 
 	@Override
