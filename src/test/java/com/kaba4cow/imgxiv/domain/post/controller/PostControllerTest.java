@@ -15,6 +15,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -79,6 +80,9 @@ public class PostControllerTest {
 
 	@Autowired
 	private ImageStorage imageStorage;
+
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@BeforeEach
 	public void clearImageStorage() {
@@ -380,13 +384,7 @@ public class PostControllerTest {
 	private ResultActions performSearchPosts(String query) {
 		return mockMvc.perform(post("/api/posts/search")//
 				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"query": "%s"
-							}
-						""".formatted(//
-						query//
-				)));
+				.content(objectMapper.writeValueAsString(Map.of("query", query))));
 	}
 
 	private User authenticateUser(User user) {

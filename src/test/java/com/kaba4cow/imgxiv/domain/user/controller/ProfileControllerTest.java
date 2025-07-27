@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Map;
 import java.util.function.Function;
 
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kaba4cow.imgxiv.domain.user.Credentials;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
@@ -49,6 +51,9 @@ public class ProfileControllerTest {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@SneakyThrows
 	@Test
@@ -137,13 +142,7 @@ public class ProfileControllerTest {
 	private ResultActions performChangeField(String fieldName, String fieldValue) {
 		return mockMvc.perform(patch("/api/profile/" + fieldName)//
 				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"%s": "%s"
-							}
-						""".formatted(//
-						fieldName, fieldValue//
-				)));
+				.content(objectMapper.writeValueAsString(Map.of(fieldName, fieldValue))));
 	}
 
 	@SneakyThrows

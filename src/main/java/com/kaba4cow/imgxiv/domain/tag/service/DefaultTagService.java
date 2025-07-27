@@ -2,6 +2,7 @@ package com.kaba4cow.imgxiv.domain.tag.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ import com.kaba4cow.imgxiv.domain.category.service.CategoryService;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
+import com.kaba4cow.imgxiv.domain.tag.dto.TagEditRequest;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,21 @@ public class DefaultTagService implements TagService {
 	@Override
 	public TagDto getTag(Long tagId) {
 		return tagMapper.mapToDto(tagRepository.findByIdOrThrow(tagId));
+	}
+
+	@Override
+	public TagDto editTag(Long tagId, TagEditRequest request) {
+		Tag tag = tagRepository.findByIdOrThrow(tagId);
+		Optional.ofNullable(request.getCategory())//
+				.map(categoryRepository::findByIdOrThrow)//
+				.ifPresent(tag::setCategory);
+		Optional.ofNullable(request.getName())//
+				.ifPresent(tag::setName);
+		Optional.ofNullable(request.getDescription())//
+				.ifPresent(tag::setDescription);
+		Tag saved = tagRepository.save(tag);
+		log.info("Updated tag: {}", saved);
+		return tagMapper.mapToDto(saved);
 	}
 
 	@Override
