@@ -17,9 +17,7 @@ import jakarta.persistence.criteria.Subquery;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class PostSpecification implements Specification<Post> {
 
@@ -28,6 +26,11 @@ public class PostSpecification implements Specification<Post> {
 	private final Set<String> requiredTags;
 
 	private final Set<String> excludedTags;
+
+	public PostSpecification(Set<String> requiredTags, Set<String> excludedTags) {
+		this.requiredTags = Set.copyOf(requiredTags);
+		this.excludedTags = Set.copyOf(excludedTags);
+	}
 
 	public static PostSpecificationBuilder builder() {
 		return new PostSpecificationBuilder();
