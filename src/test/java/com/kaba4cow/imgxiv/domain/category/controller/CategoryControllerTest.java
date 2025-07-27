@@ -2,6 +2,7 @@ package com.kaba4cow.imgxiv.domain.category.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -77,10 +78,48 @@ public class CategoryControllerTest {
 	@Test
 	public void doesNotCreateCategoryWithTakenName() {
 		String name = "name";
-		saveTestCategory(name);
+		saveTestCategory(name, "description");
 		performCreateCategory(name, "")//
 				.andExpect(status().is4xxClientError())//
 				.andExpect(status().isConflict());
+	}
+
+	@SneakyThrows
+	private ResultActions performCreateCategory(String name, String description) {
+		return mockMvc.perform(post("/api/categories")//
+				.contentType(MediaType.APPLICATION_JSON)//
+				.content(objectMapper.writeValueAsString(Map.of(//
+						"name", name, //
+						"description", description//
+				))));
+	}
+
+	@SneakyThrows
+	@WithMockUser(authorities = UserAuthorities.MANAGE_CATEGORIES)
+	@Test
+	public void editsCategoryWithAuthority() {
+		String oldName = "name";
+		String oldDescription = "description";
+		Category category = saveTestCategory(oldName, oldDescription);
+
+		String newName = "name_new";
+		String newDescription = "description_new";
+
+		performEditCategory(category.getId(), newName, newDescription)//
+				.andExpect(status().isOk())//
+				.andExpect(jsonPath("$.id").value(category.getId()))//
+				.andExpect(jsonPath("$.name").value(newName))//
+				.andExpect(jsonPath("$.description").value(newDescription));
+	}
+
+	@SneakyThrows
+	private ResultActions performEditCategory(Long id, String name, String description) {
+		return mockMvc.perform(patch("/api/categories/{id}", id)//
+				.contentType(MediaType.APPLICATION_JSON)//
+				.content(objectMapper.writeValueAsString(Map.of(//
+						"name", name, //
+						"description", description//
+				))));
 	}
 
 	@SneakyThrows
@@ -88,7 +127,7 @@ public class CategoryControllerTest {
 	public void retrievesAllCategories() {
 		int numberOfCategories = 3;
 		for (int i = 0; i < numberOfCategories; i++)
-			saveTestCategory("name" + i);
+			saveTestCategory("name" + i, "description");
 
 		performGetAllCategories()//
 				.andExpect(status().isOk())//
@@ -106,24 +145,14 @@ public class CategoryControllerTest {
 	}
 
 	@SneakyThrows
-	private ResultActions performCreateCategory(String name, String description) {
-		return mockMvc.perform(post("/api/categories")//
-				.contentType(MediaType.APPLICATION_JSON)//
-				.content(objectMapper.writeValueAsString(Map.of(//
-						"name", name, //
-						"description", description//
-				))));
-	}
-
-	@SneakyThrows
 	private ResultActions performGetAllCategories() {
 		return mockMvc.perform(get("/api/categories/all"));
 	}
 
-	private Category saveTestCategory(String name) {
+	private Category saveTestCategory(String name, String description) {
 		Category category = new Category();
 		category.setName(name);
-		category.setDescription("description");
+		category.setDescription(description);
 		return categoryRepository.saveAndFlush(category);
 	}
 
