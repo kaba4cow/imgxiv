@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.post.query;
+package com.kaba4cow.imgxiv.domain.post.specification;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
 
-import com.kaba4cow.imgxiv.domain.post.specification.PostSpecification;
 import com.kaba4cow.imgxiv.domain.post.specification.PostSpecification.PostSpecificationBuilder;
 
 import lombok.RequiredArgsConstructor;
