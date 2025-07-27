@@ -5,6 +5,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.comment.Comment;
@@ -58,6 +61,9 @@ public class CommentControllerTest {
 
 	@Autowired
 	private CommentRepository commentRepository;
+
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@SneakyThrows
 	@Test
@@ -111,13 +117,7 @@ public class CommentControllerTest {
 	private ResultActions performEditComment(Long id, String text) {
 		return mockMvc.perform(patch("/api/comments/{id}", id)//
 				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"text": "%s"
-							}
-						""".formatted(//
-						text//
-				)));
+				.content(objectMapper.writeValueAsString(Map.of("text", text))));
 	}
 
 	@SneakyThrows

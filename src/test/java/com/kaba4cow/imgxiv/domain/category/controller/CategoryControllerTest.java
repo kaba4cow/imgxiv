@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
@@ -32,6 +35,9 @@ public class CategoryControllerTest {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@SneakyThrows
 	@WithMockUser(authorities = UserAuthorities.CREATE_CATEGORY)
@@ -103,15 +109,10 @@ public class CategoryControllerTest {
 	private ResultActions performCreateCategory(String name, String description) {
 		return mockMvc.perform(post("/api/categories")//
 				.contentType(MediaType.APPLICATION_JSON)//
-				.content("""
-							{
-								"name": "%s",
-								"description": "%s"
-							}
-						""".formatted(//
-						name, //
-						description//
-				)));
+				.content(objectMapper.writeValueAsString(Map.of(//
+						"name", name, //
+						"description", description//
+				))));
 	}
 
 	@SneakyThrows
