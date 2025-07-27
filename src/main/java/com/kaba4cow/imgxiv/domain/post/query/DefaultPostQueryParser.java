@@ -1,12 +1,13 @@
 package com.kaba4cow.imgxiv.domain.post.query;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
+
+import com.kaba4cow.imgxiv.domain.post.specification.PostSpecification;
+import com.kaba4cow.imgxiv.domain.post.specification.PostSpecification.PostSpecificationBuilder;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,8 +18,8 @@ public class DefaultPostQueryParser implements PostQueryParser {
 	private final Pattern pattern = Pattern.compile("^!*[a-zA-Z0-9_]+$");
 
 	@Override
-	public PostQuery parseQuery(String query) {
-		QueryBuilder builder = new QueryBuilder();
+	public PostSpecification parseQuery(String query) {
+		PostSpecificationBuilder builder = PostSpecification.builder();
 		List<String> tokens = splitQuery(query);
 		for (String token : tokens)
 			if (isTokenValid(token)) {
@@ -49,30 +50,6 @@ public class DefaultPostQueryParser implements PostQueryParser {
 				.toLowerCase()//
 				.split("\\s+")//
 		);
-	}
-
-	private static class QueryBuilder {
-
-		private final Set<String> requiredTags = new HashSet<>();
-
-		private final Set<String> excludedTags = new HashSet<>();
-
-		private void requireTag(String tag) {
-			if (excludedTags.contains(tag))
-				excludedTags.remove(tag);
-			requiredTags.add(tag);
-		}
-
-		private void excludeTag(String tag) {
-			if (requiredTags.contains(tag))
-				requiredTags.remove(tag);
-			excludedTags.add(tag);
-		}
-
-		private PostQuery build() {
-			return new PostQuery(requiredTags, excludedTags);
-		}
-
 	}
 
 }
