@@ -1,7 +1,6 @@
 package com.kaba4cow.imgxiv.domain.post.service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
@@ -14,7 +13,6 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostMapper;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.security.PostSecurity;
-import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.tag.service.TagService;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.image.ImageResource;
@@ -42,11 +40,11 @@ public class DefaultPostService implements PostService {
 
 	@Override
 	public PostDto createPost(PostCreateRequest request, User author) {
-		Set<Tag> tags = tagService.getOrCreateTagsByNames(request.getTags());
-		Post post = new Post();
-		tags.forEach(post::addTag);
-		post.setAuthor(author);
-		post.setPostImage(imageService.createImages(request.getImage()));
+		Post post = Post.builder()//
+				.author(author)//
+				.postImage(imageService.createImages(request.getImage()))//
+				.build();
+		tagService.getOrCreateTagsByNames(request.getTags()).forEach(post::addTag);
 		Post saved = postRepository.save(post);
 		log.info("Created new post: {}", saved);
 		return postMapper.mapToDto(saved);
