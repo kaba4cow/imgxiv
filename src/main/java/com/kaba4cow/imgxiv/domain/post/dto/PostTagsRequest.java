@@ -5,6 +5,7 @@ import java.util.List;
 import com.kaba4cow.imgxiv.common.validation.TagName;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +22,6 @@ public class PostTagsRequest {
 	@Schema(//
 			description = "List of tag names"//
 	)
-	private List<@TagName String> tags;
+	private List<@NotBlank(message = "Tag name is required") @TagName String> tags;
 
 }
