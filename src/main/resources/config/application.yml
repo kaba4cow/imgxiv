@@ -30,11 +30,6 @@ interceptors:
             - /api/docs/**
 
 feature:
-    posts:
-        query-caching:
-            enabled: true
-        specification-caching:
-            enabled: true
     images:
         thumbnail:
             image-width: 256
