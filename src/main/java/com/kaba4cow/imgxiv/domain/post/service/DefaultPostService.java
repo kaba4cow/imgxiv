@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class DefaultPostService implements PostService {
 
-	private final PostQueryExecutorService postQueryExecutorService;
+	private final PostSearchService postSearchService;
 
 	private final PostRepository postRepository;
 
@@ -86,7 +86,7 @@ public class DefaultPostService implements PostService {
 
 	@Override
 	public List<PostDto> findPostsByQuery(PostQueryRequest request, Pageable pageable) {
-		return postQueryExecutorService.executeQuery(request, pageable)//
+		return postSearchService.executeQuery(request, pageable)//
 				.map(postMapper::mapToDto)//
 				.collect(Collectors.toList());
 	}

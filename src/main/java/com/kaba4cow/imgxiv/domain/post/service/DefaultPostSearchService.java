@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class DefaultPostQueryExecutorService implements PostQueryExecutorService {
+public class DefaultPostSearchService implements PostSearchService {
 
 	private final PostRepository postRepository;
 
