@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 				Endpoints for managing comments.
 				"""//
 )
-@RequestMapping("/api/comments")
+@RequestMapping("/api/comments/{id}")
 public interface CommentControllerApiDoc {
 
 	@Operation(//
@@ -31,7 +31,7 @@ public interface CommentControllerApiDoc {
 					"""//
 	)
 	@IsAuthenticated
-	@PatchMapping("/{id}")
+	@PatchMapping
 	public ResponseEntity<CommentDto> editComment(//
 			@PathVariable Long id, //
 			@Valid @RequestBody CommentEditRequest request//
@@ -44,7 +44,7 @@ public interface CommentControllerApiDoc {
 					"""//
 	)
 	@IsAuthenticated
-	@DeleteMapping("/{id}")
+	@DeleteMapping
 	public ResponseEntity<Void> deleteComment(//
 			@PathVariable Long id//
 	);
