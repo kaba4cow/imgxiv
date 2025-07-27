@@ -28,9 +28,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @Setter
-@Entity
 @ToString
 @Builder
+@Entity
 @Table(name = "table_comment")
 public class Comment {
 
