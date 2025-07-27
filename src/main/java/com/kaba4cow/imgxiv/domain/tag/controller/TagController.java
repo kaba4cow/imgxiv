@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
+import com.kaba4cow.imgxiv.domain.tag.dto.TagEditRequest;
 import com.kaba4cow.imgxiv.domain.tag.service.TagService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,11 @@ public class TagController implements TagControllerApiDoc {
 	@Override
 	public ResponseEntity<TagDto> getTag(Long id) {
 		return ResponseEntity.ok(tagService.getTag(id));
+	}
+
+	@Override
+	public ResponseEntity<TagDto> editTag(Long id, TagEditRequest request) {
+		throw new UnsupportedOperationException();
 	}
 
 }
