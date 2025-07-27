@@ -10,13 +10,13 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class CompiledPostQuery {
+public class PostQuery {
 
 	private final Set<String> requiredTags;
 
 	private final Set<String> excludedTags;
 
-	public CompiledPostQuery(Collection<String> requiredTags, Collection<String> excludedTags) {
+	public PostQuery(Collection<String> requiredTags, Collection<String> excludedTags) {
 		this.requiredTags = Set.copyOf(requiredTags);
 		this.excludedTags = Set.copyOf(excludedTags);
 	}

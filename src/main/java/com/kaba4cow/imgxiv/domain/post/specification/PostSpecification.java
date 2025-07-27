@@ -4,7 +4,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.kaba4cow.imgxiv.domain.link.posttag.PostTag;
 import com.kaba4cow.imgxiv.domain.post.Post;
-import com.kaba4cow.imgxiv.domain.post.query.CompiledPostQuery;
+import com.kaba4cow.imgxiv.domain.post.query.PostQuery;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -21,7 +21,7 @@ public class PostSpecification implements Specification<Post> {
 
 	private static final long serialVersionUID = 1L;
 
-	private final CompiledPostQuery postQuery;
+	private final PostQuery postQuery;
 
 	@Override
 	public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

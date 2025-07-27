@@ -4,7 +4,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.config.CacheConfig;
-import com.kaba4cow.imgxiv.domain.post.query.CompiledPostQuery;
+import com.kaba4cow.imgxiv.domain.post.query.PostQuery;
 import com.kaba4cow.imgxiv.domain.post.query.PostQueryParser;
 
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class CachedPostQueryService implements PostQueryService {
 
 	@Cacheable(value = CacheConfig.POST_QUERY, key = "#normalizedQuery")
 	@Override
-	public CompiledPostQuery getCompiledQuery(String query) {
+	public PostQuery getCompiledQuery(String query) {
 		return postQueryParser.parse(query);
 	}
 

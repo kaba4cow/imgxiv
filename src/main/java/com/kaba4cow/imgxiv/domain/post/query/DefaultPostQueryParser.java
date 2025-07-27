@@ -17,7 +17,7 @@ public class DefaultPostQueryParser implements PostQueryParser {
 	private final Pattern pattern = Pattern.compile("^!*[a-zA-Z0-9_]+$");
 
 	@Override
-	public CompiledPostQuery parse(String query) {
+	public PostQuery parse(String query) {
 		QueryBuilder builder = new QueryBuilder();
 		List<String> tokens = splitQuery(query);
 		for (String token : tokens)
@@ -69,8 +69,8 @@ public class DefaultPostQueryParser implements PostQueryParser {
 			excludedTags.add(tag);
 		}
 
-		private CompiledPostQuery build() {
-			return new CompiledPostQuery(requiredTags, excludedTags);
+		private PostQuery build() {
+			return new PostQuery(requiredTags, excludedTags);
 		}
 
 	}

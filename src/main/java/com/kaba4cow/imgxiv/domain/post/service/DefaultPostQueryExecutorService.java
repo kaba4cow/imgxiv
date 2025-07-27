@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
-import com.kaba4cow.imgxiv.domain.post.query.CompiledPostQuery;
+import com.kaba4cow.imgxiv.domain.post.query.PostQuery;
 import com.kaba4cow.imgxiv.domain.post.service.query.PostQueryService;
 import com.kaba4cow.imgxiv.domain.post.service.specification.PostSpecificationService;
 import com.kaba4cow.imgxiv.domain.post.specification.PostSpecification;
@@ -27,7 +27,7 @@ public class DefaultPostQueryExecutorService implements PostQueryExecutorService
 
 	@Override
 	public Stream<Post> executeQuery(PostQueryRequest request, Pageable pageable) {
-		CompiledPostQuery postQuery = postQueryService.getCompiledQuery(request.getQuery());
+		PostQuery postQuery = postQueryService.getCompiledQuery(request.getQuery());
 		PostSpecification postSpecification = postSpecificationService.getPostSpecification(postQuery);
 		return postRepository.findAll(postSpecification, pageable).stream();
 	}
