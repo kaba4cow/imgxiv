@@ -21,6 +21,7 @@ public enum UserRole {
 			UserAuthorities.DELETE_COMMENT_NA, //
 
 			UserAuthorities.MANAGE_TAGS, //
+			UserAuthorities.MANAGE_CATEGORIES, //
 
 			UserAuthorities.VIEW_MODERATORS//
 	)), //

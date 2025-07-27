@@ -18,6 +18,8 @@ public class UserAuthorities {
 
 	public static final String MANAGE_TAGS = "manage-tags";
 
+	public static final String MANAGE_CATEGORIES = "manage-categories";
+
 	public static final String VIEW_MODERATORS = "view-moderators";
 
 	public static final String MANAGE_MODERATORS = "manage-moderators";
