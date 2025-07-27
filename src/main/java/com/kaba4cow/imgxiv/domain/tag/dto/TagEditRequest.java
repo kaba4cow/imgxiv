@@ -1,9 +1,9 @@
 package com.kaba4cow.imgxiv.domain.tag.dto;
 
+import com.kaba4cow.imgxiv.domain.tag.validation.ValidTagDescription;
 import com.kaba4cow.imgxiv.domain.tag.validation.ValidTagName;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +23,7 @@ public class TagEditRequest {
 	)
 	private String name;
 
-	@Size(max = 1024, message = "Description is too long (max 1024 characters)")
+	@ValidTagDescription
 	@Schema(//
 			description = "New description", //
 			example = "Description"//
