@@ -3,8 +3,7 @@ package com.kaba4cow.imgxiv.domain.post.service.query;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.domain.post.query.CompiledPostQuery;
-import com.kaba4cow.imgxiv.domain.post.query.NormalizedPostQuery;
-import com.kaba4cow.imgxiv.domain.post.query.PostQueryCompiler;
+import com.kaba4cow.imgxiv.domain.post.query.PostQueryParser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -12,11 +11,11 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class DefaultPostQueryService implements PostQueryService {
 
-	private final PostQueryCompiler postQueryCompiler;
+	private final PostQueryParser postQueryParser;
 
 	@Override
-	public CompiledPostQuery getCompiledQuery(NormalizedPostQuery normalizedQuery) {
-		return postQueryCompiler.compileQuery(normalizedQuery);
+	public CompiledPostQuery getCompiledQuery(String query) {
+		return postQueryParser.parse(query);
 	}
 
 }
