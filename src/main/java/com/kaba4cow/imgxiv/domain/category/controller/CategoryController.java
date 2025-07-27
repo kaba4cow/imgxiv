@@ -19,7 +19,7 @@ public class CategoryController implements CategoryControllerApiDoc {
 
 	@Override
 	public ResponseEntity<CategoryDto> createCategory(CategoryCreateRequest request) {
-		return ResponseEntity.ok(categoryService.create(request));
+		return ResponseEntity.ok(categoryService.createCategory(request));
 	}
 
 	@Override

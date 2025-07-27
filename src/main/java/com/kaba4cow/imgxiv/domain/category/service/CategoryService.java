@@ -8,7 +8,7 @@ import com.kaba4cow.imgxiv.domain.category.dto.CategoryDto;
 
 public interface CategoryService {
 
-	CategoryDto create(CategoryCreateRequest request);
+	CategoryDto createCategory(CategoryCreateRequest request);
 
 	List<CategoryDto> findAll();
 

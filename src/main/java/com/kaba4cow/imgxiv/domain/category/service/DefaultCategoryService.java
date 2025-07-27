@@ -27,7 +27,7 @@ public class DefaultCategoryService implements CategoryService {
 	private final CategoryMapper categoryMapper;
 
 	@Override
-	public CategoryDto create(CategoryCreateRequest request) {
+	public CategoryDto createCategory(CategoryCreateRequest request) {
 		if (categoryRepository.existsByName(request.getName()))
 			throw new NameConflictException("Category with this name already exists");
 		Category category = new Category();
