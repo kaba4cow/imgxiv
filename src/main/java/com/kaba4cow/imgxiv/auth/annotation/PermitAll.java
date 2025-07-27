@@ -14,6 +14,4 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
 @PreAuthorize("permitAll()")
-public @interface PermitAll {
-
-}
+public @interface PermitAll {}
