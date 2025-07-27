@@ -1,9 +1,9 @@
 package com.kaba4cow.imgxiv.auth.dto;
 
+import com.kaba4cow.imgxiv.domain.user.validation.ValidEmail;
 import com.kaba4cow.imgxiv.domain.user.validation.ValidUsername;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -27,8 +27,7 @@ public class RegisterRequest {
 	private String username;
 
 	@NotBlank(message = "Email is required")
-	@Size(max = 64, message = "Email is too long (max 64 characters)")
-	@Email(message = "Email must be valid")
+	@ValidEmail
 	@Schema(//
 			description = "User email", //
 			example = "john@example.com"//
