@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,7 +48,7 @@ public interface CategoryControllerApiDoc {
 					"""//
 	)
 	@CanCreateCategory
-	@PostMapping("/{id}")
+	@PatchMapping("/{id}")
 	ResponseEntity<CategoryDto> editCategory(//
 			@PathVariable Long id, //
 			@Valid @RequestBody CategoryEditRequest request//
