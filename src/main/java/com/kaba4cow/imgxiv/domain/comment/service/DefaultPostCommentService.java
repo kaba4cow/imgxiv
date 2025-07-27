@@ -29,11 +29,11 @@ public class DefaultPostCommentService implements PostCommentService {
 
 	@Override
 	public CommentDto createComment(Long postId, CommentCreateRequest request, User author) {
-		Comment comment = new Comment();
-		comment.setPost(postRepository.findByIdOrThrow(postId));
-		comment.setAuthor(author);
-		comment.setText(request.getText());
-		Comment saved = commentRepository.save(comment);
+		Comment saved = commentRepository.save(Comment.builder()//
+				.post(postRepository.findByIdOrThrow(postId))//
+				.author(author)//
+				.text(request.getText())//
+				.build());
 		log.info("Created new comment: {}", saved);
 		return commentMapper.mapToDto(saved);
 	}

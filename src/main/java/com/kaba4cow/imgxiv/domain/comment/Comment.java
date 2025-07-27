@@ -18,6 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +30,7 @@ import lombok.ToString;
 @Setter
 @Entity
 @ToString
+@Builder
 @Table(name = "table_comment")
 public class Comment {
 
@@ -50,9 +52,11 @@ public class Comment {
 	@Column(name = "column_text", length = 1024)
 	private String text;
 
+	@Builder.Default
 	@Embedded
 	private CreatedAt createdAt = new CreatedAt();
 
+	@Builder.Default
 	@Embedded
 	private UpdatedAt updatedAt = new UpdatedAt();
 
