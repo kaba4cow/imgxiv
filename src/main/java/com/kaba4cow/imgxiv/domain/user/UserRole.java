@@ -20,6 +20,8 @@ public enum UserRole {
 
 			UserAuthorities.DELETE_COMMENT_NA, //
 
+			UserAuthorities.MANAGE_TAGS, //
+
 			UserAuthorities.VIEW_MODERATORS//
 	)), //
 	ADMIN(UserRoles.ADMIN, Set.of(//
