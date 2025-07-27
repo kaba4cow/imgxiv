@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
 import com.kaba4cow.imgxiv.auth.annotation.policy.CanCreateCategory;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryCreateRequest;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryDto;
+import com.kaba4cow.imgxiv.domain.category.dto.CategoryEditRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,6 +38,19 @@ public interface CategoryControllerApiDoc {
 	@PostMapping
 	ResponseEntity<CategoryDto> createCategory(//
 			@Valid @RequestBody CategoryCreateRequest request//
+	);
+
+	@Operation(//
+			summary = "Edits an existing category", //
+			description = """
+					Edits the category and returns its details.
+					"""//
+	)
+	@CanCreateCategory
+	@PostMapping("/{id}")
+	ResponseEntity<CategoryDto> editCategory(//
+			@PathVariable Long id, //
+			@Valid @RequestBody CategoryEditRequest request//
 	);
 
 	@Operation(//
