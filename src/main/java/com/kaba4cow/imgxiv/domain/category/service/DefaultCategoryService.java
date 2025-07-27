@@ -1,6 +1,7 @@
 package com.kaba4cow.imgxiv.domain.category.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,8 @@ public class DefaultCategoryService implements CategoryService {
 	@Override
 	public CategoryDto editCategory(Long id, CategoryEditRequest request) {
 		Category category = categoryRepository.findByIdOrThrow(id);
+		if (!Objects.equals(category.getName(), request.getName()) && categoryRepository.existsByName(request.getName()))
+			throw new NameConflictException("Category with this name already exists");
 		Optional.ofNullable(request.getName())//
 				.ifPresent(category::setName);
 		Optional.ofNullable(request.getDescription())//
