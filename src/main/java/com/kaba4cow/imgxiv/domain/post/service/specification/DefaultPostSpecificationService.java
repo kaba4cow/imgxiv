@@ -2,7 +2,7 @@ package com.kaba4cow.imgxiv.domain.post.service.specification;
 
 import org.springframework.stereotype.Service;
 
-import com.kaba4cow.imgxiv.domain.post.query.PostQueryParser;
+import com.kaba4cow.imgxiv.domain.post.query.PostSpecificationParser;
 import com.kaba4cow.imgxiv.domain.post.specification.PostSpecification;
 
 import lombok.RequiredArgsConstructor;
@@ -11,11 +11,11 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class DefaultPostSpecificationService implements PostSpecificationService {
 
-	private final PostQueryParser postSpecificationParser;
+	private final PostSpecificationParser postSpecificationParser;
 
 	@Override
 	public PostSpecification getPostSpecification(String query) {
-		return postSpecificationParser.parseQuery(query);
+		return postSpecificationParser.parsePostSpecification(query);
 	}
 
 }

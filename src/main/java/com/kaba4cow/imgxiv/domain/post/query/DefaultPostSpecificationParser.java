@@ -13,12 +13,12 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
-public class DefaultPostQueryParser implements PostQueryParser {
+public class DefaultPostSpecificationParser implements PostSpecificationParser {
 
 	private final Pattern pattern = Pattern.compile("^!*[a-zA-Z0-9_]+$");
 
 	@Override
-	public PostSpecification parseQuery(String query) {
+	public PostSpecification parsePostSpecification(String query) {
 		PostSpecificationBuilder builder = PostSpecification.builder();
 		List<String> tokens = splitQuery(query);
 		for (String token : tokens)
