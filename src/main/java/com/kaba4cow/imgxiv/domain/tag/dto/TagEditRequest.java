@@ -1,6 +1,6 @@
 package com.kaba4cow.imgxiv.domain.tag.dto;
 
-import com.kaba4cow.imgxiv.domain.tag.validation.TagName;
+import com.kaba4cow.imgxiv.domain.tag.validation.ValidTagName;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
@@ -16,7 +16,7 @@ import lombok.Setter;
 @Schema(description = "Request for editing a tag")
 public class TagEditRequest {
 
-	@TagName
+	@ValidTagName
 	@Schema(//
 			description = "New tag name", //
 			example = "tag_name"//

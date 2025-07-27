@@ -21,7 +21,7 @@ import jakarta.validation.constraints.Size;
 @Size(min = 2, message = "Tag name is too short (min 2 characters)")
 @Size(max = 32, message = "Tag name is too long (max 32 characters)")
 @Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Tag name must contain only letters, digits and underscores")
-public @interface TagName {
+public @interface ValidTagName {
 
 	String message() default "Invalid tag name";
 
