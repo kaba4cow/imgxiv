@@ -1,6 +1,6 @@
 package com.kaba4cow.imgxiv.domain.category.dto;
 
-import com.kaba4cow.imgxiv.domain.category.validation.CategoryName;
+import com.kaba4cow.imgxiv.domain.category.validation.ValidCategoryName;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
@@ -16,7 +16,7 @@ import lombok.Setter;
 @Schema(description = "Request for editing a category")
 public class CategoryEditRequest {
 
-	@CategoryName
+	@ValidCategoryName
 	@Schema(//
 			description = "New category name", //
 			example = "category_name"//

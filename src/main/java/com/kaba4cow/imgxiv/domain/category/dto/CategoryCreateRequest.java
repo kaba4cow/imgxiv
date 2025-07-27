@@ -1,6 +1,6 @@
 package com.kaba4cow.imgxiv.domain.category.dto;
 
-import com.kaba4cow.imgxiv.domain.category.validation.CategoryName;
+import com.kaba4cow.imgxiv.domain.category.validation.ValidCategoryName;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -18,7 +18,7 @@ import lombok.Setter;
 public class CategoryCreateRequest {
 
 	@NotBlank(message = "Category name is required")
-	@CategoryName
+	@ValidCategoryName
 	@Schema(//
 			description = "Unique name", //
 			example = "category_name"//

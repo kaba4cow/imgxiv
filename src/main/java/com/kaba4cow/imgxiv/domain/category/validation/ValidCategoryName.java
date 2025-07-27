@@ -21,7 +21,7 @@ import jakarta.validation.constraints.Size;
 @Size(min = 2, message = "Category name is too short (min 2 characters)")
 @Size(max = 32, message = "Category name is too long (max 32 characters)")
 @Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Category name must contain only letters, digits and underscores")
-public @interface CategoryName {
+public @interface ValidCategoryName {
 
 	String message() default "Invalid category name";
 
