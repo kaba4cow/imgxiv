@@ -15,8 +15,8 @@ public class DefaultPostSpecificationService implements PostSpecificationService
 	private final PostSpecificationFactory postSpecificationFactory;
 
 	@Override
-	public PostSpecification getPostSpecification(CompiledPostQuery compiledQuery) {
-		return postSpecificationFactory.createPostSpecification(compiledQuery);
+	public PostSpecification getPostSpecification(CompiledPostQuery query) {
+		return postSpecificationFactory.createPostSpecification(query);
 	}
 
 }
