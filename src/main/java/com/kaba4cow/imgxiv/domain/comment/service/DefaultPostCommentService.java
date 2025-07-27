@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.domain.comment.Comment;
 import com.kaba4cow.imgxiv.domain.comment.CommentRepository;
-import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
+import com.kaba4cow.imgxiv.domain.comment.dto.CommentTextRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentMapper;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
@@ -28,7 +28,7 @@ public class DefaultPostCommentService implements PostCommentService {
 	private final CommentMapper commentMapper;
 
 	@Override
-	public CommentDto createComment(Long postId, CommentCreateRequest request, User author) {
+	public CommentDto createComment(Long postId, CommentTextRequest request, User author) {
 		Comment saved = commentRepository.save(Comment.builder()//
 				.post(postRepository.findByIdOrThrow(postId))//
 				.author(author)//

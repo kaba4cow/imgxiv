@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import com.kaba4cow.imgxiv.domain.comment.Comment;
 import com.kaba4cow.imgxiv.domain.comment.CommentRepository;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
-import com.kaba4cow.imgxiv.domain.comment.dto.CommentEditRequest;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentMapper;
+import com.kaba4cow.imgxiv.domain.comment.dto.CommentTextRequest;
 import com.kaba4cow.imgxiv.domain.comment.security.CommentSecurity;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class DefaultCommentService implements CommentService {
 	private final CommentMapper commentMapper;
 
 	@Override
-	public CommentDto editComment(Long id, CommentEditRequest request) {
+	public CommentDto editComment(Long id, CommentTextRequest request) {
 		Comment comment = commentSecurity.getCommentToEdit(id);
 		comment.setText(request.getText());
 		Comment saved = commentRepository.save(comment);

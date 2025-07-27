@@ -12,8 +12,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Schema(description = "Request for creating a new comment")
-public class CommentCreateRequest {
+@Schema(description = "Request for creating or editing a comment")
+public class CommentTextRequest {
 
 	@NotBlank(message = "Comment text is required")
 	@Size(max = 1024, message = "Text is too long (max 1024 characters)")
