@@ -9,6 +9,6 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 
 public interface PostSearchService {
 
-	Stream<Post> executeQuery(PostQueryRequest request, Pageable pageable);
+	Stream<Post> searchPosts(PostQueryRequest request, Pageable pageable);
 
 }

@@ -86,7 +86,7 @@ public class DefaultPostService implements PostService {
 
 	@Override
 	public List<PostDto> findPostsByQuery(PostQueryRequest request, Pageable pageable) {
-		return postSearchService.executeQuery(request, pageable)//
+		return postSearchService.searchPosts(request, pageable)//
 				.map(postMapper::mapToDto)//
 				.collect(Collectors.toList());
 	}

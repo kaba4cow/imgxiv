@@ -26,7 +26,7 @@ public class DefaultPostSearchService implements PostSearchService {
 	private final PostSpecificationService postSpecificationService;
 
 	@Override
-	public Stream<Post> executeQuery(PostQueryRequest request, Pageable pageable) {
+	public Stream<Post> searchPosts(PostQueryRequest request, Pageable pageable) {
 		PostQuery postQuery = postQueryService.getCompiledQuery(request.getQuery());
 		PostSpecification postSpecification = postSpecificationService.getPostSpecification(postQuery);
 		return postRepository.findAll(postSpecification, pageable).stream();
