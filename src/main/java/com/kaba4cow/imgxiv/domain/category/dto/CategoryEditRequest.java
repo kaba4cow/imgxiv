@@ -1,9 +1,9 @@
 package com.kaba4cow.imgxiv.domain.category.dto;
 
+import com.kaba4cow.imgxiv.domain.category.validation.ValidCategoryDescription;
 import com.kaba4cow.imgxiv.domain.category.validation.ValidCategoryName;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +23,7 @@ public class CategoryEditRequest {
 	)
 	private String name;
 
-	@Size(max = 1024, message = "Description is too long (max 1024 characters)")
+	@ValidCategoryDescription
 	@Schema(//
 			description = "New description", //
 			example = "Category description"//
