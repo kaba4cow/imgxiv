@@ -1,6 +1,7 @@
 package com.kaba4cow.imgxiv.domain.category.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -41,7 +42,14 @@ public class DefaultCategoryService implements CategoryService {
 
 	@Override
 	public CategoryDto editCategory(Long id, CategoryEditRequest request) {
-		throw new UnsupportedOperationException();
+		Category category = categoryRepository.findByIdOrThrow(id);
+		Optional.ofNullable(request.getName())//
+				.ifPresent(category::setName);
+		Optional.ofNullable(request.getDescription())//
+				.ifPresent(category::setDescription);
+		Category saved = categoryRepository.save(category);
+		log.info("Updated category: {}", saved);
+		return categoryMapper.mapToDto(saved);
 	}
 
 	@Override
