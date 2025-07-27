@@ -6,10 +6,13 @@ import java.util.Set;
 
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
+import com.kaba4cow.imgxiv.domain.tag.dto.TagEditRequest;
 
 public interface TagService {
 
 	TagDto getTag(Long tagId);
+
+	TagDto editTag(Long tagId, TagEditRequest request);
 
 	List<TagDto> getTagsByCategory(Long categoryId);
 

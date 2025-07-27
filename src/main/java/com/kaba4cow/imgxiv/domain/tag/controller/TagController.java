@@ -22,7 +22,7 @@ public class TagController implements TagControllerApiDoc {
 
 	@Override
 	public ResponseEntity<TagDto> editTag(Long id, TagEditRequest request) {
-		throw new UnsupportedOperationException();
+		return ResponseEntity.ok(tagService.editTag(id, request));
 	}
 
 }
