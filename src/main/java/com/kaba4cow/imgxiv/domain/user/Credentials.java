@@ -3,16 +3,18 @@ package com.kaba4cow.imgxiv.domain.user;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @NoArgsConstructor
-@AllArgsConstructor(staticName = "of")
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
+@Builder
 @Embeddable
 public class Credentials {
 
