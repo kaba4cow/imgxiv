@@ -26,7 +26,7 @@ import jakarta.transaction.Transactional;
 
 @DataJpaTest
 @Transactional
-public class DefaultPostSpecificationTest {
+public class PostSpecificationTest {
 
 	@Autowired
 	private TagRepository tagRepository;

@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.comment;
+package com.kaba4cow.imgxiv.domain.comment.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.comment.Comment;
+import com.kaba4cow.imgxiv.domain.comment.CommentRepository;
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostImage;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
