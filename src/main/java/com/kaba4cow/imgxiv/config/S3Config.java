@@ -13,13 +13,13 @@ import software.amazon.awssdk.services.s3.S3Client;
 
 @RequiredArgsConstructor
 @Configuration
-public class AwsConfig {
+public class S3Config {
 
 	@Bean
 	public S3Client s3Client(//
-			@Value("${aws.region}") String region, //
-			@Value("${aws.access-key}") String accessKey, //
-			@Value("${aws.secret-key}") String secretKey) {
+			@Value("${aws.s3.region}") String region, //
+			@Value("${aws.s3.access-key}") String accessKey, //
+			@Value("${aws.s3.secret-key}") String secretKey) {
 		AwsCredentials credentials = AwsBasicCredentials.builder()//
 				.accessKeyId(accessKey)//
 				.secretAccessKey(secretKey)//
