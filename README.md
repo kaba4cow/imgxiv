@@ -7,16 +7,6 @@
 
 **imgxiv** is a RESTful image archive focused on tag-based content discovery.
 
-## Features
-
-- JWT-based authentication
-- Tag-based post querying
-- Commenting and voting on posts
-- Image upload
-- In-memory caching
-- Swagger UI for testing the API
-- Role-based access control
-
 ## Getting Started
 
 ### Requirements
