@@ -1,28 +1,47 @@
 package com.kaba4cow.imgxiv.domain.tag.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
+import com.kaba4cow.imgxiv.auth.annotation.authority.CanManageTags;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagEditRequest;
-import com.kaba4cow.imgxiv.domain.tag.service.TagService;
 
-import lombok.RequiredArgsConstructor;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
-@RequiredArgsConstructor
-@RestController
-public class TagController implements TagControllerApiDoc {
+@Tag(//
+		name = "Tags", //
+		description = """
+				Endpoints for managing tags.
+				"""//
+)
+@RequestMapping("/api/tags/{id}")
+public interface TagController {
 
-	private final TagService tagService;
+	@Operation(//
+			summary = "Get tags by ID", //
+			description = """
+					Returns tag by its ID.
+					"""//
+	)
+	@PermitAll
+	@GetMapping
+	ResponseEntity<TagDto> getTag(//
+			@PathVariable Long id//
+	);
 
-	@Override
-	public ResponseEntity<TagDto> getTag(Long id) {
-		return ResponseEntity.ok(tagService.getTag(id));
-	}
-
-	@Override
-	public ResponseEntity<TagDto> editTag(Long id, TagEditRequest request) {
-		return ResponseEntity.ok(tagService.editTag(id, request));
-	}
+	@CanManageTags
+	@PatchMapping
+	ResponseEntity<TagDto> editTag(//
+			@PathVariable Long id, //
+			@Valid @RequestBody TagEditRequest request//
+	);
 
 }
