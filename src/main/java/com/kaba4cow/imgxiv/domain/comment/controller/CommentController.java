@@ -1,45 +1,52 @@
 package com.kaba4cow.imgxiv.domain.comment.controller;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.kaba4cow.imgxiv.common.dto.CommentIdRequest;
-import com.kaba4cow.imgxiv.common.dto.PostIdRequest;
-import com.kaba4cow.imgxiv.domain.comment.dto.CommentCreateRequest;
+import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
-import com.kaba4cow.imgxiv.domain.comment.dto.CommentEditRequest;
-import com.kaba4cow.imgxiv.domain.comment.service.CommentService;
-import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.comment.dto.CommentTextRequest;
 
-import lombok.RequiredArgsConstructor;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
-@RequiredArgsConstructor
-@RestController
-public class CommentController implements CommentControllerApiDoc {
+@Tag(//
+		name = "Comments", //
+		description = """
+				Endpoints for managing comments.
+				"""//
+)
+@RequestMapping("/api/comments/{id}")
+public interface CommentController {
 
-	private final CommentService commentService;
+	@Operation(//
+			summary = "Edit comment", //
+			description = """
+					Edits specified comment.
+					"""//
+	)
+	@IsAuthenticated
+	@PatchMapping
+	public ResponseEntity<CommentDto> editComment(//
+			@PathVariable Long id, //
+			@Valid @RequestBody CommentTextRequest request//
+	);
 
-	@Override
-	public ResponseEntity<CommentDto> createComment(CommentCreateRequest request, User user) {
-		return ResponseEntity.ok(commentService.createComment(request, user));
-	}
-
-	@Override
-	public ResponseEntity<CommentDto> editComment(CommentEditRequest request) {
-		return ResponseEntity.ok(commentService.editComment(request));
-	}
-
-	@Override
-	public ResponseEntity<Void> deleteComment(CommentIdRequest request) {
-		commentService.deleteComment(request.getCommentId());
-		return ResponseEntity.noContent().build();
-	}
-
-	@Override
-	public ResponseEntity<List<CommentDto>> getCommentsByPost(PostIdRequest request) {
-		return ResponseEntity.ok(commentService.getCommentsByPost(request.getPostId()));
-	}
+	@Operation(//
+			summary = "Delete comment", //
+			description = """
+					Deletes specified comment.
+					"""//
+	)
+	@IsAuthenticated
+	@DeleteMapping
+	public ResponseEntity<Void> deleteComment(//
+			@PathVariable Long id//
+	);
 
 }

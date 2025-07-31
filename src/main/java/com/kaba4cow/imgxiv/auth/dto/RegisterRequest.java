@@ -1,10 +1,11 @@
 package com.kaba4cow.imgxiv.auth.dto;
 
+import com.kaba4cow.imgxiv.domain.user.validation.ValidEmail;
+import com.kaba4cow.imgxiv.domain.user.validation.ValidPassword;
+import com.kaba4cow.imgxiv.domain.user.validation.ValidUsername;
+
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,9 +19,7 @@ import lombok.Setter;
 public class RegisterRequest {
 
 	@NotBlank(message = "Username is required")
-	@Size(min = 4, message = "Username is too short (min 4 characters)")
-	@Size(max = 32, message = "Username is too long (max 32 characters)")
-	@Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Username must contain only letters, digits and underscores")
+	@ValidUsername
 	@Schema(//
 			description = "Unique username", //
 			example = "john_doe"//
@@ -28,8 +27,7 @@ public class RegisterRequest {
 	private String username;
 
 	@NotBlank(message = "Email is required")
-	@Size(max = 64, message = "Email is too long (max 64 characters)")
-	@Email(message = "Email must be valid")
+	@ValidEmail
 	@Schema(//
 			description = "User email", //
 			example = "john@example.com"//
@@ -37,8 +35,7 @@ public class RegisterRequest {
 	private String email;
 
 	@NotBlank(message = "Password is required")
-	@Size(min = 8, message = "Password is too short (min 8 characters)")
-	@Size(max = 64, message = "Password is too long (max 64 characters)")
+	@ValidPassword
 	@Schema(//
 			description = "Password", //
 			example = "password1234"//

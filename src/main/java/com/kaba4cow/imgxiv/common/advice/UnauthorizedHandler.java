@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.kaba4cow.imgxiv.common.advice.handler.ExceptionHandlerResponseEntity;
+import com.kaba4cow.imgxiv.common.advice.response.ExceptionHandlerResponseEntity;
 
 @ControllerAdvice
 public class UnauthorizedHandler extends AbstractExceptionHandler {

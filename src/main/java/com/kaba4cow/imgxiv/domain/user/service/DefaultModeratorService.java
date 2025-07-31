@@ -2,11 +2,9 @@ package com.kaba4cow.imgxiv.domain.user.service;
 
 import java.util.List;
 
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.kaba4cow.imgxiv.common.dto.PageRequestExtractor;
-import com.kaba4cow.imgxiv.common.dto.PageableRequest;
 import com.kaba4cow.imgxiv.common.exception.RoleAssignException;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
@@ -24,14 +22,11 @@ public class DefaultModeratorService implements ModeratorService {
 
 	private final UserRepository userRepository;
 
-	private final PageRequestExtractor pageRequestExtractor;
-
 	private final UserMapper userMapper;
 
 	@Override
-	public List<UserDto> getModerators(PageableRequest request) {
-		PageRequest pageRequest = pageRequestExtractor.getPageRequest(request, "createdAt.timestamp");
-		return userRepository.findAllByRole(UserRole.MODERATOR, pageRequest).stream()//
+	public List<UserDto> getModerators(Pageable pageable) {
+		return userRepository.findAllByRole(UserRole.MODERATOR, pageable).stream()//
 				.map(userMapper::mapToDto)//
 				.toList();
 	}

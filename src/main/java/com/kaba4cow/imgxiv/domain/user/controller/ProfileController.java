@@ -1,44 +1,76 @@
 package com.kaba4cow.imgxiv.domain.user.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
+import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeEmailRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangePasswordRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeUsernameRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ProfileDto;
-import com.kaba4cow.imgxiv.domain.user.service.ProfileService;
 
-import lombok.RequiredArgsConstructor;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
-@RequiredArgsConstructor
-@RestController
-public class ProfileController implements ProfileControllerApiDoc {
+@Tag(//
+		name = "User Profile", //
+		description = """
+				Endpoints for managing the authenticated user's profile.
+				""")
+@RequestMapping("/api/profile")
+public interface ProfileController {
 
-	private final ProfileService profileService;
+	@Operation(//
+			summary = "Get current authenticated user", //
+			description = """
+					Returns information about the currently authenticated user.
+					""")
+	@IsAuthenticated
+	@GetMapping("/me")
+	ResponseEntity<ProfileDto> getUserInfo(//
+			@CurrentUser User user//
+	);
 
-	@Override
-	public ResponseEntity<ProfileDto> getUserInfo(User user) {
-		return ResponseEntity.ok(profileService.getProfile(user));
-	}
+	@Operation(//
+			summary = "Change username", //
+			description = """
+					Allows an authenticated user to change their username. Returns the updated user info.
+					""")
+	@IsAuthenticated
+	@PatchMapping("/username")
+	ResponseEntity<ProfileDto> changeUsername(//
+			@Valid @RequestBody ChangeUsernameRequest request, //
+			@CurrentUser User user//
+	);
 
-	@Override
-	public ResponseEntity<ProfileDto> changeUsername(ChangeUsernameRequest request, User user) {
-		ProfileDto result = profileService.changeUsername(request, user);
-		return ResponseEntity.ok(result);
-	}
+	@Operation(//
+			summary = "Change email", //
+			description = """
+					Allows an authenticated user to change their email address. Returns the updated user info.
+					""")
+	@IsAuthenticated
+	@PatchMapping("/email")
+	ResponseEntity<ProfileDto> changeEmail(//
+			@Valid @RequestBody ChangeEmailRequest request, //
+			@CurrentUser User user//
+	);
 
-	@Override
-	public ResponseEntity<ProfileDto> changeEmail(ChangeEmailRequest request, User user) {
-		ProfileDto result = profileService.changeEmail(request, user);
-		return ResponseEntity.ok(result);
-	}
-
-	@Override
-	public ResponseEntity<Void> changePassword(ChangePasswordRequest request, User user) {
-		profileService.changePassword(request, user);
-		return ResponseEntity.noContent().build();
-	}
+	@Operation(//
+			summary = "Change password", //
+			description = """
+					Allows an authenticated user to change their password. No content is returned on success.
+					""")
+	@IsAuthenticated
+	@PatchMapping("/password")
+	ResponseEntity<Void> changePassword(//
+			@Valid @RequestBody ChangePasswordRequest request, //
+			@CurrentUser User user//
+	);
 
 }

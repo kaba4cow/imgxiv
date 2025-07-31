@@ -2,70 +2,126 @@ package com.kaba4cow.imgxiv.domain.post.controller;
 
 import java.util.List;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.core.io.Resource;
-import org.springframework.http.CacheControl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.kaba4cow.imgxiv.common.dto.PostIdRequest;
+import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
+import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
+import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
-import com.kaba4cow.imgxiv.domain.post.dto.PostEditRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
-import com.kaba4cow.imgxiv.domain.post.service.PostService;
+import com.kaba4cow.imgxiv.domain.post.dto.PostTagsRequest;
 import com.kaba4cow.imgxiv.domain.user.User;
-import com.kaba4cow.imgxiv.image.ImageResource;
 
-import lombok.RequiredArgsConstructor;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
-@RequiredArgsConstructor
-@RestController
-public class PostController implements PostControllerApiDoc {
+@Tag(//
+		name = "Posts", //
+		description = """
+				Endpoints for post creation and retrieval.
+				"""//
+)
+@RequestMapping("/api/posts")
+public interface PostController {
 
-	private final PostService postService;
+	@Operation(//
+			summary = "Create a new post", //
+			description = """
+					Creates a new post with the provided tags and returns the post data.
+					"""//
+	)
+	@IsAuthenticated
+	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	ResponseEntity<PostDto> createPost(//
+			@Valid @ModelAttribute PostCreateRequest request, //
+			@CurrentUser User user//
+	);
 
-	@Override
-	public ResponseEntity<PostDto> createPost(PostCreateRequest request, User user) {
-		return ResponseEntity.ok(postService.createPost(request, user));
-	}
+	@Operation(//
+			summary = "Get post by ID", //
+			description = """
+					Returns post by ID.
+					"""//
+	)
+	@GetMapping("/{id}")
+	ResponseEntity<PostDto> getPost(//
+			@PathVariable Long id//
+	);
 
-	@Override
-	public ResponseEntity<PostDto> getPost(PostIdRequest request) {
-		return ResponseEntity.ok(postService.getPost(request.getPostId()));
-	}
+	@Operation(//
+			summary = "Load post image", //
+			description = """
+					Loads image of the specified post.
+					"""//
+	)
+	@GetMapping("/{id}/image")
+	ResponseEntity<Resource> getPostImage(//
+			@PathVariable Long id//
+	);
 
-	@Override
-	public ResponseEntity<Resource> getPostImage(PostIdRequest request) {
-		return createImageResponse(postService.getPostImage(request.getPostId()));
-	}
+	@Operation(//
+			summary = "Load post thumbnail", //
+			description = """
+					Loads thumbnail of the specified post.
+					"""//
+	)
+	@GetMapping("/{id}/thumb")
+	ResponseEntity<Resource> getPostThumbnail(//
+			@PathVariable Long id//
+	);
 
-	@Override
-	public ResponseEntity<Resource> getPostThumbnail(PostIdRequest request) {
-		return createImageResponse(postService.getPostThumbnail(request.getPostId()));
-	}
+	@Operation(//
+			summary = "Edit post", //
+			description = """
+					Edits specified post.
+					"""//
+	)
+	@IsAuthenticated
+	@PatchMapping("/{id}")
+	ResponseEntity<PostDto> editPost(//
+			@PathVariable Long id, //
+			@Valid @ParameterObject PostTagsRequest request//
+	);
 
-	private ResponseEntity<Resource> createImageResponse(ImageResource image) {
-		return ResponseEntity.ok()//
-				.cacheControl(CacheControl.noStore())//
-				.contentLength(image.contentLength())//
-				.contentType(image.contentType())//
-				.body(image);
-	}
+	@Operation(//
+			summary = "Delete post", //
+			description = """
+					Deletes specified post.
+					"""//
+	)
+	@IsAuthenticated
+	@DeleteMapping("/{id}")
+	ResponseEntity<Void> deletePost(//
+			@PathVariable Long id//
+	);
 
-	@Override
-	public ResponseEntity<PostDto> editPost(PostEditRequest request) {
-		return ResponseEntity.ok(postService.editPost(request));
-	}
-
-	@Override
-	public ResponseEntity<Void> deletePost(PostIdRequest request) {
-		postService.deletePost(request.getPostId());
-		return ResponseEntity.noContent().build();
-	}
-
-	@Override
-	public ResponseEntity<List<PostDto>> searchPosts(PostQueryRequest request) {
-		return ResponseEntity.ok(postService.findPostsByQuery(request));
-	}
+	@Operation(//
+			summary = "Search posts by tag query", //
+			description = """
+					Performs a tag-based search and returns a list of post data.
+					"""//
+	)
+	@PermitAll
+	@PostMapping("/search")
+	ResponseEntity<List<PostDto>> searchPosts(//
+			@Valid @RequestBody PostQueryRequest request, //
+			@PageableDefault(size = 20, direction = Sort.Direction.DESC, sort = "createdAt.timestamp") Pageable pageable//
+	);
 
 }

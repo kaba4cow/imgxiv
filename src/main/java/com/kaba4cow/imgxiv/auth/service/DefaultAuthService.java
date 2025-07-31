@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.kaba4cow.imgxiv.auth.dto.AuthDto;
 import com.kaba4cow.imgxiv.auth.dto.AuthRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
+import com.kaba4cow.imgxiv.domain.user.Credentials;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.UserRole;
@@ -35,12 +36,14 @@ public class DefaultAuthService implements AuthService {
 	public ProfileDto register(RegisterRequest request) {
 		userValidationService.ensureUsernameAvailable(request.getUsername());
 		userValidationService.ensureEmailAvailable(request.getEmail());
-		User user = new User();
-		user.getCredentials().setUsername(request.getUsername());
-		user.getCredentials().setEmail(request.getEmail());
-		user.getCredentials().setPasswordHash(passwordEncoder.encode(request.getPassword()));
-		user.setRole(UserRole.defaultRole());
-		User saved = userRepository.save(user);
+		User saved = userRepository.save(User.builder()//
+				.role(UserRole.defaultRole())//
+				.credentials(Credentials.builder()//
+						.username(request.getUsername())//
+						.email(request.getEmail())//
+						.passwordHash(passwordEncoder.encode(request.getPassword()))//
+						.build())//
+				.build());
 		log.info("Registered new user: {}", saved);
 		return profileMapper.mapToDto(saved);
 	}

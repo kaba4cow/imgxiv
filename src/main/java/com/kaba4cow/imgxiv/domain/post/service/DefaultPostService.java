@@ -1,21 +1,18 @@
 package com.kaba4cow.imgxiv.domain.post.service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
-import com.kaba4cow.imgxiv.domain.post.dto.PostEditRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostMapper;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.security.PostSecurity;
-import com.kaba4cow.imgxiv.domain.tag.Tag;
-import com.kaba4cow.imgxiv.domain.tag.TagRepository;
+import com.kaba4cow.imgxiv.domain.tag.service.TagService;
 import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.image.ImageResource;
 import com.kaba4cow.imgxiv.image.service.ImageService;
@@ -28,11 +25,11 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class DefaultPostService implements PostService {
 
-	private final PostQueryExecutorService postQueryExecutorService;
+	private final PostSearchService postSearchService;
 
 	private final PostRepository postRepository;
 
-	private final TagRepository tagRepository;
+	private final TagService tagService;
 
 	private final ImageService imageService;
 
@@ -42,11 +39,11 @@ public class DefaultPostService implements PostService {
 
 	@Override
 	public PostDto createPost(PostCreateRequest request, User author) {
-		Set<Tag> tags = tagRepository.findByIdsOrThrow(request.getTagIds());
-		Post post = new Post();
-		tags.forEach(post::addTag);
-		post.setAuthor(author);
-		post.setPostImage(imageService.createImages(request.getImage()));
+		Post post = Post.builder()//
+				.author(author)//
+				.postImage(imageService.createImages(request.getImage()))//
+				.build();
+		tagService.getOrCreateTagsByNames(request.getTags()).forEach(post::addTag);
 		Post saved = postRepository.save(post);
 		log.info("Created new post: {}", saved);
 		return postMapper.mapToDto(saved);
@@ -68,12 +65,13 @@ public class DefaultPostService implements PostService {
 	}
 
 	@Override
-	public PostDto editPost(PostEditRequest request) {
-		Post post = postSecurity.getPostToEdit(request.getId());
-		post.getPostTags().clear();
-		tagRepository.findByIdsOrThrow(request.getTagIds())//
+	public PostDto editPost(Long id, List<String> tags) {
+		Post post = postSecurity.getPostToEdit(id);
+		post.clearTags();
+		tagService.getOrCreateTagsByNames(tags)//
 				.forEach(post::addTag);
 		Post saved = postRepository.save(post);
+		log.info("Updated post: {}", saved);
 		return postMapper.mapToDto(saved);
 	}
 
@@ -82,13 +80,14 @@ public class DefaultPostService implements PostService {
 		Post post = postSecurity.getPostToDelete(id);
 		imageService.deleteImages(post.getPostImage());
 		postRepository.delete(post);
+		log.info("Deleted post: {}", post);
 	}
 
 	@Override
-	public List<PostDto> findPostsByQuery(PostQueryRequest request) {
-		return postQueryExecutorService.executeQuery(request)//
+	public List<PostDto> findPostsByQuery(PostQueryRequest request, Pageable pageable) {
+		return postSearchService.searchPosts(request, pageable)//
 				.map(postMapper::mapToDto)//
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 }

@@ -10,13 +10,15 @@ public class UserAuthorities {
 
 	public static final String CREATE_CATEGORY = "create-category";
 
-	public static final String CREATE_TAG = "create-tag";
-
 	public static final String EDIT_POST_NA = "edit-post-na";
 
 	public static final String DELETE_POST_NA = "delete-post-na";
 
 	public static final String DELETE_COMMENT_NA = "delete-comment-na";
+
+	public static final String MANAGE_TAGS = "manage-tags";
+
+	public static final String MANAGE_CATEGORIES = "manage-categories";
 
 	public static final String VIEW_MODERATORS = "view-moderators";
 

@@ -16,8 +16,8 @@ public class ImageStorageConfig {
 
 	@Profile("prod")
 	@Bean
-	public ImageStorage prodImageStorage(S3Client s3Client, @Value("${aws.bucket-name}") String bucketName) {
-		return new AwsImageStorage(s3Client, bucketName);
+	public ImageStorage prodImageStorage(S3Client s3Client, @Value("${aws.s3.bucket-name}") String bucketName) {
+		return new S3ImageStorage(s3Client, bucketName);
 	}
 
 	@Profile("dev")

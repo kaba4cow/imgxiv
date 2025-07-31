@@ -18,7 +18,7 @@ public class PostDto {
 
 	private Long authorId;
 
-	private Set<Long> tagIds;
+	private Set<String> tagNames;
 
 	private LocalDateTime createdAt;
 

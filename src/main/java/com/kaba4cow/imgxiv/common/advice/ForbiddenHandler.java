@@ -5,7 +5,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.kaba4cow.imgxiv.common.advice.handler.ExceptionHandlerResponseEntity;
+import com.kaba4cow.imgxiv.common.advice.response.ExceptionHandlerResponseEntity;
 import com.kaba4cow.imgxiv.common.exception.RoleAssignException;
 
 @ControllerAdvice

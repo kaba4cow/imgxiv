@@ -1,17 +1,23 @@
 package com.kaba4cow.imgxiv.domain.tag.service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.common.exception.NameConflictException;
 import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.category.service.CategoryService;
 import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
-import com.kaba4cow.imgxiv.domain.tag.dto.TagCreateRequest;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
+import com.kaba4cow.imgxiv.domain.tag.dto.TagEditRequest;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -26,34 +32,70 @@ public class DefaultTagService implements TagService {
 
 	private final CategoryRepository categoryRepository;
 
+	private final CategoryService categoryService;
+
 	private final TagMapper tagMapper;
 
 	@Override
-	public TagDto create(TagCreateRequest request) {
-		if (tagRepository.existsByName(request.getName()))
+	public TagDto getTag(Long tagId) {
+		return tagMapper.mapToDto(tagRepository.findByIdOrThrow(tagId));
+	}
+
+	@Override
+	public TagDto editTag(Long tagId, TagEditRequest request) {
+		Tag tag = tagRepository.findByIdOrThrow(tagId);
+		if (!Objects.equals(tag.getName(), request.getName()) && tagRepository.existsByName(request.getName()))
 			throw new NameConflictException("Tag with this name already exists");
-		Tag tag = new Tag();
-		tag.getNameAndDescription().setName(request.getName());
-		tag.getNameAndDescription().setDescription(request.getDescription());
-		tag.setCategory(categoryRepository.findByIdOrThrow(request.getCategoryId()));
+		Optional.ofNullable(request.getCategory())//
+				.map(categoryRepository::findByIdOrThrow)//
+				.ifPresent(tag::setCategory);
+		Optional.ofNullable(request.getName())//
+				.ifPresent(tag::setName);
+		Optional.ofNullable(request.getDescription())//
+				.ifPresent(tag::setDescription);
 		Tag saved = tagRepository.save(tag);
-		log.info("Created new tag: {}", saved);
+		log.info("Updated tag: {}", saved);
 		return tagMapper.mapToDto(saved);
 	}
 
 	@Override
-	public List<TagDto> findAll() {
-		return tagRepository.findAll().stream()//
+	public List<TagDto> getTagsByCategory(Long categoryId) {
+		Category category = categoryRepository.findByIdOrThrow(categoryId);
+		return tagRepository.findByCategory(category).stream()//
 				.map(tagMapper::mapToDto)//
 				.collect(Collectors.toList());
 	}
 
 	@Override
-	public List<TagDto> findByCategoryId(Long categoryId) {
-		Category category = categoryRepository.findByIdOrThrow(categoryId);
-		return tagRepository.findByCategory(category).stream()//
-				.map(tagMapper::mapToDto)//
-				.collect(Collectors.toList());
+	public List<TagDto> getTagsByDefaultCategory() {
+		return getTagsByCategory(categoryService.getDefaultCategory().getId());
+	}
+
+	@Override
+	@Transactional
+	public Set<Tag> getOrCreateTagsByNames(Collection<? extends String> names) {
+		return names.stream()//
+				.map(this::normalizeTagName)//
+				.map(this::getOrCreateTagByName)//
+				.collect(Collectors.toSet());
+	}
+
+	private String normalizeTagName(String name) {
+		return name.trim().toLowerCase();
+	}
+
+	private Tag getOrCreateTagByName(String name) {
+		return tagRepository.findByName(name).orElseGet(() -> createNewTag(name));
+	}
+
+	private Tag createNewTag(String name) {
+		Tag saved = tagRepository.save(Tag.builder()//
+				.name(name)//
+				.description("")//
+				.category(categoryService.getDefaultCategory())//
+				.build());
+		log.info("Created new tag: {}", saved);
+		return saved;
 	}
 
 }

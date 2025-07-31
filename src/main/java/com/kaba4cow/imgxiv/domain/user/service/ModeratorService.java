@@ -2,12 +2,13 @@ package com.kaba4cow.imgxiv.domain.user.service;
 
 import java.util.List;
 
-import com.kaba4cow.imgxiv.common.dto.PageableRequest;
+import org.springframework.data.domain.Pageable;
+
 import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 
 public interface ModeratorService {
 
-	List<UserDto> getModerators(PageableRequest request);
+	List<UserDto> getModerators(Pageable pageable);
 
 	void assignModerator(Long id);
 
