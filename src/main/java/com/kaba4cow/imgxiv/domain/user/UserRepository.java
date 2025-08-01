@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	}
 
 	default User findByUsernameOrEmailOrThrow(String usernameOrEmail) {
-		return findByUsernameOrEmail(usernameOrEmail).orElseThrow(() -> new NotFoundException("Comment", usernameOrEmail));
+		return findByUsernameOrEmail(usernameOrEmail).orElseThrow(() -> new NotFoundException("User", usernameOrEmail));
 	}
 
 	@Query("SELECT u FROM User u WHERE u.credentials.username = :username")
