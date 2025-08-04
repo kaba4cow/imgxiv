@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kaba4cow.imgxiv.common.exception.EmailConflictException;
 import com.kaba4cow.imgxiv.common.exception.PasswordMismatchException;
 import com.kaba4cow.imgxiv.common.exception.UsernameConflictException;
-import com.kaba4cow.imgxiv.domain.user.UserRepository;
+import com.kaba4cow.imgxiv.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

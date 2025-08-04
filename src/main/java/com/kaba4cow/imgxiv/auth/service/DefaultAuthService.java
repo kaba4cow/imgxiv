@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 import com.kaba4cow.imgxiv.auth.dto.AuthDto;
 import com.kaba4cow.imgxiv.auth.dto.AuthRequest;
 import com.kaba4cow.imgxiv.auth.dto.RegisterRequest;
-import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.dto.ProfileDto;
 import com.kaba4cow.imgxiv.domain.user.dto.ProfileMapper;
 import com.kaba4cow.imgxiv.domain.user.model.Credentials;
 import com.kaba4cow.imgxiv.domain.user.model.User;
 import com.kaba4cow.imgxiv.domain.user.model.UserRole;
+import com.kaba4cow.imgxiv.domain.user.repository.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.service.UserValidationService;
 
 import lombok.RequiredArgsConstructor;

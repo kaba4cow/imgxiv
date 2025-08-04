@@ -2,10 +2,10 @@ package com.kaba4cow.imgxiv.domain.comment.security;
 
 import org.springframework.stereotype.Component;
 
-import com.kaba4cow.imgxiv.domain.comment.CommentRepository;
 import com.kaba4cow.imgxiv.domain.comment.model.Comment;
 import com.kaba4cow.imgxiv.domain.comment.policy.IsCommentDeletable;
 import com.kaba4cow.imgxiv.domain.comment.policy.IsCommentEditable;
+import com.kaba4cow.imgxiv.domain.comment.repository.CommentRepository;
 
 import lombok.RequiredArgsConstructor;
 

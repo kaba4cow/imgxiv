@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.link.posttag;
+package com.kaba4cow.imgxiv.domain.link.posttag.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

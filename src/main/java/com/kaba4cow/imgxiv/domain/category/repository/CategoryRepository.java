@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.category;
+package com.kaba4cow.imgxiv.domain.category.repository;
 
 import java.util.Optional;
 

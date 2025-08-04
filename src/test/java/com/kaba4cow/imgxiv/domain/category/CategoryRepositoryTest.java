@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
 import com.kaba4cow.imgxiv.domain.category.model.Category;
+import com.kaba4cow.imgxiv.domain.category.repository.CategoryRepository;
 
 @DataJpaTest
 @Transactional

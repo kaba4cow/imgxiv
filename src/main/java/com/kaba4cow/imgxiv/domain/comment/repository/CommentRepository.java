@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.comment;
+package com.kaba4cow.imgxiv.domain.comment.repository;
 
 import java.util.List;
 

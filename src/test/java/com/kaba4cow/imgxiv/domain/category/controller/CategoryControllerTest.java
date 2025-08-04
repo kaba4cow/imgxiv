@@ -20,8 +20,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.category.model.Category;
+import com.kaba4cow.imgxiv.domain.category.repository.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
 
 import lombok.SneakyThrows;

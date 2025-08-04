@@ -25,10 +25,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kaba4cow.imgxiv.domain.user.UserRepository;
 import com.kaba4cow.imgxiv.domain.user.model.Credentials;
 import com.kaba4cow.imgxiv.domain.user.model.User;
 import com.kaba4cow.imgxiv.domain.user.model.UserRole;
+import com.kaba4cow.imgxiv.domain.user.repository.UserRepository;
 
 import lombok.SneakyThrows;
 

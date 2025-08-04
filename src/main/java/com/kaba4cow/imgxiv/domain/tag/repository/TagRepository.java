@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.tag;
+package com.kaba4cow.imgxiv.domain.tag.repository;
 
 import java.util.List;
 import java.util.Optional;

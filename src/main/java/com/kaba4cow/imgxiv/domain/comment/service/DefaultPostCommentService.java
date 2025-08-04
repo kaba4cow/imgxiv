@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.kaba4cow.imgxiv.domain.comment.CommentRepository;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentMapper;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentTextRequest;
 import com.kaba4cow.imgxiv.domain.comment.model.Comment;
-import com.kaba4cow.imgxiv.domain.post.PostRepository;
+import com.kaba4cow.imgxiv.domain.comment.repository.CommentRepository;
+import com.kaba4cow.imgxiv.domain.post.repository.PostRepository;
 import com.kaba4cow.imgxiv.domain.user.model.User;
 
 import lombok.RequiredArgsConstructor;
