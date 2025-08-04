@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.tag;
+package com.kaba4cow.imgxiv.domain.tag.repository;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -16,7 +16,6 @@ import com.kaba4cow.imgxiv.common.exception.NotFoundException;
 import com.kaba4cow.imgxiv.domain.category.model.Category;
 import com.kaba4cow.imgxiv.domain.category.repository.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.tag.model.Tag;
-import com.kaba4cow.imgxiv.domain.tag.repository.TagRepository;
 
 @DataJpaTest
 @Transactional

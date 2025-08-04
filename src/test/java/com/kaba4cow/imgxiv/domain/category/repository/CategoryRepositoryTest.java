@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.category;
+package com.kaba4cow.imgxiv.domain.category.repository;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
 import com.kaba4cow.imgxiv.domain.category.model.Category;
-import com.kaba4cow.imgxiv.domain.category.repository.CategoryRepository;
 
 @DataJpaTest
 @Transactional
