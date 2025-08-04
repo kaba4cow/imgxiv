@@ -2,7 +2,7 @@ package com.kaba4cow.imgxiv.domain.user.dto;
 
 import org.springframework.stereotype.Component;
 
-import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.user.model.User;
 
 @Component
 public class ProfileMapper {

@@ -2,7 +2,7 @@ package com.kaba4cow.imgxiv.domain.tag.dto;
 
 import org.springframework.stereotype.Component;
 
-import com.kaba4cow.imgxiv.domain.tag.Tag;
+import com.kaba4cow.imgxiv.domain.tag.model.Tag;
 
 @Component
 public class TagMapper {

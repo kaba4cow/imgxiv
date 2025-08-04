@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.vote;
+package com.kaba4cow.imgxiv.domain.vote.model;
 
 public interface VoteSummary {
 

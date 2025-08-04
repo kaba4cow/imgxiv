@@ -1,10 +1,11 @@
-package com.kaba4cow.imgxiv.domain.category;
+package com.kaba4cow.imgxiv.domain.comment.model;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
+import com.kaba4cow.imgxiv.domain.category.model.Category;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 

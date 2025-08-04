@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import com.kaba4cow.imgxiv.domain.tag.Tag;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagEditRequest;
+import com.kaba4cow.imgxiv.domain.tag.model.Tag;
 
 public interface TagService {
 

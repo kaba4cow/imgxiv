@@ -5,8 +5,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.kaba4cow.imgxiv.domain.embeddable.CreatedAt;
 import com.kaba4cow.imgxiv.domain.embeddable.UpdatedAt;
-import com.kaba4cow.imgxiv.domain.post.Post;
-import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.post.model.Post;
+import com.kaba4cow.imgxiv.domain.user.model.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;

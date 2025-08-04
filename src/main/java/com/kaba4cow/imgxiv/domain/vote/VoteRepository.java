@@ -4,7 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.kaba4cow.imgxiv.domain.post.Post;
+import com.kaba4cow.imgxiv.domain.post.model.Post;
+import com.kaba4cow.imgxiv.domain.vote.model.Vote;
+import com.kaba4cow.imgxiv.domain.vote.model.VoteId;
+import com.kaba4cow.imgxiv.domain.vote.model.VoteSummary;
 
 public interface VoteRepository extends JpaRepository<Vote, VoteId> {
 

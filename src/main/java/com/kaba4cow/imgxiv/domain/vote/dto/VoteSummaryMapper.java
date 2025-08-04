@@ -2,8 +2,8 @@ package com.kaba4cow.imgxiv.domain.vote.dto;
 
 import org.springframework.stereotype.Component;
 
-import com.kaba4cow.imgxiv.domain.post.Post;
-import com.kaba4cow.imgxiv.domain.vote.VoteSummary;
+import com.kaba4cow.imgxiv.domain.post.model.Post;
+import com.kaba4cow.imgxiv.domain.vote.model.VoteSummary;
 
 import lombok.RequiredArgsConstructor;
 

@@ -2,10 +2,10 @@ package com.kaba4cow.imgxiv.domain.category.service;
 
 import java.util.List;
 
-import com.kaba4cow.imgxiv.domain.category.Category;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryCreateRequest;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryDto;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryEditRequest;
+import com.kaba4cow.imgxiv.domain.category.model.Category;
 
 public interface CategoryService {
 

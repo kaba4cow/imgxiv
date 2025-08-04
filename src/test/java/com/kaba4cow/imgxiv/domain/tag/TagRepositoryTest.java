@@ -13,8 +13,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
-import com.kaba4cow.imgxiv.domain.category.Category;
-import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.category.model.Category;
+import com.kaba4cow.imgxiv.domain.comment.model.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.tag.model.Tag;
 
 @DataJpaTest
 @Transactional

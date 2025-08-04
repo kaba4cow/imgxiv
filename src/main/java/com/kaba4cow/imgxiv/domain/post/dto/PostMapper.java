@@ -4,8 +4,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import com.kaba4cow.imgxiv.domain.post.Post;
-import com.kaba4cow.imgxiv.domain.tag.Tag;
+import com.kaba4cow.imgxiv.domain.post.model.Post;
+import com.kaba4cow.imgxiv.domain.tag.model.Tag;
 
 @Component
 public class PostMapper {

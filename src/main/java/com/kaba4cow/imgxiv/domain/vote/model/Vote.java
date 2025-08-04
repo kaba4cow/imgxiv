@@ -1,7 +1,7 @@
-package com.kaba4cow.imgxiv.domain.vote;
+package com.kaba4cow.imgxiv.domain.vote.model;
 
-import com.kaba4cow.imgxiv.domain.post.Post;
-import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.post.model.Post;
+import com.kaba4cow.imgxiv.domain.user.model.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;

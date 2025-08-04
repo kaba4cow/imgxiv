@@ -1,7 +1,7 @@
-package com.kaba4cow.imgxiv.domain.link.posttag;
+package com.kaba4cow.imgxiv.domain.link.posttag.model;
 
-import com.kaba4cow.imgxiv.domain.post.Post;
-import com.kaba4cow.imgxiv.domain.tag.Tag;
+import com.kaba4cow.imgxiv.domain.post.model.Post;
+import com.kaba4cow.imgxiv.domain.tag.model.Tag;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

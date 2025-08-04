@@ -3,11 +3,11 @@ package com.kaba4cow.imgxiv.domain.user.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeEmailRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangePasswordRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeUsernameRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ProfileDto;
+import com.kaba4cow.imgxiv.domain.user.model.User;
 import com.kaba4cow.imgxiv.domain.user.service.ProfileService;
 
 import lombok.RequiredArgsConstructor;

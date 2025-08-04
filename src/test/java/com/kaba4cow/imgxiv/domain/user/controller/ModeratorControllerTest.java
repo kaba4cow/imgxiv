@@ -15,10 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
-import com.kaba4cow.imgxiv.domain.user.UserRole;
+import com.kaba4cow.imgxiv.domain.user.model.User;
+import com.kaba4cow.imgxiv.domain.user.model.UserRole;
 
 import lombok.SneakyThrows;
 

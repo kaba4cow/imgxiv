@@ -5,15 +5,15 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.dto.PostCreateRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostMapper;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
+import com.kaba4cow.imgxiv.domain.post.model.Post;
 import com.kaba4cow.imgxiv.domain.post.security.PostSecurity;
 import com.kaba4cow.imgxiv.domain.tag.service.TagService;
-import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.user.model.User;
 import com.kaba4cow.imgxiv.image.ImageResource;
 import com.kaba4cow.imgxiv.image.service.ImageService;
 

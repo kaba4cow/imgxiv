@@ -3,9 +3,9 @@ package com.kaba4cow.imgxiv.domain.vote.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kaba4cow.imgxiv.domain.user.User;
-import com.kaba4cow.imgxiv.domain.vote.VoteType;
+import com.kaba4cow.imgxiv.domain.user.model.User;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryDto;
+import com.kaba4cow.imgxiv.domain.vote.model.VoteType;
 import com.kaba4cow.imgxiv.domain.vote.service.VoteService;
 
 import lombok.RequiredArgsConstructor;

@@ -13,7 +13,7 @@ import com.kaba4cow.imgxiv.domain.post.dto.PostDto;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
 import com.kaba4cow.imgxiv.domain.post.dto.PostTagsRequest;
 import com.kaba4cow.imgxiv.domain.post.service.PostService;
-import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.user.model.User;
 import com.kaba4cow.imgxiv.image.ImageResource;
 
 import lombok.RequiredArgsConstructor;

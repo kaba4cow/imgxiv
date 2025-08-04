@@ -1,9 +1,9 @@
-package com.kaba4cow.imgxiv.domain.link.posttag;
+package com.kaba4cow.imgxiv.domain.vote.model;
 
 import java.io.Serializable;
 
-import com.kaba4cow.imgxiv.domain.post.Post;
-import com.kaba4cow.imgxiv.domain.tag.Tag;
+import com.kaba4cow.imgxiv.domain.post.model.Post;
+import com.kaba4cow.imgxiv.domain.user.model.User;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
@@ -20,16 +20,16 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @Embeddable
-public class PostTagId implements Serializable {
+public class VoteId implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private Long postId;
 
-	private Long tagId;
+	private Long userId;
 
-	public static PostTagId of(Post post, Tag tag) {
-		return of(post.getId(), tag.getId());
+	public static VoteId of(Post post, User user) {
+		return of(post.getId(), user.getId());
 	}
 
 }

@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
+import com.kaba4cow.imgxiv.domain.user.model.User;
+import com.kaba4cow.imgxiv.domain.user.model.UserRole;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 

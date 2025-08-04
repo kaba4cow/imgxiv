@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
 import com.kaba4cow.imgxiv.auth.annotation.PermitAll;
-import com.kaba4cow.imgxiv.domain.user.User;
-import com.kaba4cow.imgxiv.domain.vote.VoteType;
+import com.kaba4cow.imgxiv.domain.user.model.User;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryDto;
+import com.kaba4cow.imgxiv.domain.vote.model.VoteType;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

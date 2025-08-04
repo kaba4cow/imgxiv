@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import com.kaba4cow.imgxiv.domain.category.Category;
-import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
-import com.kaba4cow.imgxiv.domain.post.Post;
-import com.kaba4cow.imgxiv.domain.post.PostImage;
+import com.kaba4cow.imgxiv.domain.category.model.Category;
+import com.kaba4cow.imgxiv.domain.comment.model.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
-import com.kaba4cow.imgxiv.domain.tag.Tag;
+import com.kaba4cow.imgxiv.domain.post.model.Post;
+import com.kaba4cow.imgxiv.domain.post.model.PostImage;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
-import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.tag.model.Tag;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
-import com.kaba4cow.imgxiv.domain.user.UserRole;
+import com.kaba4cow.imgxiv.domain.user.model.User;
+import com.kaba4cow.imgxiv.domain.user.model.UserRole;
 
 import jakarta.transaction.Transactional;
 

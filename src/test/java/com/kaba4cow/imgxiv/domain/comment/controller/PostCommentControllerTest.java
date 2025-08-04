@@ -19,18 +19,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kaba4cow.imgxiv.domain.category.Category;
-import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.category.model.Category;
 import com.kaba4cow.imgxiv.domain.comment.Comment;
 import com.kaba4cow.imgxiv.domain.comment.CommentRepository;
-import com.kaba4cow.imgxiv.domain.post.Post;
-import com.kaba4cow.imgxiv.domain.post.PostImage;
+import com.kaba4cow.imgxiv.domain.comment.model.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
-import com.kaba4cow.imgxiv.domain.tag.Tag;
+import com.kaba4cow.imgxiv.domain.post.model.Post;
+import com.kaba4cow.imgxiv.domain.post.model.PostImage;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
-import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.tag.model.Tag;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
-import com.kaba4cow.imgxiv.domain.user.UserRole;
+import com.kaba4cow.imgxiv.domain.user.model.User;
+import com.kaba4cow.imgxiv.domain.user.model.UserRole;
 
 import lombok.SneakyThrows;
 

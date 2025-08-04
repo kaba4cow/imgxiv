@@ -2,7 +2,7 @@ package com.kaba4cow.imgxiv.auth.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.user.model.User;
 
 public interface JwtService {
 

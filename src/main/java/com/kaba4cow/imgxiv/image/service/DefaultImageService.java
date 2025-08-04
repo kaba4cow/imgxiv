@@ -3,7 +3,7 @@ package com.kaba4cow.imgxiv.image.service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kaba4cow.imgxiv.domain.post.PostImage;
+import com.kaba4cow.imgxiv.domain.post.model.PostImage;
 import com.kaba4cow.imgxiv.image.ImageResource;
 import com.kaba4cow.imgxiv.image.storage.ImageStorage;
 import com.kaba4cow.imgxiv.image.thumbnail.ThumbnailGenerator;

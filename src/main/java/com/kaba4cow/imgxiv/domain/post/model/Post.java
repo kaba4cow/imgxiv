@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.post;
+package com.kaba4cow.imgxiv.domain.post.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,9 +9,9 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.kaba4cow.imgxiv.domain.embeddable.CreatedAt;
 import com.kaba4cow.imgxiv.domain.embeddable.UpdatedAt;
-import com.kaba4cow.imgxiv.domain.link.posttag.PostTag;
-import com.kaba4cow.imgxiv.domain.tag.Tag;
-import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.link.posttag.model.PostTag;
+import com.kaba4cow.imgxiv.domain.tag.model.Tag;
+import com.kaba4cow.imgxiv.domain.user.model.User;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

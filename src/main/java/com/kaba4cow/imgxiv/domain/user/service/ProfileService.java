@@ -1,10 +1,10 @@
 package com.kaba4cow.imgxiv.domain.user.service;
 
-import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeEmailRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangePasswordRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeUsernameRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ProfileDto;
+import com.kaba4cow.imgxiv.domain.user.model.User;
 
 public interface ProfileService {
 

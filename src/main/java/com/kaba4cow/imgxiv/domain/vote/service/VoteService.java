@@ -1,8 +1,8 @@
 package com.kaba4cow.imgxiv.domain.vote.service;
 
-import com.kaba4cow.imgxiv.domain.user.User;
-import com.kaba4cow.imgxiv.domain.vote.VoteType;
+import com.kaba4cow.imgxiv.domain.user.model.User;
 import com.kaba4cow.imgxiv.domain.vote.dto.VoteSummaryDto;
+import com.kaba4cow.imgxiv.domain.vote.model.VoteType;
 
 public interface VoteService {
 

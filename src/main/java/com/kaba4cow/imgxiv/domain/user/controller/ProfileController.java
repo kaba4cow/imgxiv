@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kaba4cow.imgxiv.auth.annotation.CurrentUser;
 import com.kaba4cow.imgxiv.auth.annotation.IsAuthenticated;
-import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeEmailRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangePasswordRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ChangeUsernameRequest;
 import com.kaba4cow.imgxiv.domain.user.dto.ProfileDto;
+import com.kaba4cow.imgxiv.domain.user.model.User;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

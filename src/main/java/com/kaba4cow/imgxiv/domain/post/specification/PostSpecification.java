@@ -5,8 +5,8 @@ import java.util.Set;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import com.kaba4cow.imgxiv.domain.link.posttag.PostTag;
-import com.kaba4cow.imgxiv.domain.post.Post;
+import com.kaba4cow.imgxiv.domain.link.posttag.model.PostTag;
+import com.kaba4cow.imgxiv.domain.post.model.Post;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

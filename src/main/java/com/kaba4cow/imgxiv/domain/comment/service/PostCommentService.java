@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentDto;
 import com.kaba4cow.imgxiv.domain.comment.dto.CommentTextRequest;
-import com.kaba4cow.imgxiv.domain.user.User;
+import com.kaba4cow.imgxiv.domain.user.model.User;
 
 public interface PostCommentService {
 

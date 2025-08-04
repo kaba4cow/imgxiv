@@ -6,11 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.common.exception.RoleAssignException;
-import com.kaba4cow.imgxiv.domain.user.User;
 import com.kaba4cow.imgxiv.domain.user.UserRepository;
-import com.kaba4cow.imgxiv.domain.user.UserRole;
 import com.kaba4cow.imgxiv.domain.user.dto.UserDto;
 import com.kaba4cow.imgxiv.domain.user.dto.UserMapper;
+import com.kaba4cow.imgxiv.domain.user.model.User;
+import com.kaba4cow.imgxiv.domain.user.model.UserRole;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

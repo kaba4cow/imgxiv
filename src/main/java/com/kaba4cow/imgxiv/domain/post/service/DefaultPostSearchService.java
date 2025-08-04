@@ -4,9 +4,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.kaba4cow.imgxiv.domain.post.Post;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.dto.PostQueryRequest;
+import com.kaba4cow.imgxiv.domain.post.model.Post;
 import com.kaba4cow.imgxiv.domain.post.specification.PostSpecification;
 
 import lombok.RequiredArgsConstructor;

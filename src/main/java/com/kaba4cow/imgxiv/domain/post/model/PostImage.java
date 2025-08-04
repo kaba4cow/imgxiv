@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.post;
+package com.kaba4cow.imgxiv.domain.post.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
