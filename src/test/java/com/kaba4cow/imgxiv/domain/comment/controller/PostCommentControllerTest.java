@@ -19,10 +19,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.category.model.Category;
-import com.kaba4cow.imgxiv.domain.comment.Comment;
 import com.kaba4cow.imgxiv.domain.comment.CommentRepository;
-import com.kaba4cow.imgxiv.domain.comment.model.CategoryRepository;
+import com.kaba4cow.imgxiv.domain.comment.model.Comment;
 import com.kaba4cow.imgxiv.domain.post.PostRepository;
 import com.kaba4cow.imgxiv.domain.post.model.Post;
 import com.kaba4cow.imgxiv.domain.post.model.PostImage;

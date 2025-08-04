@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kaba4cow.imgxiv.common.exception.NameConflictException;
+import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.category.model.Category;
 import com.kaba4cow.imgxiv.domain.category.service.CategoryService;
-import com.kaba4cow.imgxiv.domain.comment.model.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.tag.TagRepository;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagDto;
 import com.kaba4cow.imgxiv.domain.tag.dto.TagEditRequest;

@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.kaba4cow.imgxiv.common.exception.NameConflictException;
+import com.kaba4cow.imgxiv.domain.category.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryCreateRequest;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryDto;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryEditRequest;
 import com.kaba4cow.imgxiv.domain.category.dto.CategoryMapper;
 import com.kaba4cow.imgxiv.domain.category.model.Category;
-import com.kaba4cow.imgxiv.domain.comment.model.CategoryRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

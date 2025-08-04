@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.comment;
+package com.kaba4cow.imgxiv.domain.comment.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;

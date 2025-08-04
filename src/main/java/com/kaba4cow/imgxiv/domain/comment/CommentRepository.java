@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.kaba4cow.imgxiv.common.exception.NotFoundException;
+import com.kaba4cow.imgxiv.domain.comment.model.Comment;
 import com.kaba4cow.imgxiv.domain.post.model.Post;
 import com.kaba4cow.imgxiv.domain.user.model.User;
 

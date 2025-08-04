@@ -1,4 +1,4 @@
-package com.kaba4cow.imgxiv.domain.comment.model;
+package com.kaba4cow.imgxiv.domain.category;
 
 import java.util.Optional;
 

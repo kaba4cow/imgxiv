@@ -2,7 +2,7 @@ package com.kaba4cow.imgxiv.domain.comment.dto;
 
 import org.springframework.stereotype.Component;
 
-import com.kaba4cow.imgxiv.domain.comment.Comment;
+import com.kaba4cow.imgxiv.domain.comment.model.Comment;
 
 @Component
 public class CommentMapper {

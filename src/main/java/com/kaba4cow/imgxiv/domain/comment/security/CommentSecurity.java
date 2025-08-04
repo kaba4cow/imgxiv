@@ -2,8 +2,8 @@ package com.kaba4cow.imgxiv.domain.comment.security;
 
 import org.springframework.stereotype.Component;
 
-import com.kaba4cow.imgxiv.domain.comment.Comment;
 import com.kaba4cow.imgxiv.domain.comment.CommentRepository;
+import com.kaba4cow.imgxiv.domain.comment.model.Comment;
 import com.kaba4cow.imgxiv.domain.comment.policy.IsCommentDeletable;
 import com.kaba4cow.imgxiv.domain.comment.policy.IsCommentEditable;
 
