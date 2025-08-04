@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
-import com.kaba4cow.imgxiv.domain.user.UserRoles;
+import com.kaba4cow.imgxiv.domain.user.policy.UserAuthorities;
+import com.kaba4cow.imgxiv.domain.user.policy.UserRoles;
 
 public enum UserRole {
 

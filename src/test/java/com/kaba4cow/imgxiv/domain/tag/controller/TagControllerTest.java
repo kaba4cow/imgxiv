@@ -22,7 +22,7 @@ import com.kaba4cow.imgxiv.domain.category.model.Category;
 import com.kaba4cow.imgxiv.domain.category.repository.CategoryRepository;
 import com.kaba4cow.imgxiv.domain.tag.model.Tag;
 import com.kaba4cow.imgxiv.domain.tag.repository.TagRepository;
-import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
+import com.kaba4cow.imgxiv.domain.user.policy.UserAuthorities;
 
 import lombok.SneakyThrows;
 

@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 import org.springframework.security.access.prepost.PostAuthorize;
 
-import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
+import com.kaba4cow.imgxiv.domain.user.policy.UserAuthorities;
 
 @Documented
 @Retention(RUNTIME)

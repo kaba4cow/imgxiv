@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kaba4cow.imgxiv.domain.category.model.Category;
 import com.kaba4cow.imgxiv.domain.category.repository.CategoryRepository;
-import com.kaba4cow.imgxiv.domain.user.UserAuthorities;
+import com.kaba4cow.imgxiv.domain.user.policy.UserAuthorities;
 
 import lombok.SneakyThrows;
 
